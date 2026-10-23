@@ -1,0 +1,996 @@
+{
+  "titulo": "Hora de aventura",
+  "inicio": "p01-intro",
+  "interfaz": {
+    "empezar": "Empezar",
+    "seguir": "Seguir",
+    "volver": "Volver",
+    "recorrerConEllos": "Recorrer con ellos",
+    "silenciar": "Silenciar",
+    "activarSonido": "Activar sonido",
+    "saltearNarracion": "Saltear narración",
+    "monedas": "Monedas",
+    "cerrar": "Cerrar",
+    "verCreditos": "Ver créditos",
+    "volverAJugar": "Volver a jugar",
+    "subirAlColectivo": "Subir al colectivo",
+    "destinoElegido": "Destino elegido",
+    "pendiente": "PENDIENTE",
+    "secreto": "Secreto",
+    "secretoPendiente": "Qué revela este secreto (falta que el equipo lo indique)",
+    "narracion": "Narración",
+    "escucharPresentacion": "Escuchar",
+    "reloj": "Reloj de la isla",
+    "descubiertos": "Secretos descubiertos",
+    "seguirBloqueado": "Tocá algo de la escena para seguir",
+    "ilustracion": "Ilustración",
+    "sonido": "Sonido",
+    "elegirDupla": "Elegir a"
+  },
+  "duplas": {
+    "jp-roberto": {
+      "nombre": "Juan Pablo y Roberto",
+      "presentacion": [
+        "Juan Pablo y Roberto, dos amigos que se llevan muy bien y buscan conseguir dinero. Juan Pablo tiene 17 años y anda en bicicleta, sabe hacer trucos como el Miami. Le teme a que le pidan plata y desea conseguir dinero para pagar sus deudas. Le gusta estar en el bosque, donde vive con un lobo, que es su mascota. Roberto tiene 16 años y sabe hacer mortales hacia adelante y hacia atrás. Le teme a que lo echen de su casa y desea conseguir dinero para comprarse una propia. También le gusta andar mucho por el bosque, donde tiene un amigo llamado Tulio."
+      ],
+      "narracion": "narracion-jp-roberto",
+      "imagen": "p02-dupla-jp-roberto"
+    },
+    "camila-alma": {
+      "nombre": "Camila y Alma",
+      "presentacion": [
+        "Camila y Alma, son amigas. Camila tiene 22 años y sabe hacer cosas con la tecnología, como producir y editar videos. Le cuesta andar en bicicleta. Desea conseguir un buen trabajo y tener un perro pitbull. Alma tiene 21 años y desea ser fisicoculturista. Habla inglés y siempre lleva su celular consigo."
+      ],
+      "narracion": "narracion-camila-alma",
+      "imagen": "p02-dupla-camila-alma"
+    },
+    "diana-rogelio": {
+      "nombre": "Diana y Rogelio",
+      "presentacion": [
+        "Diana y Rogelio, un hada muñeca y un gato negro que cambia de color. Diana tiene 12 años y sabe volar. Le cuesta guardar secretos y desea conseguir dientes. No le gusta comer comida saludable. Rogelio, generalmente es negro, pero cambia de color según sea de día o de noche. Solo puede comunicarse con Diana."
+      ],
+      "narracion": "narracion-diana-rogelio",
+      "imagen": "p02-dupla-diana-rogelio"
+    }
+  },
+  "pantallas": [
+    {
+      "id": "p01-intro",
+      "numero": 1,
+      "tipo": "intro",
+      "momento": "dia",
+      "titulo": "Hora de aventura",
+      "texto": [
+        "Más allá de las nubes existe un lugar que casi nadie conoce: un pequeño pueblo sobre una isla que flota en el cielo. Desde allí arriba, las casas parecen diminutas, los caminos se pierden entre los árboles del bosque y, si mirás hacia abajo, podés ver las nubes pasar muy cerca de tus pies.",
+        "En el pueblo viven chicos, chicas y animales muy especiales. Cada uno tiene su propia historia, sus secretos y, quizás, algún poder extraordinario. Allí hay mucho por descubrir: lugares escondidos, objetos mágicos, animales que tienen algo para contarte y rincones que pueden cambiar cuando los tocás.",
+        "Pero hay algo que todos saben: durante el día, la isla es un lugar lleno de aventuras; cuando llega la noche, las cosas cambian.",
+        "Elegí con quién querés recorrer el pueblo, explorá sus senderos, descubrí sus secretos y ayudá a tus personajes a encontrar el camino de regreso."
+      ],
+      "escenario": {
+        "fondo": "p01-intro-fondo"
+      },
+      "narracion": "narracion-intro",
+      "ambiente": [
+        "amb-viento"
+      ],
+      "siguiente": "p02-eleccion"
+    },
+    {
+      "id": "p02-eleccion",
+      "numero": 2,
+      "tipo": "eleccion-dupla",
+      "momento": "dia",
+      "titulo": "Elegí un personaje, podés recorrer el pueblo con:",
+      "texto": [],
+      "duplas": [
+        "jp-roberto",
+        "camila-alma",
+        "diana-rogelio"
+      ],
+      "ambiente": [
+        "amb-viento"
+      ],
+      "siguiente": {
+        "segun": "dupla",
+        "casos": {
+          "jp-roberto": "p03-dia-jp-roberto",
+          "camila-alma": "p04-dia-camila-alma",
+          "diana-rogelio": "p05-dia-diana-rogelio"
+        }
+      }
+    },
+    {
+      "id": "p03-dia-jp-roberto",
+      "numero": 3,
+      "tipo": "exploracion",
+      "momento": "dia",
+      "dupla": "jp-roberto",
+      "titulo": "El día",
+      "texto": [
+        "El día recién comienza en el pueblo. Desde lo alto, el pueblo parece tranquilo: las casas descansan entre las nubes, los caminos se esconden entre los árboles y, más allá de las últimas casas, el bosque se extiende hasta una pequeña laguna de aguas brillantes.",
+        "Pero en este lugar las cosas nunca son exactamente lo que parecen. Una flor puede crecer hasta alcanzar el tamaño de una casa. Una piedra puede esconder un secreto. Un árbol puede guardar una historia entre sus ramas. Y algunos objetos, cuando alguien se acerca, parecen despertar de un largo sueño. Cada rincón tiene algo para contar y cada personaje sabe descubrirlo a su manera. Tocá para saber cuáles son los secretos mágicos que esconden.",
+        {
+          "texto": "Juan Pablo y Roberto conocen cada calle y cada rincón del pueblo.",
+          "estilo": "destacado"
+        },
+        "Todavía falta mucho para que llegue la noche. Por ahora, el pueblo está despierto. Y parece estar esperando que alguien descubra qué esconde."
+      ],
+      "escenario": {
+        "fondo": "p03-dia-jp-roberto-fondo",
+        "elementos": [
+          {
+            "id": "juan-pablo",
+            "nombre": "Juan Pablo con su bicicleta",
+            "imagen": "personaje-juan-pablo",
+            "x": 28,
+            "y": 54,
+            "ancho": 15
+          },
+          {
+            "id": "roberto",
+            "nombre": "Roberto",
+            "imagen": "personaje-roberto",
+            "x": 58,
+            "y": 54,
+            "ancho": 13
+          },
+          {
+            "id": "flor",
+            "nombre": "Una flor",
+            "imagen": "objeto-flor",
+            "x": 12,
+            "y": 72,
+            "ancho": 14,
+            "interaccion": {
+              "tipo": "secreto",
+              "animacion": "crecer",
+              "secreto": null
+            }
+          },
+          {
+            "id": "piedra",
+            "nombre": "Una piedra",
+            "imagen": "objeto-piedra",
+            "x": 46,
+            "y": 84,
+            "ancho": 11,
+            "interaccion": {
+              "tipo": "secreto",
+              "animacion": "brillar",
+              "secreto": null
+            }
+          },
+          {
+            "id": "arbol",
+            "nombre": "Un árbol",
+            "imagen": "objeto-arbol",
+            "x": 80,
+            "y": 36,
+            "ancho": 17,
+            "interaccion": {
+              "tipo": "secreto",
+              "animacion": "sacudir",
+              "secreto": null
+            }
+          },
+          {
+            "id": "dormido",
+            "nombre": "Un objeto que despierta",
+            "imagen": "objeto-dormido",
+            "x": 88,
+            "y": 80,
+            "ancho": 11,
+            "interaccion": {
+              "tipo": "secreto",
+              "animacion": "despertar",
+              "secreto": null
+            }
+          }
+        ]
+      },
+      "ambiente": [
+        "amb-calle",
+        "amb-vecinos",
+        "amb-pelotita"
+      ],
+      "efectos": [
+        "sfx-moto"
+      ],
+      "requiereInteracciones": 1,
+      "siguiente": "p06-noche-jp-roberto"
+    },
+    {
+      "id": "p04-dia-camila-alma",
+      "numero": 4,
+      "tipo": "exploracion",
+      "momento": "dia",
+      "dupla": "camila-alma",
+      "titulo": "El día",
+      "texto": [
+        "El día recién comienza en el pueblo. Desde lo alto, el pueblo parece tranquilo: las casas descansan entre las nubes, los caminos se esconden entre los árboles y, más allá de las últimas casas, el bosque se extiende hasta una pequeña laguna de aguas brillantes.",
+        "Pero en este lugar las cosas nunca son exactamente lo que parecen. Una flor puede crecer hasta alcanzar el tamaño de una casa. Una piedra puede esconder un secreto. Un árbol puede guardar una historia entre sus ramas. Y algunos objetos, cuando alguien se acerca, parecen despertar de un largo sueño. Cada rincón tiene algo para contar y cada personaje sabe descubrirlo a su manera. Tocá para saber cuáles son los secretos mágicos que esconden.",
+        {
+          "texto": "Camila y Alma saben que donde hay fiesta, música y celebración siempre puede aparecer algo inesperado.",
+          "estilo": "destacado"
+        },
+        "Todavía falta mucho para que llegue la noche. Por ahora, el pueblo está despierto. Y parece estar esperando que alguien descubra qué esconde."
+      ],
+      "escenario": {
+        "fondo": "p04-dia-camila-alma-fondo",
+        "elementos": [
+          {
+            "id": "camila",
+            "nombre": "Camila",
+            "imagen": "personaje-camila",
+            "x": 28,
+            "y": 54,
+            "ancho": 13
+          },
+          {
+            "id": "alma",
+            "nombre": "Alma con su celular",
+            "imagen": "personaje-alma",
+            "x": 58,
+            "y": 54,
+            "ancho": 13
+          },
+          {
+            "id": "flor",
+            "nombre": "Una flor",
+            "imagen": "objeto-flor",
+            "x": 12,
+            "y": 72,
+            "ancho": 14,
+            "interaccion": {
+              "tipo": "secreto",
+              "animacion": "crecer",
+              "secreto": null
+            }
+          },
+          {
+            "id": "piedra",
+            "nombre": "Una piedra",
+            "imagen": "objeto-piedra",
+            "x": 46,
+            "y": 84,
+            "ancho": 11,
+            "interaccion": {
+              "tipo": "secreto",
+              "animacion": "brillar",
+              "secreto": null
+            }
+          },
+          {
+            "id": "arbol",
+            "nombre": "Un árbol",
+            "imagen": "objeto-arbol",
+            "x": 80,
+            "y": 36,
+            "ancho": 17,
+            "interaccion": {
+              "tipo": "secreto",
+              "animacion": "sacudir",
+              "secreto": null
+            }
+          },
+          {
+            "id": "dormido",
+            "nombre": "Un objeto que despierta",
+            "imagen": "objeto-dormido",
+            "x": 88,
+            "y": 80,
+            "ancho": 11,
+            "interaccion": {
+              "tipo": "secreto",
+              "animacion": "despertar",
+              "secreto": null
+            }
+          }
+        ]
+      },
+      "ambiente": [
+        "amb-guitarra",
+        "amb-vecinos"
+      ],
+      "efectos": [],
+      "requiereInteracciones": 1,
+      "siguiente": "p07-noche-camila-alma"
+    },
+    {
+      "id": "p05-dia-diana-rogelio",
+      "numero": 5,
+      "tipo": "exploracion",
+      "momento": "dia",
+      "dupla": "diana-rogelio",
+      "titulo": "El día",
+      "texto": [
+        "El día recién comienza en el pueblo. Desde lo alto, el pueblo parece tranquilo: las casas descansan entre las nubes, los caminos se esconden entre los árboles y, más allá de las últimas casas, el bosque se extiende hasta una pequeña laguna de aguas brillantes.",
+        "Pero en este lugar las cosas nunca son exactamente lo que parecen. Una flor puede crecer hasta alcanzar el tamaño de una casa. Una piedra puede esconder un secreto. Un árbol puede guardar una historia entre sus ramas. Y algunos objetos, cuando alguien se acerca, parecen despertar de un largo sueño. Cada rincón tiene algo para contar y cada personaje sabe descubrirlo a su manera. Tocá para saber cuáles son los secretos mágicos que esconden.",
+        {
+          "texto": "Diana y Rogelio prefieren internarse entre los árboles, donde la laguna guarda algunos de los secretos más antiguos de la isla.",
+          "estilo": "destacado"
+        },
+        "Todavía falta mucho para que llegue la noche. Por ahora, el pueblo está despierto. Y parece estar esperando que alguien descubra qué esconde."
+      ],
+      "escenario": {
+        "fondo": "p05-dia-diana-rogelio-fondo",
+        "elementos": [
+          {
+            "id": "diana",
+            "nombre": "Diana, el hada muñeca",
+            "imagen": "personaje-diana",
+            "x": 28,
+            "y": 50,
+            "ancho": 11
+          },
+          {
+            "id": "rogelio",
+            "nombre": "Rogelio, el gato",
+            "imagen": "personaje-rogelio",
+            "x": 58,
+            "y": 64,
+            "ancho": 11
+          },
+          {
+            "id": "flor",
+            "nombre": "Una flor",
+            "imagen": "objeto-flor",
+            "x": 12,
+            "y": 72,
+            "ancho": 14,
+            "interaccion": {
+              "tipo": "secreto",
+              "animacion": "crecer",
+              "secreto": null
+            }
+          },
+          {
+            "id": "piedra",
+            "nombre": "Una piedra",
+            "imagen": "objeto-piedra",
+            "x": 46,
+            "y": 84,
+            "ancho": 11,
+            "interaccion": {
+              "tipo": "secreto",
+              "animacion": "brillar",
+              "secreto": null
+            }
+          },
+          {
+            "id": "arbol",
+            "nombre": "Un árbol",
+            "imagen": "objeto-arbol",
+            "x": 80,
+            "y": 36,
+            "ancho": 17,
+            "interaccion": {
+              "tipo": "secreto",
+              "animacion": "sacudir",
+              "secreto": null
+            }
+          },
+          {
+            "id": "dormido",
+            "nombre": "Un objeto que despierta",
+            "imagen": "objeto-dormido",
+            "x": 88,
+            "y": 80,
+            "ancho": 11,
+            "interaccion": {
+              "tipo": "secreto",
+              "animacion": "despertar",
+              "secreto": null
+            }
+          }
+        ]
+      },
+      "ambiente": [
+        "amb-loritas",
+        "amb-viento"
+      ],
+      "efectos": [],
+      "requiereInteracciones": 1,
+      "siguiente": "p08-noche-diana-rogelio"
+    },
+    {
+      "id": "p06-noche-jp-roberto",
+      "numero": 6,
+      "tipo": "exploracion",
+      "momento": "noche",
+      "dupla": "jp-roberto",
+      "titulo": "La noche",
+      "texto": [
+        "Sin embargo, cuando cae la noche, el sol comienza a esconderse detrás de las nubes. Primero, casi no se nota. La luz se vuelve más dorada, las sombras se alargan y el cielo empieza a cambiar de color. Poco a poco, las casas del pueblo encienden sus luces y el bosque se vuelve más oscuro. Entonces se escucha un ruido lejano. Clac, clac, clac… Es el viejo de la bolsa.",
+        "Nadie sabe exactamente de dónde viene ni cuándo aparece. Algunos dicen que camina por la isla desde hace tantos años que ya conoce todos sus caminos. Otros aseguran que solo sale cuando el último rayo de sol está por desaparecer. El viejo se detiene, mira hacia el cielo y dice:",
+        "—Ya es hora de volver a casa.",
+        "Después mira su enorme bolsa y sonríe:",
+        "—Cuando el reloj marque las doce, la isla cerrará sus caminos. Y quien todavía esté afuera… perderá una moneda. Pero tengan cuidado: en esta isla, una moneda nunca vale lo mismo para todos.",
+        "El viejo sigue su camino. El cielo está cada vez más oscuro. Hay poco tiempo para regresar. Pero cada uno tendrá que encontrar su propia manera de conseguir lo que necesita antes de la medianoche:",
+        {
+          "texto": "Juan Pablo y Roberto saben que todavía pueden ganar unas monedas haciendo el Miami y la mortal.",
+          "estilo": "destacado"
+        },
+        "El reloj comienza a avanzar. Tic… tac… tic… tac…La noche se acerca."
+      ],
+      "escenario": {
+        "fondo": "p06-noche-jp-roberto-fondo",
+        "elementos": [
+          {
+            "id": "miami",
+            "nombre": "Juan Pablo y su bici: el Miami",
+            "imagen": "personaje-juan-pablo",
+            "x": 32,
+            "y": 66,
+            "ancho": 20,
+            "interaccion": {
+              "tipo": "truco",
+              "animacion": "miami",
+              "monedas": 3
+            }
+          },
+          {
+            "id": "mortal",
+            "nombre": "Roberto: la mortal",
+            "imagen": "personaje-roberto",
+            "x": 60,
+            "y": 62,
+            "ancho": 14,
+            "interaccion": {
+              "tipo": "truco",
+              "animacion": "mortal",
+              "monedas": 3
+            }
+          },
+          {
+            "id": "viejo",
+            "nombre": "El viejo de la bolsa",
+            "imagen": "personaje-viejo-de-la-bolsa",
+            "x": 84,
+            "y": 58,
+            "ancho": 14
+          }
+        ]
+      },
+      "reloj": {
+        "desde": "23:40",
+        "hasta": "23:58"
+      },
+      "ambiente": [
+        "amb-viento"
+      ],
+      "efectos": [
+        "sfx-clac-clac",
+        "sfx-tic-tac"
+      ],
+      "requiereInteracciones": 1,
+      "siguiente": "p09-colectivo"
+    },
+    {
+      "id": "p07-noche-camila-alma",
+      "numero": 7,
+      "tipo": "exploracion",
+      "momento": "noche",
+      "dupla": "camila-alma",
+      "titulo": "La noche",
+      "texto": [
+        "Sin embargo, cuando cae la noche, el sol comienza a esconderse detrás de las nubes. Primero, casi no se nota. La luz se vuelve más dorada, las sombras se alargan y el cielo empieza a cambiar de color. Poco a poco, las casas del pueblo encienden sus luces y el bosque se vuelve más oscuro. Entonces se escucha un ruido lejano. Clac, clac, clac… Es el viejo de la bolsa.",
+        "Nadie sabe exactamente de dónde viene ni cuándo aparece. Algunos dicen que camina por la isla desde hace tantos años que ya conoce todos sus caminos. Otros aseguran que solo sale cuando el último rayo de sol está por desaparecer. El viejo se detiene, mira hacia el cielo y dice:",
+        "—Ya es hora de volver a casa.",
+        "Después mira su enorme bolsa y sonríe:",
+        "—Cuando el reloj marque las doce, la isla cerrará sus caminos. Y quien todavía esté afuera… perderá una moneda. Pero tengan cuidado: en esta isla, una moneda nunca vale lo mismo para todos.",
+        "El viejo sigue su camino. El cielo está cada vez más oscuro. Hay poco tiempo para regresar. Pero cada uno tendrá que encontrar su propia manera de conseguir lo que necesita antes de la medianoche:",
+        {
+          "texto": "Camila y Alma tienen una cámara de fotos donde que les puede ayudar, el flash de cada fotografía permite iluminar objetos. Tal vez, si siguen buscando, encuentren el sobre de una antigua herencia… aunque parece que alguien decidió llenarlo de pequeños perros pitbull.",
+          "estilo": "destacado"
+        },
+        "El reloj comienza a avanzar. Tic… tac… tic… tac…La noche se acerca."
+      ],
+      "escenario": {
+        "fondo": "p07-noche-camila-alma-fondo",
+        "elementos": [
+          {
+            "id": "alma",
+            "nombre": "Alma con su celular",
+            "imagen": "personaje-alma",
+            "x": 22,
+            "y": 62,
+            "ancho": 14
+          },
+          {
+            "id": "camara",
+            "nombre": "La cámara de fotos",
+            "imagen": "objeto-camara",
+            "x": 46,
+            "y": 66,
+            "ancho": 14,
+            "interaccion": {
+              "tipo": "truco",
+              "animacion": "flash",
+              "monedas": 1,
+              "aparece": "objeto-sobre-herencia"
+            }
+          },
+          {
+            "id": "viejo",
+            "nombre": "El viejo de la bolsa",
+            "imagen": "personaje-viejo-de-la-bolsa",
+            "x": 84,
+            "y": 58,
+            "ancho": 14
+          }
+        ]
+      },
+      "reloj": {
+        "desde": "23:40",
+        "hasta": "23:58"
+      },
+      "ambiente": [
+        "amb-viento"
+      ],
+      "efectos": [
+        "sfx-clac-clac",
+        "sfx-tic-tac"
+      ],
+      "requiereInteracciones": 1,
+      "siguiente": "p09-colectivo"
+    },
+    {
+      "id": "p08-noche-diana-rogelio",
+      "numero": 8,
+      "tipo": "exploracion",
+      "momento": "noche",
+      "dupla": "diana-rogelio",
+      "titulo": "La noche",
+      "texto": [
+        "Sin embargo, cuando cae la noche, el sol comienza a esconderse detrás de las nubes. Primero, casi no se nota. La luz se vuelve más dorada, las sombras se alargan y el cielo empieza a cambiar de color. Poco a poco, las casas del pueblo encienden sus luces y el bosque se vuelve más oscuro. Entonces se escucha un ruido lejano. Clac, clac, clac… Es el viejo de la bolsa.",
+        "Nadie sabe exactamente de dónde viene ni cuándo aparece. Algunos dicen que camina por la isla desde hace tantos años que ya conoce todos sus caminos. Otros aseguran que solo sale cuando el último rayo de sol está por desaparecer. El viejo se detiene, mira hacia el cielo y dice:",
+        "—Ya es hora de volver a casa.",
+        "Después mira su enorme bolsa y sonríe:",
+        "—Cuando el reloj marque las doce, la isla cerrará sus caminos. Y quien todavía esté afuera… perderá una moneda. Pero tengan cuidado: en esta isla, una moneda nunca vale lo mismo para todos.",
+        "El viejo sigue su camino. El cielo está cada vez más oscuro. Hay poco tiempo para regresar. Pero cada uno tendrá que encontrar su propia manera de conseguir lo que necesita antes de la medianoche:",
+        {
+          "texto": "Diana y Rogelio tienen otro problema. Para volver a casa necesitan dientes. Por suerte, Diana todavía conserva su varita mágica.",
+          "estilo": "destacado"
+        },
+        "El reloj comienza a avanzar. Tic… tac… tic… tac…La noche se acerca."
+      ],
+      "escenario": {
+        "fondo": "p08-noche-diana-rogelio-fondo",
+        "elementos": [
+          {
+            "id": "rogelio",
+            "nombre": "Rogelio, el gato",
+            "imagen": "personaje-rogelio",
+            "x": 22,
+            "y": 72,
+            "ancho": 12
+          },
+          {
+            "id": "varita",
+            "nombre": "La varita mágica de Diana",
+            "imagen": "objeto-varita",
+            "x": 46,
+            "y": 60,
+            "ancho": 12,
+            "interaccion": {
+              "tipo": "truco",
+              "animacion": "destellos",
+              "monedas": 1,
+              "aparece": "objeto-dientes"
+            }
+          },
+          {
+            "id": "viejo",
+            "nombre": "El viejo de la bolsa",
+            "imagen": "personaje-viejo-de-la-bolsa",
+            "x": 84,
+            "y": 58,
+            "ancho": 14
+          }
+        ]
+      },
+      "reloj": {
+        "desde": "23:40",
+        "hasta": "23:58"
+      },
+      "ambiente": [
+        "amb-viento"
+      ],
+      "efectos": [
+        "sfx-clac-clac",
+        "sfx-tic-tac"
+      ],
+      "requiereInteracciones": 1,
+      "siguiente": "p09-colectivo"
+    },
+    {
+      "id": "p09-colectivo",
+      "numero": 9,
+      "tipo": "mapa",
+      "momento": "noche",
+      "titulo": "El colectivo",
+      "texto": [
+        "Las monedas ya están en sus manos. Ahora sí, ya pueden volver a casa. A lo lejos aparece el colectivo. Sus luces atraviesan la oscuridad y se detiene suavemente frente a ellos. Es momento de elegir a dónde queremos ir. Puede ser volver a la Escuela San Martín, puede ser volver a casa, o podemos ir a explorar otros pueblos lejanos. El mapa que nos ofrece el chofer, nos permite elegir qué recorrido tomar. ¿A dónde te gustaría ir? Toca en el mapa el camino elegido."
+      ],
+      "escenario": {
+        "fondo": "p09-colectivo-fondo"
+      },
+      "mapa": "p09-mapa",
+      "destinos": [
+        {
+          "id": "escuela",
+          "nombre": "Escuela San Martín",
+          "x": 22,
+          "y": 30
+        },
+        {
+          "id": "casa",
+          "nombre": "Volver a casa",
+          "x": 66,
+          "y": 24
+        },
+        {
+          "id": "pueblos-lejanos",
+          "nombre": "Otros pueblos lejanos",
+          "x": 48,
+          "y": 72
+        }
+      ],
+      "ambiente": [
+        "amb-viento"
+      ],
+      "efectos": [
+        "sfx-colectivo"
+      ],
+      "siguiente": "p10-viaje"
+    },
+    {
+      "id": "p10-viaje",
+      "numero": 10,
+      "tipo": "viaje",
+      "momento": "noche",
+      "titulo": "El viaje",
+      "texto": [
+        "Luego de elegir, suben y se acomodan en sus asientos, mientras el colectivo comienza a recorrer la isla, miran por la ventana. Las casas quedan atrás. El bosque se pierde entre las nubes. La laguna brilla por última vez bajo la luz de la luna. El viaje parece durar apenas unos minutos. O quizás mucho más. Hasta que, finalmente, el colectivo se detiene."
+      ],
+      "capas": [
+        "p10-viaje-casas",
+        "p10-viaje-bosque",
+        "p10-viaje-laguna"
+      ],
+      "ambiente": [
+        "amb-viento"
+      ],
+      "siguiente": "p11-cierre"
+    },
+    {
+      "id": "p11-cierre",
+      "numero": 11,
+      "tipo": "cierre",
+      "momento": "noche",
+      "titulo": "El final",
+      "texto": [
+        "—¡Llegamos! Los chicos bajan y se despiden. Todo parece haber terminado. Hasta que alguien se da cuenta de que hay un ruido.",
+        "—¡Guau!",
+        "Un perrito pitbull se baja corriendo del colectivo, moviendo la cola. Nadie vio en qué momento se subió. Antes de que puedan agarrarlo, se escucha nuevamente: Clac, clac, clac… El viejo de la bolsa aparece al otro lado de la calle. —Ah… con que acá estabas. Se agacha, abre su enorme bolsa y el perrito entra de un salto. Los chicos le preguntan si el perrito se puede quedar con ellos. Pero el viejo les responde que deben volver a la isla. —¡Pueden venir de nuevo cuando quieran! Les alcanza a decir. Cuando los chicos quieren responder, el viejo ya no está. Solo queda una pequeña nube de polvo que se eleva lentamente en el aire… y desaparece. Los chicos se miran. Quizás el viejo nunca estuvo allí. Quizás sí. Mientras tanto, esperan ansiosos volver a visitar el pueblo sobre la isla."
+      ],
+      "escenario": {
+        "fondo": "p11-cierre-fondo",
+        "elementos": [
+          {
+            "id": "perrito",
+            "nombre": "El perrito pitbull",
+            "imagen": "objeto-perro-pitbull",
+            "x": 30,
+            "y": 74,
+            "ancho": 12
+          },
+          {
+            "id": "viejo",
+            "nombre": "El viejo de la bolsa",
+            "imagen": "personaje-viejo-de-la-bolsa",
+            "x": 76,
+            "y": 58,
+            "ancho": 14
+          }
+        ]
+      },
+      "efectos": [
+        "sfx-perros",
+        "sfx-clac-clac"
+      ],
+      "ambiente": [],
+      "reiniciarEn": "p02-eleccion"
+    }
+  ],
+  "creditos": {
+    "titulo": "Créditos",
+    "secciones": [
+      {
+        "titulo": "Escribieron, ilustraron y narraron",
+        "detalle": "Chicos y chicas de la Escuela San Martín, Villa María",
+        "nombres": [],
+        "pendiente": "Los nombres de los chicos, tal como los indique el equipo"
+      },
+      {
+        "titulo": "Un proyecto de investigación y extensión de",
+        "nombres": [
+          "Universidad Nacional de Villa María (UNVM)"
+        ]
+      },
+      {
+        "titulo": "Equipo UNVM",
+        "nombres": [],
+        "pendiente": "Los nombres del equipo, tal como los indique Lucila"
+      },
+      {
+        "titulo": "Cofinanciado por",
+        "nombres": [
+          "Municipalidad de Villa María"
+        ]
+      },
+      {
+        "titulo": "Desarrollo",
+        "nombres": [
+          "David Abril"
+        ]
+      }
+    ]
+  },
+  "imagenes": {
+    "p01-intro-fondo": {
+      "src": "img/p01-intro-fondo.webp",
+      "pendiente": true,
+      "descripcion": "La isla flotante y el pueblo visto desde arriba"
+    },
+    "p02-dupla-jp-roberto": {
+      "src": "img/p02-dupla-jp-roberto.webp",
+      "pendiente": true,
+      "descripcion": "Juan Pablo con su bici y Roberto"
+    },
+    "p02-dupla-camila-alma": {
+      "src": "img/p02-dupla-camila-alma.webp",
+      "pendiente": true,
+      "descripcion": "Camila y Alma"
+    },
+    "p02-dupla-diana-rogelio": {
+      "src": "img/p02-dupla-diana-rogelio.webp",
+      "pendiente": true,
+      "descripcion": "Diana, el hada muñeca, y Rogelio, el gato negro"
+    },
+    "personaje-juan-pablo": {
+      "src": "img/personaje-juan-pablo.webp",
+      "pendiente": true,
+      "descripcion": "Juan Pablo con su bicicleta"
+    },
+    "personaje-roberto": {
+      "src": "img/personaje-roberto.webp",
+      "pendiente": true,
+      "descripcion": "Roberto"
+    },
+    "personaje-camila": {
+      "src": "img/personaje-camila.webp",
+      "pendiente": true,
+      "descripcion": "Camila"
+    },
+    "personaje-alma": {
+      "src": "img/personaje-alma.webp",
+      "pendiente": true,
+      "descripcion": "Alma con su celular"
+    },
+    "personaje-diana": {
+      "src": "img/personaje-diana.webp",
+      "pendiente": true,
+      "descripcion": "Diana, el hada muñeca"
+    },
+    "personaje-rogelio": {
+      "src": "img/personaje-rogelio.webp",
+      "pendiente": true,
+      "descripcion": "Rogelio, el gato",
+      "cambiaDeColorDeNoche": true
+    },
+    "personaje-viejo-de-la-bolsa": {
+      "src": "img/personaje-viejo-de-la-bolsa.webp",
+      "pendiente": true,
+      "descripcion": "El viejo de la bolsa"
+    },
+    "objeto-flor": {
+      "src": "img/objeto-flor.webp",
+      "pendiente": true,
+      "descripcion": "Una flor"
+    },
+    "objeto-piedra": {
+      "src": "img/objeto-piedra.webp",
+      "pendiente": true,
+      "descripcion": "Una piedra"
+    },
+    "objeto-arbol": {
+      "src": "img/objeto-arbol.webp",
+      "pendiente": true,
+      "descripcion": "Un árbol"
+    },
+    "objeto-dormido": {
+      "src": "img/objeto-dormido.webp",
+      "pendiente": true,
+      "descripcion": "Un objeto que parece dormido"
+    },
+    "objeto-camara": {
+      "src": "img/objeto-camara.webp",
+      "pendiente": true,
+      "descripcion": "La cámara de fotos de Camila"
+    },
+    "objeto-sobre-herencia": {
+      "src": "img/objeto-sobre-herencia.webp",
+      "pendiente": true,
+      "descripcion": "El sobre de la herencia lleno de pitbulls"
+    },
+    "objeto-varita": {
+      "src": "img/objeto-varita.webp",
+      "pendiente": true,
+      "descripcion": "La varita mágica de Diana"
+    },
+    "objeto-dientes": {
+      "src": "img/objeto-dientes.webp",
+      "pendiente": true,
+      "descripcion": "Dientes"
+    },
+    "objeto-perro-pitbull": {
+      "src": "img/objeto-perro-pitbull.webp",
+      "pendiente": true,
+      "descripcion": "El perrito pitbull"
+    },
+    "p03-dia-jp-roberto-fondo": {
+      "src": "img/p03-dia-jp-roberto-fondo.webp",
+      "pendiente": true,
+      "descripcion": "Las calles y los rincones del pueblo, de día"
+    },
+    "p04-dia-camila-alma-fondo": {
+      "src": "img/p04-dia-camila-alma-fondo.webp",
+      "pendiente": true,
+      "descripcion": "La fiesta del pueblo, con música, de día"
+    },
+    "p05-dia-diana-rogelio-fondo": {
+      "src": "img/p05-dia-diana-rogelio-fondo.webp",
+      "pendiente": true,
+      "descripcion": "El bosque y la laguna, de día"
+    },
+    "p06-noche-jp-roberto-fondo": {
+      "src": "img/p06-noche-jp-roberto-fondo.webp",
+      "pendiente": true,
+      "descripcion": "Las calles del pueblo de noche, con las casas iluminadas"
+    },
+    "p07-noche-camila-alma-fondo": {
+      "src": "img/p07-noche-camila-alma-fondo.webp",
+      "pendiente": true,
+      "descripcion": "La fiesta del pueblo, de noche"
+    },
+    "p08-noche-diana-rogelio-fondo": {
+      "src": "img/p08-noche-diana-rogelio-fondo.webp",
+      "pendiente": true,
+      "descripcion": "El bosque y la laguna, de noche"
+    },
+    "p09-colectivo-fondo": {
+      "src": "img/p09-colectivo-fondo.webp",
+      "pendiente": true,
+      "descripcion": "El colectivo llegando con las luces encendidas"
+    },
+    "p09-mapa": {
+      "src": "img/p09-mapa.webp",
+      "pendiente": true,
+      "descripcion": "El mapa que ofrece el chofer"
+    },
+    "p10-viaje-casas": {
+      "src": "img/p10-viaje-casas.webp",
+      "pendiente": true,
+      "descripcion": "Las casas del pueblo que quedan atrás"
+    },
+    "p10-viaje-bosque": {
+      "src": "img/p10-viaje-bosque.webp",
+      "pendiente": true,
+      "descripcion": "El bosque entre las nubes"
+    },
+    "p10-viaje-laguna": {
+      "src": "img/p10-viaje-laguna.webp",
+      "pendiente": true,
+      "descripcion": "La laguna bajo la luz de la luna"
+    },
+    "p11-cierre-fondo": {
+      "src": "img/p11-cierre-fondo.webp",
+      "pendiente": true,
+      "descripcion": "Los chicos bajando del colectivo"
+    }
+  },
+  "audios": {
+    "narracion-intro": {
+      "src": "audio/narracion-intro.m4a",
+      "tipo": "narracion",
+      "pendiente": true,
+      "descripcion": "Narración de la introducción (Lucas)"
+    },
+    "narracion-jp-roberto": {
+      "src": "audio/narracion-jp-roberto.m4a",
+      "tipo": "narracion",
+      "pendiente": true,
+      "descripcion": "Narración de Juan Pablo y Roberto (Jere)"
+    },
+    "narracion-camila-alma": {
+      "src": "audio/narracion-camila-alma.m4a",
+      "tipo": "narracion",
+      "pendiente": true,
+      "descripcion": "Narración de Camila y Alma (Juli)"
+    },
+    "narracion-diana-rogelio": {
+      "src": "audio/narracion-diana-rogelio.m4a",
+      "tipo": "narracion",
+      "pendiente": true,
+      "descripcion": "Narración de Diana y Rogelio (Ana Paula)"
+    },
+    "amb-viento": {
+      "src": "audio/amb-viento.m4a",
+      "tipo": "ambiente",
+      "pendiente": true,
+      "descripcion": "Viento"
+    },
+    "amb-calle": {
+      "src": "audio/amb-calle.m4a",
+      "tipo": "ambiente",
+      "pendiente": true,
+      "descripcion": "Ruido de calle"
+    },
+    "amb-vecinos": {
+      "src": "audio/amb-vecinos.m4a",
+      "tipo": "ambiente",
+      "pendiente": true,
+      "descripcion": "Vecinos saludándose"
+    },
+    "amb-pelotita": {
+      "src": "audio/amb-pelotita.m4a",
+      "tipo": "ambiente",
+      "pendiente": true,
+      "descripcion": "Pelotita picando"
+    },
+    "amb-guitarra": {
+      "src": "audio/amb-guitarra.m4a",
+      "tipo": "ambiente",
+      "pendiente": true,
+      "descripcion": "Guitarra"
+    },
+    "amb-loritas": {
+      "src": "audio/amb-loritas.m4a",
+      "tipo": "ambiente",
+      "pendiente": true,
+      "descripcion": "Loritas"
+    },
+    "sfx-moto": {
+      "src": "audio/sfx-moto.m4a",
+      "tipo": "efecto",
+      "pendiente": true,
+      "descripcion": "Moto que pasa"
+    },
+    "sfx-perros": {
+      "src": "audio/sfx-perros.m4a",
+      "tipo": "efecto",
+      "pendiente": true,
+      "descripcion": "¡Guau! (fragmento de perros ladrando)"
+    },
+    "sfx-clac-clac": {
+      "src": "audio/sfx-clac-clac.m4a",
+      "tipo": "efecto",
+      "pendiente": true,
+      "descripcion": "Clac, clac, clac del viejo de la bolsa (falta grabarlo)"
+    },
+    "sfx-tic-tac": {
+      "src": "audio/sfx-tic-tac.m4a",
+      "tipo": "efecto",
+      "pendiente": true,
+      "descripcion": "Tic tac del reloj (falta grabarlo)"
+    },
+    "sfx-colectivo": {
+      "src": "audio/sfx-colectivo.m4a",
+      "tipo": "efecto",
+      "pendiente": true,
+      "descripcion": "El colectivo que llega y frena (falta grabarlo)"
+    }
+  }
+}
