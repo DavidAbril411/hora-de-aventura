@@ -26,6 +26,8 @@ export interface Dupla {
   presentacion: string[];
   narracion: string;
   imagen: string;
+  /** Texto del botón para elegirla, si no sirve el general ("Recorrer con ellas"). */
+  botonElegir?: string;
 }
 
 export type Animacion =

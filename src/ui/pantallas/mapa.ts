@@ -1,7 +1,7 @@
 import type { Contexto } from '../../engine/motor';
 import { historia, t } from '../../engine/historia';
 import type { PantallaMapa } from '../../engine/tipos';
-import { aparecer } from '../animaciones';
+import { aparecer, llamarAtencion } from '../animaciones';
 import { h } from '../dom';
 import { acciones, avisoAudioPendiente, boton, escenario, ilustracion, panelTexto, parrafos } from '../componentes';
 import { iconoSeguir } from '../iconos';
@@ -23,6 +23,7 @@ export function mapa(ctx: Contexto<PantallaMapa>): HTMLElement {
 
   const subir = boton(t('subirAlColectivo'), () => {
     if (estado.get().destino) ctx.avanzar();
+    else llamarAtencion([...botones, pista]);
   }, { icono: iconoSeguir });
   const pista = h('p', { class: 'acciones__pista', id: `pista-${p.id}` });
 
@@ -51,7 +52,9 @@ export function mapa(ctx: Contexto<PantallaMapa>): HTMLElement {
   const actualizar = () => {
     const destino = p.destinos.find((d) => d.id === estado.get().destino);
     subir.setAttribute('aria-disabled', String(!destino));
-    pista.textContent = destino ? `${t('destinoElegido')}: ${destino.nombre}` : '';
+    if (destino) subir.removeAttribute('aria-describedby');
+    else subir.setAttribute('aria-describedby', pista.id);
+    pista.textContent = destino ? `${t('destinoElegido')}: ${destino.nombre}` : t('elegirDestino');
     pista.classList.toggle('acciones__pista--elegido', !!destino);
   };
   // Si vuelve a esta pantalla con un destino ya elegido, se respeta.

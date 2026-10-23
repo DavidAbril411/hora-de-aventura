@@ -16,16 +16,15 @@
     "subirAlColectivo": "Subir al colectivo",
     "destinoElegido": "Destino elegido",
     "pendiente": "PENDIENTE",
-    "secreto": "Secreto",
     "secretoPendiente": "Qué revela este secreto (falta que el equipo lo indique)",
-    "narracion": "Narración",
-    "escucharPresentacion": "Escuchar",
     "reloj": "Reloj de la isla",
     "descubiertos": "Secretos descubiertos",
     "seguirBloqueado": "Tocá algo de la escena para seguir",
-    "ilustracion": "Ilustración",
     "sonido": "Sonido",
-    "elegirDupla": "Elegir a"
+    "de": "de",
+    "descubierto": "descubierto",
+    "elegirDestino": "Tocá un lugar del mapa",
+    "inicio": "Inicio"
   },
   "duplas": {
     "jp-roberto": {
@@ -42,7 +41,8 @@
         "Camila y Alma, son amigas. Camila tiene 22 años y sabe hacer cosas con la tecnología, como producir y editar videos. Le cuesta andar en bicicleta. Desea conseguir un buen trabajo y tener un perro pitbull. Alma tiene 21 años y desea ser fisicoculturista. Habla inglés y siempre lleva su celular consigo."
       ],
       "narracion": "narracion-camila-alma",
-      "imagen": "p02-dupla-camila-alma"
+      "imagen": "p02-dupla-camila-alma",
+      "botonElegir": "Recorrer con ellas"
     },
     "diana-rogelio": {
       "nombre": "Diana y Rogelio",
@@ -621,20 +621,20 @@
         {
           "id": "escuela",
           "nombre": "Escuela San Martín",
-          "x": 22,
-          "y": 30
+          "x": 30,
+          "y": 22
         },
         {
           "id": "casa",
           "nombre": "Volver a casa",
-          "x": 66,
-          "y": 24
+          "x": 68,
+          "y": 48
         },
         {
           "id": "pueblos-lejanos",
           "nombre": "Otros pueblos lejanos",
-          "x": 48,
-          "y": 72
+          "x": 40,
+          "y": 76
         }
       ],
       "ambiente": [

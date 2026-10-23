@@ -51,8 +51,11 @@ export class Motor {
     return this.actual?.pantalla ?? null;
   }
 
-  iniciar(): void {
-    this.irA(historia.inicio);
+  /** Arranca en la pantalla guardada si sigue siendo válida; si no, en la intro. */
+  iniciar(guardada: string | null = null): void {
+    const pantalla = guardada ? historia.pantallas.find((p) => p.id === guardada) : undefined;
+    const valida = pantalla && pantalla.tipo !== 'intro' && (!pantalla.dupla || pantalla.dupla === this.estado.get().dupla);
+    this.irA(valida ? pantalla.id : historia.inicio);
   }
 
   irA(id: string): void {
@@ -107,6 +110,7 @@ export class Motor {
     el.dataset.pantalla = pantalla.id;
     document.documentElement.dataset.momento = pantalla.momento;
     this.actual = { pantalla, el, limpiezas };
+    this.estado.recordarPantalla(pantalla.id);
 
     this.escena.append(el);
     window.scrollTo(0, 0);

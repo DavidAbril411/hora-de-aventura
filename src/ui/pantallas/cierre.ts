@@ -15,10 +15,28 @@ export function cierre(ctx: Contexto<PantallaCierre>): HTMLElement {
   const raiz = h('main', { class: 'disposicion' });
   const dibujo = escenario(p.escenario, p.momento);
 
+  const bloques = parrafos(p.texto);
+  const finDeLectura = h('span', { class: 'fin-de-lectura', 'aria-hidden': 'true' });
   const viejo = dibujo.elementos.get('viejo')?.contenedor;
   if (viejo) {
-    const espera = window.setTimeout(() => void nubeDePolvo(viejo, dibujo.raiz), 2500);
-    ctx.alSalir(() => window.clearTimeout(espera));
+    // El viejo desaparece cuando el lector llega al final del texto, no antes.
+    let listo = false;
+    const desaparecer = () => {
+      if (listo) return;
+      listo = true;
+      observador.disconnect();
+      void nubeDePolvo(viejo, dibujo.raiz);
+    };
+    let espera = 0;
+    const observador = new IntersectionObserver((entradas) => {
+      window.clearTimeout(espera);
+      if (entradas.some((e) => e.isIntersecting)) espera = window.setTimeout(desaparecer, 1800);
+    });
+    observador.observe(finDeLectura);
+    ctx.alSalir(() => {
+      observador.disconnect();
+      window.clearTimeout(espera);
+    });
   }
 
   const mostrarCreditos = () => {
@@ -40,6 +58,8 @@ export function cierre(ctx: Contexto<PantallaCierre>): HTMLElement {
     }, { iconoAntes: iconoVolver });
     const lista = h('div', { class: 'creditos__lista' }, ...secciones);
     raiz.className = 'creditos';
+    document.documentElement.dataset.creditos = '';
+    ctx.alSalir(() => delete document.documentElement.dataset.creditos);
     raiz.replaceChildren(h('h1', { class: 'creditos__titulo', tabindex: '-1' }, creditos.titulo), lista, acciones(otraVez));
     window.scrollTo(0, 0);
     aparecerEnCascada([...lista.children]);
@@ -47,7 +67,7 @@ export function cierre(ctx: Contexto<PantallaCierre>): HTMLElement {
   };
 
   const aviso = avisoAudioPendiente(p.narracion, ...(p.ambiente ?? []), ...(p.efectos ?? []));
-  const panel = panelTexto(p.titulo, [...parrafos(p.texto), aviso], acciones(boton(t('verCreditos'), mostrarCreditos, { icono: iconoSeguir })));
+  const panel = panelTexto(p.titulo, [...bloques, aviso, finDeLectura], acciones(boton(t('verCreditos'), mostrarCreditos, { icono: iconoSeguir })));
   raiz.append(dibujo.raiz, panel);
   return raiz;
 }

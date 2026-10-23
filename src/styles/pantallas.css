@@ -11,39 +11,37 @@
   min-height: 100dvh;
 }
 
+/* El dibujo queda a la vista mientras se lee, y sus elementos, a mano. */
 .disposicion > .escenario {
+  position: sticky;
+  top: 0;
   width: 100%;
   flex: none;
+  z-index: 6;
 }
 
-/* Tablet horizontal (la pantalla principal): ilustración y texto lado a lado. */
+/*
+ * Tablet horizontal (la pantalla principal): la ilustración manda y queda
+ * fija; el texto corre al lado con el scroll de la página, así deslizar
+ * sobre el dibujo también hace avanzar la lectura (no hay scroll anidado).
+ */
 @media (orientation: landscape) and (min-width: 56rem) {
   .disposicion {
     display: grid;
-    grid-template-columns: minmax(0, 1.45fr) minmax(23rem, 1fr);
-    height: 100dvh;
-    min-height: 0;
+    grid-template-columns: minmax(0, 1.9fr) minmax(21rem, 1fr);
+    align-items: start;
   }
 
   .disposicion > .escenario {
-    align-self: center;
+    position: sticky;
+    top: var(--margen);
     justify-self: center;
     width: min(100% - 2 * var(--margen), (100dvh - 2 * var(--margen)) * 4 / 3);
     margin: var(--margen);
   }
 
   .panel {
-    height: 100dvh;
-    overflow: hidden;
-  }
-
-  .panel__lectura {
-    overflow-y: auto;
-    flex: 1;
-    min-height: 0;
-    padding-bottom: 3rem;
-    /* Que se note que el texto sigue más abajo. */
-    mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent);
+    min-height: 100dvh;
   }
 }
 
@@ -185,21 +183,34 @@
   pointer-events: none;
 }
 
-/* Secreto revelado: tarjeta sobre la ilustración, cerca de lo que se tocó. */
+/* Secreto revelado: va del lado opuesto a lo que se tocó (lo decide exploracion.ts). */
 .revelacion {
   position: absolute;
-  inset: auto 0 4% 0;
-  display: flex;
-  justify-content: center;
-  padding-inline: 4%;
+  width: min(48%, 24rem);
   pointer-events: none;
   z-index: 3;
 }
 
+.revelacion[data-lado='derecha'] {
+  right: 3%;
+}
+
+.revelacion[data-lado='izquierda'] {
+  left: 3%;
+}
+
+.revelacion[data-altura='arriba'] {
+  top: 4%;
+}
+
+.revelacion[data-altura='abajo'] {
+  bottom: 4%;
+}
+
 .revelacion__tarjeta {
   position: relative;
-  width: min(100%, 30rem);
-  padding: 1rem 4.25rem 1.1rem 1.25rem;
+  width: 100%;
+  padding: 0.9rem 3.9rem 1rem 1.1rem;
   border-radius: var(--radio);
   background: var(--papel);
   color: var(--tinta);
@@ -327,7 +338,7 @@
 }
 
 .panel__lectura > p {
-  max-width: 62ch;
+  max-width: 56ch;
 }
 
 .panel__titulo {
@@ -511,9 +522,12 @@
 
 /* ---------- Pantalla 1: portada ---------- */
 
-.panel--portada .panel__lectura {
+.panel--portada {
   justify-content: center;
-  flex: 1;
+}
+
+.panel--portada .panel__lectura {
+  flex: none;
 }
 
 .panel--portada .panel__titulo {
@@ -525,6 +539,7 @@
 .panel--portada .acciones {
   justify-content: flex-start;
   position: static;
+  margin-top: 0;
   background: none;
   padding-top: 0;
 }
@@ -543,7 +558,7 @@
 }
 
 .intro__texto > p {
-  max-width: 62ch;
+  max-width: 56ch;
 }
 
 /* ---------- Pantalla 2: elección de dupla ---------- */
@@ -616,6 +631,18 @@
 
 /* ---------- Pantalla 9: mapa ---------- */
 
+/* El mapa tapa casi todo el fondo: el aviso PENDIENTE del fondo va en una línea arriba. */
+.pantalla--mapa .escenario__fondo.pendiente {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 0 0.4rem;
+  padding-top: 0.35rem;
+  font-size: 0.8rem;
+}
+
 .mapa {
   position: absolute;
   top: 21%;
@@ -626,6 +653,16 @@
   border-radius: var(--radio);
   box-shadow: var(--sombra);
   z-index: 2;
+}
+
+.mapa .ilustracion.pendiente {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-end;
+  gap: 0 0.4rem;
+  padding-bottom: 0.4rem;
+  font-size: 0.8rem;
 }
 
 .mapa__imagen {
@@ -642,8 +679,8 @@
   align-items: center;
   gap: 0.5rem;
   min-height: var(--toque);
-  max-width: 48%;
   padding: 0.5rem 1rem 0.5rem 0.6rem;
+  white-space: nowrap;
   border: 0.15rem solid var(--linea);
   border-radius: 999px;
   background: var(--papel);
@@ -694,7 +731,6 @@
   .destino {
     font-size: 0.9rem;
     padding: 0.4rem 0.7rem 0.4rem 0.45rem;
-    max-width: 56%;
   }
 
 }
@@ -812,13 +848,13 @@
 
 @media (max-width: 30rem) {
   .elemento .ilustracion.pendiente {
-    font-size: 0.68rem;
+    font-size: 0.75rem;
     padding: 0.2rem;
     gap: 0;
   }
 
   .elemento .pendiente__marca {
-    font-size: 0.6rem;
+    font-size: 0.7rem;
     letter-spacing: 0;
   }
 
@@ -829,12 +865,39 @@
 
   .mapa {
     width: 90%;
-    top: 4%;
+    top: 9%;
+  }
+
+  .revelacion {
+    width: 60%;
+  }
+
+  .revelacion__tarjeta {
+    padding: 0.6rem 3.6rem 0.7rem 0.8rem;
+    font-size: 0.95rem;
+    line-height: 1.35;
+  }
+
+  .revelacion__pendiente {
+    font-size: 0.85rem;
   }
 
   .pasajeros {
     width: 22%;
-    left: 2%;
+    left: auto;
+    right: 2%;
     bottom: 2%;
+  }
+}
+
+/* En los créditos no hacen falta las monedas. */
+:root[data-creditos] .monedas {
+  display: none;
+}
+
+@media (max-width: 30rem) {
+  /* "Volver" y la acción principal: cada uno ocupa su fila entera. */
+  .acciones:has(.boton--secundario) .boton {
+    flex: 1 1 100%;
   }
 }

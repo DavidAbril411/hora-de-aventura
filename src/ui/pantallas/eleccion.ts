@@ -42,7 +42,7 @@ export function eleccion(ctx: Contexto<PantallaEleccion>): HTMLElement {
 
   const mostrarDupla = (id: string) => {
     const dupla = historia.duplas[id];
-    const elegir = boton(t('recorrerConEllos'), () => {
+    const elegir = boton(dupla.botonElegir ?? t('recorrerConEllos'), () => {
       estado.set({ dupla: id });
       ctx.avanzar();
     }, { icono: iconoSeguir });

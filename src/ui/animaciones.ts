@@ -57,6 +57,16 @@ export function invitarATocar(el: Element): () => void {
   return () => control.stop();
 }
 
+/** Un llamado de atención breve: "acá es donde hay que tocar". */
+export function llamarAtencion(els: Element[]): void {
+  if (!els.length) return;
+  if (movimientoReducido()) {
+    animate(els, { opacity: [1, 0.3, 1, 0.3, 1] }, { duration: 0.8 });
+    return;
+  }
+  animate(els, { scale: [1, 1.18, 1, 1.12, 1] }, { duration: 0.8, delay: stagger(0.06) });
+}
+
 /** La animación de cada elemento al tocarlo. */
 export async function animarElemento(el: HTMLElement, tipo: Animacion, escenario: HTMLElement): Promise<void> {
   if (movimientoReducido()) {

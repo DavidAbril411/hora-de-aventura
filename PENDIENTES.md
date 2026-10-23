@@ -68,6 +68,11 @@ No existen todavía y hay que pedirlos al equipo (lo ideal es que los graben los
   - Escena 4: "**Toca** en el mapa el camino elegido." En el resto del cuento se usa voseo ("Tocá para saber…"). Propuesta: "Tocá".
   - Escena 1: "Camila y Alma**,** son amigas" y "Rogelio**,** generalmente es negro". Las comas separan sujeto y verbo. Propuesta: sacarlas.
 
+### Para la sesión de `/design`
+
+- La critique de Impeccable marcó que en tablet horizontal el texto le compite al dibujo. Ya se agrandó la ilustración (dos tercios del ancho, fija mientras se lee) y se sacó el scroll anidado. Queda abierto para `/design` si el texto va al costado, como un epígrafe sobre el dibujo o en páginas que se pasan tocando. En cualquier caso las palabras no cambian, solo cómo se muestran.
+- Los créditos son hoy una lista al final. Es el momento en que los autores se ven a sí mismos: vale la pena diseñarlo con los dibujos y los nombres reales.
+
 ### Técnico
 
 - **PWA y service worker:** fuera de este PR (prioridad 4 del plan).

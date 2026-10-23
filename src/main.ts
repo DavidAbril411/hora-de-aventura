@@ -36,4 +36,8 @@ const motor = new Motor(
   { intro, 'eleccion-dupla': eleccion, exploracion, mapa, viaje, cierre },
   () => controles.contador,
 );
-motor.iniciar();
+motor.iniciar(estado.pantallaGuardada);
+
+// El navegador habilita el audio con el primer toque. En la intro eso lo hace
+// "Empezar"; si se retomó la historia después de recargar, cualquier toque.
+document.addEventListener('pointerdown', () => void sonido.desbloquear(), { once: true, capture: true });
