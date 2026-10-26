@@ -100,6 +100,40 @@
   max-width: 26ch;
 }
 
+/* Los dos personajes de una dupla, parados uno al lado del otro. */
+.pareja {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4%;
+  padding: 0 4% 5%;
+  overflow: hidden;
+  background: var(--papel-hondo);
+}
+
+.pareja__fondo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pareja__personaje {
+  position: relative;
+  min-width: 0;
+  max-width: 46%;
+  max-height: 88%;
+  object-fit: contain;
+}
+
+.pareja .ilustracion.pendiente {
+  width: 40%;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radio-chico);
+}
+
 /* Rogelio cambia de color de noche. El tono exacto lo define el equipo. */
 :root[data-momento='noche'] .cambia-de-noche {
   filter: hue-rotate(190deg) saturate(1.8) brightness(1.6);
@@ -607,8 +641,6 @@
 .tarjeta-dupla__imagen {
   aspect-ratio: 4 / 3;
   width: 100%;
-  object-fit: cover;
-  border: 0;
 }
 
 .tarjeta-dupla__nombre {
@@ -721,8 +753,13 @@
   z-index: 3;
 }
 
-.pasajeros .ilustracion.pendiente {
+.pasajeros__imagen {
   aspect-ratio: 4 / 3;
+  padding: 0;
+  background: none;
+}
+
+.pasajeros .ilustracion.pendiente {
   border-radius: var(--radio-chico);
   font-size: 0.8rem;
 }

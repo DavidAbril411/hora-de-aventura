@@ -3,7 +3,7 @@ import { historia, t } from '../../engine/historia';
 import type { PantallaMapa } from '../../engine/tipos';
 import { aparecer, llamarAtencion } from '../animaciones';
 import { h } from '../dom';
-import { acciones, avisoAudioPendiente, boton, escenario, ilustracion, panelTexto, parrafos } from '../componentes';
+import { acciones, avisoAudioPendiente, boton, escenario, ilustracion, pareja, panelTexto, parrafos } from '../componentes';
 import { iconoSeguir } from '../iconos';
 
 /**
@@ -17,7 +17,7 @@ export function mapa(ctx: Contexto<PantallaMapa>): HTMLElement {
 
   const dupla = estado.get().dupla;
   if (dupla) {
-    const pasajeros = h('div', { class: 'pasajeros' }, ilustracion(historia.duplas[dupla].imagen, 'pasajeros__imagen', p.momento));
+    const pasajeros = h('div', { class: 'pasajeros' }, pareja(historia.duplas[dupla], 'pasajeros__imagen', p.momento));
     dibujo.raiz.append(pasajeros);
   }
 

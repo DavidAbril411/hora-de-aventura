@@ -1,5 +1,5 @@
 import { historia, t, urlPublica } from '../engine/historia';
-import type { BloqueTexto, Elemento, Escenario, Momento } from '../engine/tipos';
+import type { BloqueTexto, Dupla, Elemento, Escenario, Momento } from '../engine/tipos';
 import { h, svg } from './dom';
 
 /** Una ilustración, o un recuadro PENDIENTE si todavía no llegó tratada. */
@@ -22,6 +22,21 @@ export function ilustracion(id: string, clase = '', momento?: Momento): HTMLElem
     decoding: 'async',
     draggable: 'false',
   });
+}
+
+/**
+ * Los dos personajes de una dupla, uno al lado del otro, sobre el fondo de
+ * la dupla. Si el fondo todavía no llegó se deja liso: el PENDIENTE ya se
+ * ve en el escenario de la dupla.
+ */
+export function pareja(dupla: Dupla, clase = '', momento?: Momento): HTMLElement {
+  const fondo = dupla.fondo && !historia.imagenes[dupla.fondo]?.pendiente ? ilustracion(dupla.fondo, 'pareja__fondo', momento) : null;
+  return h(
+    'div',
+    { class: `pareja ${clase}`, role: 'img', 'aria-label': dupla.nombre },
+    fondo,
+    ...dupla.personajes.map((id) => ilustracion(id, 'pareja__personaje', momento)),
+  );
 }
 
 /** Aviso visible, en una sola línea, de los audios que todavía no están. */

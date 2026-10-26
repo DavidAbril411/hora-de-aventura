@@ -3,7 +3,7 @@ import { historia, t } from '../../engine/historia';
 import type { PantallaEleccion } from '../../engine/tipos';
 import { aparecerEnCascada } from '../animaciones';
 import { h } from '../dom';
-import { avisoAudioPendiente, boton, ilustracion, parrafos } from '../componentes';
+import { avisoAudioPendiente, boton, pareja, parrafos } from '../componentes';
 import { iconoSeguir, iconoVolver } from '../iconos';
 
 /**
@@ -28,7 +28,7 @@ export function eleccion(ctx: Contexto<PantallaEleccion>): HTMLElement {
           h(
             'button',
             { type: 'button', class: 'tarjeta-dupla', 'data-dupla': id, onclick: () => mostrarDupla(id) },
-            ilustracion(dupla.imagen, 'tarjeta-dupla__imagen'),
+            pareja(dupla, 'tarjeta-dupla__imagen'),
             h('span', { class: 'tarjeta-dupla__nombre' }, dupla.nombre),
           ),
         );
@@ -50,7 +50,7 @@ export function eleccion(ctx: Contexto<PantallaEleccion>): HTMLElement {
     const detalle = h(
       'div',
       { class: 'disposicion' },
-      h('div', { class: 'escenario escenario--retrato' }, ilustracion(dupla.imagen, 'escenario__fondo')),
+      h('div', { class: 'escenario escenario--retrato' }, pareja(dupla, 'escenario__fondo')),
       h(
         'section',
         { class: 'panel' },

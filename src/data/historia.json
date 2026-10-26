@@ -33,7 +33,11 @@
         "Juan Pablo y Roberto, dos amigos que se llevan muy bien y buscan conseguir dinero. Juan Pablo tiene 17 años y anda en bicicleta, sabe hacer trucos como el Miami. Le teme a que le pidan plata y desea conseguir dinero para pagar sus deudas. Le gusta estar en el bosque, donde vive con un lobo, que es su mascota. Roberto tiene 16 años y sabe hacer mortales hacia adelante y hacia atrás. Le teme a que lo echen de su casa y desea conseguir dinero para comprarse una propia. También le gusta andar mucho por el bosque, donde tiene un amigo llamado Tulio."
       ],
       "narracion": "narracion-jp-roberto",
-      "imagen": "p02-dupla-jp-roberto"
+      "personajes": [
+        "personaje-juan-pablo",
+        "personaje-roberto"
+      ],
+      "fondo": "p03-dia-jp-roberto-fondo"
     },
     "camila-alma": {
       "nombre": "Camila y Alma",
@@ -41,7 +45,11 @@
         "Camila y Alma, son amigas. Camila tiene 22 años y sabe hacer cosas con la tecnología, como producir y editar videos. Le cuesta andar en bicicleta. Desea conseguir un buen trabajo y tener un perro pitbull. Alma tiene 21 años y desea ser fisicoculturista. Habla inglés y siempre lleva su celular consigo."
       ],
       "narracion": "narracion-camila-alma",
-      "imagen": "p02-dupla-camila-alma",
+      "personajes": [
+        "personaje-camila",
+        "personaje-alma"
+      ],
+      "fondo": "p04-dia-camila-alma-fondo",
       "botonElegir": "Recorrer con ellas"
     },
     "diana-rogelio": {
@@ -50,7 +58,11 @@
         "Diana y Rogelio, un hada muñeca y un gato negro que cambia de color. Diana tiene 12 años y sabe volar. Le cuesta guardar secretos y desea conseguir dientes. No le gusta comer comida saludable. Rogelio, generalmente es negro, pero cambia de color según sea de día o de noche. Solo puede comunicarse con Diana."
       ],
       "narracion": "narracion-diana-rogelio",
-      "imagen": "p02-dupla-diana-rogelio"
+      "personajes": [
+        "personaje-diana",
+        "personaje-rogelio"
+      ],
+      "fondo": "p05-dia-diana-rogelio-fondo"
     }
   },
   "pantallas": [
@@ -133,6 +145,14 @@
             "x": 58,
             "y": 54,
             "ancho": 13
+          },
+          {
+            "id": "lobo",
+            "nombre": "El lobo de Juan Pablo",
+            "imagen": "personaje-lobo",
+            "x": 42,
+            "y": 58,
+            "ancho": 7
           },
           {
             "id": "flor",
@@ -228,11 +248,19 @@
           },
           {
             "id": "alma",
-            "nombre": "Alma con su celular",
+            "nombre": "Alma",
             "imagen": "personaje-alma",
             "x": 58,
             "y": 54,
             "ancho": 13
+          },
+          {
+            "id": "celular",
+            "nombre": "El celular de Alma",
+            "imagen": "objeto-celular-de-alma",
+            "x": 70,
+            "y": 62,
+            "ancho": 9
           },
           {
             "id": "flor",
@@ -411,7 +439,7 @@
           "texto": "Juan Pablo y Roberto saben que todavía pueden ganar unas monedas haciendo el Miami y la mortal.",
           "estilo": "destacado"
         },
-        "El reloj comienza a avanzar. Tic… tac… tic… tac…La noche se acerca."
+        "El reloj comienza a avanzar. Tic… tac… tic… tac… La noche se acerca."
       ],
       "escenario": {
         "fondo": "p06-noche-jp-roberto-fondo",
@@ -419,7 +447,7 @@
           {
             "id": "miami",
             "nombre": "Juan Pablo y su bici: el Miami",
-            "imagen": "personaje-juan-pablo",
+            "imagen": "objeto-miami",
             "x": 32,
             "y": 66,
             "ancho": 20,
@@ -481,17 +509,17 @@
         "—Cuando el reloj marque las doce, la isla cerrará sus caminos. Y quien todavía esté afuera… perderá una moneda. Pero tengan cuidado: en esta isla, una moneda nunca vale lo mismo para todos.",
         "El viejo sigue su camino. El cielo está cada vez más oscuro. Hay poco tiempo para regresar. Pero cada uno tendrá que encontrar su propia manera de conseguir lo que necesita antes de la medianoche:",
         {
-          "texto": "Camila y Alma tienen una cámara de fotos donde que les puede ayudar, el flash de cada fotografía permite iluminar objetos. Tal vez, si siguen buscando, encuentren el sobre de una antigua herencia… aunque parece que alguien decidió llenarlo de pequeños perros pitbull.",
+          "texto": "Camila y Alma tienen una cámara de fotos que les puede ayudar, el flash de cada fotografía permite iluminar objetos. Tal vez, si siguen buscando, encuentren el sobre de una antigua herencia… aunque parece que alguien decidió llenarlo de pequeños perros pitbull.",
           "estilo": "destacado"
         },
-        "El reloj comienza a avanzar. Tic… tac… tic… tac…La noche se acerca."
+        "El reloj comienza a avanzar. Tic… tac… tic… tac… La noche se acerca."
       ],
       "escenario": {
         "fondo": "p07-noche-camila-alma-fondo",
         "elementos": [
           {
             "id": "alma",
-            "nombre": "Alma con su celular",
+            "nombre": "Alma",
             "imagen": "personaje-alma",
             "x": 22,
             "y": 62,
@@ -553,7 +581,7 @@
           "texto": "Diana y Rogelio tienen otro problema. Para volver a casa necesitan dientes. Por suerte, Diana todavía conserva su varita mágica.",
           "estilo": "destacado"
         },
-        "El reloj comienza a avanzar. Tic… tac… tic… tac…La noche se acerca."
+        "El reloj comienza a avanzar. Tic… tac… tic… tac… La noche se acerca."
       ],
       "escenario": {
         "fondo": "p08-noche-diana-rogelio-fondo",
@@ -568,8 +596,8 @@
           },
           {
             "id": "varita",
-            "nombre": "La varita mágica de Diana",
-            "imagen": "objeto-varita",
+            "nombre": "Diana y su varita mágica",
+            "imagen": "personaje-diana",
             "x": 46,
             "y": 60,
             "ancho": 12,
@@ -611,7 +639,7 @@
       "momento": "noche",
       "titulo": "El colectivo",
       "texto": [
-        "Las monedas ya están en sus manos. Ahora sí, ya pueden volver a casa. A lo lejos aparece el colectivo. Sus luces atraviesan la oscuridad y se detiene suavemente frente a ellos. Es momento de elegir a dónde queremos ir. Puede ser volver a la Escuela San Martín, puede ser volver a casa, o podemos ir a explorar otros pueblos lejanos. El mapa que nos ofrece el chofer, nos permite elegir qué recorrido tomar. ¿A dónde te gustaría ir? Toca en el mapa el camino elegido."
+        "Las monedas ya están en sus manos. Ahora sí, ya pueden volver a casa. A lo lejos aparece el colectivo. Sus luces atraviesan la oscuridad y se detiene suavemente frente a ellos. Es momento de elegir a dónde queremos ir. Puede ser volver a la Escuela San Martín, puede ser volver a casa, o podemos ir a explorar otros pueblos lejanos. El mapa que nos ofrece el chofer, nos permite elegir qué recorrido tomar. ¿A dónde te gustaría ir? Tocá en el mapa el camino elegido."
       ],
       "escenario": {
         "fondo": "p09-colectivo-fondo"
@@ -744,56 +772,43 @@
       "pendiente": true,
       "descripcion": "La isla flotante y el pueblo visto desde arriba"
     },
-    "p02-dupla-jp-roberto": {
-      "src": "img/p02-dupla-jp-roberto.webp",
-      "pendiente": true,
-      "descripcion": "Juan Pablo con su bici y Roberto"
-    },
-    "p02-dupla-camila-alma": {
-      "src": "img/p02-dupla-camila-alma.webp",
-      "pendiente": true,
-      "descripcion": "Camila y Alma"
-    },
-    "p02-dupla-diana-rogelio": {
-      "src": "img/p02-dupla-diana-rogelio.webp",
-      "pendiente": true,
-      "descripcion": "Diana, el hada muñeca, y Rogelio, el gato negro"
-    },
     "personaje-juan-pablo": {
-      "src": "img/personaje-juan-pablo.webp",
-      "pendiente": true,
+      "src": "img/pj-juan-pablo.webp",
       "descripcion": "Juan Pablo con su bicicleta"
     },
     "personaje-roberto": {
-      "src": "img/personaje-roberto.webp",
-      "pendiente": true,
+      "src": "img/pj-roberto.webp",
       "descripcion": "Roberto"
     },
     "personaje-camila": {
-      "src": "img/personaje-camila.webp",
-      "pendiente": true,
+      "src": "img/pj-camila.webp",
       "descripcion": "Camila"
     },
     "personaje-alma": {
-      "src": "img/personaje-alma.webp",
-      "pendiente": true,
-      "descripcion": "Alma con su celular"
+      "src": "img/pj-alma.webp",
+      "descripcion": "Alma"
     },
     "personaje-diana": {
-      "src": "img/personaje-diana.webp",
-      "pendiente": true,
+      "src": "img/pj-diana.webp",
       "descripcion": "Diana, el hada muñeca"
     },
     "personaje-rogelio": {
-      "src": "img/personaje-rogelio.webp",
-      "pendiente": true,
+      "src": "img/pj-rogelio.webp",
       "descripcion": "Rogelio, el gato",
       "cambiaDeColorDeNoche": true
     },
     "personaje-viejo-de-la-bolsa": {
-      "src": "img/personaje-viejo-de-la-bolsa.webp",
-      "pendiente": true,
+      "src": "img/pj-viejo.webp",
       "descripcion": "El viejo de la bolsa"
+    },
+    "personaje-lobo": {
+      "src": "img/pj-lobo.webp",
+      "descripcion": "El lobo, la mascota de Juan Pablo"
+    },
+    "personaje-tulio": {
+      "src": "img/pj-tulio.webp",
+      "pendiente": true,
+      "descripcion": "Tulio, el amigo de Roberto (llega una foto nueva)"
     },
     "objeto-flor": {
       "src": "img/objeto-flor.webp",
@@ -816,28 +831,29 @@
       "descripcion": "Un objeto que parece dormido"
     },
     "objeto-camara": {
-      "src": "img/objeto-camara.webp",
-      "pendiente": true,
+      "src": "img/obj-camara.webp",
       "descripcion": "La cámara de fotos de Camila"
+    },
+    "objeto-miami": {
+      "src": "img/obj-miami.webp",
+      "descripcion": "Juan Pablo haciendo el Miami con la bici"
+    },
+    "objeto-celular-de-alma": {
+      "src": "img/obj-celular-de-alma.webp",
+      "pendiente": true,
+      "descripcion": "El celular de Alma"
     },
     "objeto-sobre-herencia": {
       "src": "img/objeto-sobre-herencia.webp",
       "pendiente": true,
       "descripcion": "El sobre de la herencia lleno de pitbulls"
     },
-    "objeto-varita": {
-      "src": "img/objeto-varita.webp",
-      "pendiente": true,
-      "descripcion": "La varita mágica de Diana"
-    },
     "objeto-dientes": {
-      "src": "img/objeto-dientes.webp",
-      "pendiente": true,
+      "src": "img/obj-dientes.webp",
       "descripcion": "Dientes"
     },
     "objeto-perro-pitbull": {
-      "src": "img/objeto-perro-pitbull.webp",
-      "pendiente": true,
+      "src": "img/obj-pitbull.webp",
       "descripcion": "El perrito pitbull"
     },
     "p03-dia-jp-roberto-fondo": {
@@ -905,73 +921,61 @@
     "narracion-intro": {
       "src": "audio/narracion-intro.m4a",
       "tipo": "narracion",
-      "pendiente": true,
       "descripcion": "Narración de la introducción (Lucas)"
     },
     "narracion-jp-roberto": {
       "src": "audio/narracion-jp-roberto.m4a",
       "tipo": "narracion",
-      "pendiente": true,
       "descripcion": "Narración de Juan Pablo y Roberto (Jere)"
     },
     "narracion-camila-alma": {
       "src": "audio/narracion-camila-alma.m4a",
       "tipo": "narracion",
-      "pendiente": true,
       "descripcion": "Narración de Camila y Alma (Juli)"
     },
     "narracion-diana-rogelio": {
       "src": "audio/narracion-diana-rogelio.m4a",
       "tipo": "narracion",
-      "pendiente": true,
       "descripcion": "Narración de Diana y Rogelio (Ana Paula)"
     },
     "amb-viento": {
       "src": "audio/amb-viento.m4a",
       "tipo": "ambiente",
-      "pendiente": true,
       "descripcion": "Viento"
     },
     "amb-calle": {
       "src": "audio/amb-calle.m4a",
       "tipo": "ambiente",
-      "pendiente": true,
       "descripcion": "Ruido de calle"
     },
     "amb-vecinos": {
       "src": "audio/amb-vecinos.m4a",
       "tipo": "ambiente",
-      "pendiente": true,
       "descripcion": "Vecinos saludándose"
     },
     "amb-pelotita": {
       "src": "audio/amb-pelotita.m4a",
       "tipo": "ambiente",
-      "pendiente": true,
       "descripcion": "Pelotita picando"
     },
     "amb-guitarra": {
       "src": "audio/amb-guitarra.m4a",
       "tipo": "ambiente",
-      "pendiente": true,
       "descripcion": "Guitarra"
     },
     "amb-loritas": {
       "src": "audio/amb-loritas.m4a",
       "tipo": "ambiente",
-      "pendiente": true,
       "descripcion": "Loritas"
     },
     "sfx-moto": {
       "src": "audio/sfx-moto.m4a",
       "tipo": "efecto",
-      "pendiente": true,
       "descripcion": "Moto que pasa"
     },
     "sfx-perros": {
       "src": "audio/sfx-perros.m4a",
       "tipo": "efecto",
-      "pendiente": true,
       "descripcion": "¡Guau! (fragmento de perros ladrando)"
     },
     "sfx-clac-clac": {

@@ -52,7 +52,8 @@ export function validarHistoria(h: Historia = historia): string[] {
   if (!ids.has(h.inicio)) problemas.push(`inicio: "${h.inicio}" no existe`);
   if (ids.size !== h.pantallas.length) problemas.push('Hay pantallas con el mismo id');
   for (const [id, d] of Object.entries(h.duplas)) {
-    imagen(d.imagen, `dupla ${id}`);
+    d.personajes.forEach((p) => imagen(p, `dupla ${id}`));
+    imagen(d.fondo, `dupla ${id}`);
     audio(d.narracion, `dupla ${id}`);
   }
   for (const p of h.pantallas) {

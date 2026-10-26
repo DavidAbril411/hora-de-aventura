@@ -25,7 +25,10 @@ export interface Dupla {
   nombre: string;
   presentacion: string[];
   narracion: string;
-  imagen: string;
+  /** Los dos personajes, que se muestran uno al lado del otro. */
+  personajes: string[];
+  /** Fondo detrás de la pareja (el escenario de día de la dupla). */
+  fondo?: string;
   /** Texto del botón para elegirla, si no sirve el general ("Recorrer con ellas"). */
   botonElegir?: string;
 }
