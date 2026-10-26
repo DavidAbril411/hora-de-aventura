@@ -53,7 +53,7 @@ export function aparecer(el: Element): void {
  */
 export function fundirTransicion(capas: Element[]): void {
   capas.forEach((capa, i) => {
-    animate(capa, { opacity: [1, 0] }, { duration: 1.6, delay: 1.4 + i * 2.8, ease: 'easeInOut' }).then(() => capa.remove());
+    animate(capa, { opacity: [1, 0] }, { duration: 1.4, delay: 1 + i * 2.4, ease: 'easeInOut' }).then(() => capa.remove());
   });
 }
 

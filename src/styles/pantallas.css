@@ -100,6 +100,11 @@
   max-width: 26ch;
 }
 
+/* El atardecer tapa la escena un momento; no frena los toques. */
+.escenario__transicion {
+  pointer-events: none;
+}
+
 /* Los dos personajes de una dupla, parados uno al lado del otro. */
 .pareja {
   position: relative;
@@ -796,6 +801,19 @@
   flex: none;
   width: auto;
   height: 100%;
+}
+
+.ventana__paisaje--fundido {
+  inset: 0;
+  width: auto;
+}
+
+.ventana__paisaje--fundido > * {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .ventana .ilustracion.pendiente {

@@ -109,10 +109,7 @@ export function escenario(
   momento: Momento,
   alTocar?: (el: Elemento, boton: HTMLButtonElement, figura: HTMLElement) => void,
 ): EscenarioDibujado {
-  // La primera imagen de la transición va arriba de todo: es la que se ve primero.
-  const transicion = (datos.transicion ?? []).map((id) => ilustracion(id, 'escenario__fondo', momento));
-  const raiz = h('div', { class: 'escenario' }, ilustracion(datos.fondo, 'escenario__fondo', momento), ...[...transicion].reverse());
-  if (transicion.length) fundirTransicion(transicion);
+  const raiz = h('div', { class: 'escenario' }, ilustracion(datos.fondo, 'escenario__fondo', momento));
   const elementos = new Map<string, { contenedor: HTMLElement; figura: HTMLElement }>();
   for (const el of datos.elementos ?? []) {
     const figura = h('span', { class: 'elemento__figura' }, ilustracion(el.imagen, 'elemento__imagen', momento));
@@ -134,6 +131,13 @@ export function escenario(
     contenedor.style.width = `${el.ancho}%`;
     raiz.append(contenedor);
     elementos.set(el.id, { contenedor, figura });
+  }
+  // La transición tapa toda la escena, personajes incluidos, y se funde para
+  // descubrirla. La primera imagen va arriba de todo: es la que se ve primero.
+  const transicion = (datos.transicion ?? []).map((id) => ilustracion(id, 'escenario__fondo escenario__transicion', momento));
+  if (transicion.length) {
+    raiz.append(...[...transicion].reverse());
+    fundirTransicion(transicion);
   }
   return { raiz, elementos };
 }

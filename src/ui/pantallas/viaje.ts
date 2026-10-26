@@ -10,6 +10,7 @@ import { iconoSeguir } from '../iconos';
 /**
  * Pantalla 10. Vista por la ventana del colectivo: el paisaje (las casas, el
  * bosque, las nubes, la laguna) pasa una sola vez y termina en el último.
+ * Con movimiento reducido, los paisajes se funden uno tras otro.
  * El cartel muestra el destino elegido en el mapa.
  */
 export function viaje(ctx: Contexto<PantallaViaje>): HTMLElement {
@@ -38,6 +39,18 @@ export function viaje(ctx: Contexto<PantallaViaje>): HTMLElement {
       activa = false;
       control?.stop();
     });
+  } else {
+    // Sin desplazamiento: los paisajes se suceden en el mismo orden, fundiéndose.
+    paisaje.classList.add('ventana__paisaje--fundido');
+    const vistas = [...paisaje.children] as HTMLElement[];
+    vistas.forEach((vista, i) => (vista.style.opacity = i === 0 ? '1' : '0'));
+    let actual = 0;
+    const pasar = window.setInterval(() => {
+      actual += 1;
+      if (actual < vistas.length) animate(vistas[actual], { opacity: 1 }, { duration: 0.8 });
+      else window.clearInterval(pasar);
+    }, 6000);
+    ctx.alSalir(() => window.clearInterval(pasar));
   }
 
   const aviso = avisoAudioPendiente(p.narracion, ...(p.ambiente ?? []), ...(p.efectos ?? []));
