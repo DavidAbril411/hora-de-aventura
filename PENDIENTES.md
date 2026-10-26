@@ -4,59 +4,91 @@ Material que falta, dudas para el equipo y placeholders en uso. Cada placeholder
 la app se marca visiblemente con la palabra `PENDIENTE` y se anota acá.
 
 Fuente: inventario de la Library del 23/10/2026 (`scripts/inventario.csv`) contra
-`especificacion.md` y `Hora_de_aventura.pdf`.
+`especificacion.md` y `Hora_de_aventura.pdf`, actualizado con la revisión de Lucila
+del 26/10/2026.
 
-## Ilustraciones que faltan
+## Llega el martes 27/10
 
-| Pantalla | Qué falta | Propuesta mientras tanto |
+Lucila avisó que ese día vuelven a ver a los chicos y mandan lo que falta.
+
+| Qué | Para qué pantalla | Qué hacemos cuando llegue |
 |---|---|---|
-| 1 · Intro | La isla flotante y el pueblo vistos desde arriba | Usar el mural colectivo recortado de la pared (`fondo-isla`). A confirmar con David |
-| 3 · 4 · 5 · Día | Una escena de día por dupla con sus personajes | Detalles del mural: casas y bosque (jp-roberto), selva y mar (diana-rogelio). A confirmar |
-| 4 · Día camila-alma | Escena de fiesta, música y celebración | No hay nada parecido en el material. Placeholder |
-| 6 · 7 · 8 · Noche | Versión nocturna de cada escenario | Oscurecer con filtro y agregar luces, como dice la especificación. Los dos dibujos de atardecer pueden ir en la transición |
-| 7 · Noche camila-alma | El sobre de la herencia lleno de pitbulls | Placeholder (hay un perrito pitbull suelto) |
-| 8 · Noche diana-rogelio | La varita mágica suelta | Aparece en la mano de Diana; no hay dibujo aparte |
-| 6 · Noche jp-roberto | La mortal de Roberto | Solo está el Miami (chico en bici) |
-| 6 · 7 · 8 | Las monedas | Placeholder |
-| 6 · 7 · 8 | El reloj (decorativo) | Placeholder o elemento de interfaz. A confirmar |
-| 9 · Colectivo | El colectivo con las luces encendidas y el mapa del chofer con los 3 destinos | Placeholder |
-| 10 · Viaje | La vista por la ventana: casas, bosque entre nubes, laguna bajo la luna | Placeholder; se podría componer con detalles del mural. A confirmar |
-| 11 · Cierre | Los chicos bajando del colectivo | Placeholder (el perrito y el viejo sí están) |
+| Los secretos de las escenas de día | 3 · 4 · 5 | Cruzarlos con las fichas «No es un… / Es…» (sin Pou) y armar las escenas de día |
+| Foto nueva de Tulio | Personajes | Tratarla y reemplazar `pj-tulio` |
+| El colectivo con el mapa del chofer | 9 | Tratarlo y ubicarlo |
+| La vista por la ventana | 10 | Tratarla; hoy el viaje usa capas del mural de noche |
+| La fiesta de Camila y Alma | 4 | Tratarla; con eso se define el fondo de día de Camila y Alma |
+| El sobre de la herencia | 7 | Tratarlo |
+| Las monedas | 6 · 7 · 8 | Tratarlas |
+| El reloj | 6 · 7 · 8 | Tratarlo |
+| Los chicos bajando del colectivo | 11 | Tratarlo |
+| Narraciones de las tres duplas, regrabadas leyendo el texto exacto del PDF | 3 · 4 · 5 | Tratarlas igual que las actuales y reemplazarlas. **Fecha a confirmar:** el comentario de Lucila dice «27 de noviembre» |
+
+Se puede pedir ya: **la lista de dibujos dados vuelta** (la tiene Lucila). Al tratarlos se
+giraron cuatro que venían de costado o al revés; con la lista se corrigen los que falten.
+
+## Fondos de cada pantalla
+
+Armados con partes del mural colectivo (`scripts/armar-fondos.py`), según la tabla de la
+revisión. Están en la Library, en `material-tratado/pantallas/`.
+
+| Pantalla | Fondo | Estado |
+|---|---|---|
+| 1 · Intro | Cielo sin la pared gris (`p01-intro-fondo`, con transparencia) + isla como capa (`p01-intro-isla`) | Listo para revisar |
+| 3 · Día jp-roberto | Bosque con casas | Listo para revisar |
+| 4 · Día camila-alma | — | **A definir** cuando lleguen los secretos y la fiesta |
+| 5 · Día diana-rogelio | Selva | Listo para revisar |
+| Paso al atardecer | Atardecer 1 y 2 | Listo para revisar |
+| 6 · Noche jp-roberto | Bosque con casas, oscurecido en azul | Listo para revisar |
+| 7 · Noche camila-alma | — | **A definir** junto con el día de Camila y Alma. Hay capas de espacio y de hada y estrellas para usar |
+| 8 · Noche diana-rogelio | Selva, oscurecida en azul | Listo para revisar |
+| 9 · Colectivo | — | Espera el dibujo del colectivo |
+| 10 · Viaje | Capas de noche: casas, bosque con casas, laguna (mar) y cielo | Listo para revisar; se reemplaza si llega la vista por la ventana |
+| 11 · Cierre | — | Espera el dibujo de los chicos bajando |
 
 ## Contenido que falta (no se inventa)
 
-- **Pantallas 3 a 5:** qué revela cada secreto. El PDF no lo dice. Hay 24 dibujos de las fichas «No es un… / Es…» que pueden ser los objetos que «despiertan», pero falta saber qué secreto cuenta cada uno y en qué escena va. Pedir a Lucila.
+- **Pantallas 3 a 5:** qué revela cada secreto. Llega el 27/10 (ver arriba).
   - La ficha del pulpo tiene pistas escritas a mano («curiosidad: tiene un hermano», «no le gusta que le toquen los tentáculos»): pueden ser el contenido de su secreto.
+  - Si alguno de los dibujos de Pou era un secreto, hay que reemplazarlo.
 - **Pantalla 10:** si el viaje cambia según el destino (el PDF no lo diferencia).
 - **Créditos:** los nombres de los chicos tal como los indique el equipo (autores, ilustradores y narradores: Lucas, Jere, Juli y Ana Paula narran; en los dibujos aparecen firmas como Lorenzo, Jonatan, Eva, Franco, Lucas y Yazmín).
 
-## Sonidos que faltan
+## Sonidos
 
-- «Clac, clac, clac» del viejo de la bolsa (pantallas 6 a 8 y 11).
-- «Tic… tac…» del reloj (pantallas 6 a 8).
-- El colectivo que llega y frena (pantalla 9).
+Resueltos con sonidos libres (decisión del 26/10): `sfx-clac-clac`, `sfx-tic-tac` y
+`sfx-colectivo`, de BigSoundBank, licencia CC0. Fuente de cada uno en
+`scripts/fuentes-sonidos.md`. Falta que el equipo los escuche y los apruebe.
 
-Lo ideal es que los graben los chicos, como el resto.
+## Esperan aprobación
+
+- **«Economía»:** dos retoques para elegir (`scripts/retocar-trazo.py`): solo el trazo
+  repasado, o el trazo repasado con un color pálido parejo adentro. Si no convence
+  ninguno, queda como está.
 
 ## Dudas para el equipo
 
-- **Ficha de Juan Pablo:** la ficha impresa con el nombre «JUAN PABLO» tiene los datos de Roberto (16 años, mortales, amigo de Tulio) y dice «se conoce con Roberto». ¿Qué figura es cada uno?
-- **Rogelio:** la ficha del gato dice «SIN NOMBRE AÚN». ¿Es Rogelio? El dibujo está pintado de azul y gris, no negro.
-- **Celular:** el archivo se llama «Celular de Camila», pero en el cuento el celular es de Alma.
-- **Imágenes digitales:** `rogelio 2.pdf` (gato con corona y anteojos) y `extra.pdf` (moto, hombre musculoso, policía) no son dibujos a mano; parecen armadas con imágenes prediseñadas. ¿Se usan?
-- **Pou:** dos fichas dibujan a Pou, personaje de un juego comercial. ¿Se usan?
-- **Chica endemoniada:** el texto de la ficha dice «asesina». ¿Va en la obra?
-- **Tulio:** está dibujado con lápiz muy claro; aun tratado se ve poco. Si se puede, pedir una foto nueva con buena luz o un repaso del trazo hecho por el autor.
-- **Narraciones:** confirmar que cada audio corresponde al fragmento que propone la especificación (ver el informe de audio).
+- **«Cambiar» sin comentario:** los 59 elementos volvieron marcados «cambiar» casi sin
+  comentarios; parece un malentendido con el botón de la página. Se trabaja como si
+  estuvieran aprobados hasta que Lucila lo confirme.
+- **Nombre de la obra:** «Hora de aventura» es el título en Latinoamérica de *Adventure
+  Time*. Preguntar dónde se va a publicar; si es abierto, sugerir sumarle algo al nombre.
+- **Chica endemoniada:** las puntas de los cuernos quedan apenas cortadas (tocaban el título
+  impreso de la ficha). Si molesta, pedir una foto nueva.
+- **Narraciones:** confirmar si se regraban el 27/10 o el 27/11.
 
-## Erratas del PDF (no aplicadas, esperan OK de David)
+## Decidido en la revisión del 26/10
 
-| Dónde | Texto | Propuesta |
-|---|---|---|
-| Escena 3, Camila y Alma | «tienen una cámara de fotos donde que les puede ayudar» | «tienen una cámara de fotos que les puede ayudar» |
-| Escena 4 | «Toca en el mapa el camino elegido.» | «Tocá en el mapa…» (el resto del texto usa voseo: «Elegí», «Tocá para saber») |
-| Escena 3 | «Tic… tac…La noche se acerca.» | «Tic… tac… La noche se acerca.» (falta un espacio) |
+- Criterio de recorte: solo el dibujo, sin textos impresos ni notas.
+- Juan Pablo y Roberto quedan como están; el gato «sin nombre aún» es Rogelio.
+- `rogelio 2` y `extra` (imágenes prediseñadas) no se usan.
+- Pou (`pou-empresario`, `pou-oruga`) sale del material.
+- La chica endemoniada va, nombrada solo como «chica endemoniada».
+- El celular es de Alma: `obj-celular-de-alma`.
+- Las tres erratas del PDF se corrigen (las aplica el motor):
+  «donde que les puede ayudar» → «que les puede ayudar»; «Toca en el mapa» → «Tocá en
+  el mapa»; «Tic… tac…La noche» → «Tic… tac… La noche».
 
 ## Placeholders en uso
 
-Ninguno todavía: el material tratado no se integra a las pantallas hasta que David apruebe el informe.
+Ninguno desde el material. Los que use el motor se anotan en su PR.

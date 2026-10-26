@@ -18,6 +18,9 @@ origen="$1"
 destino="$2"
 aqui="$(cd "$(dirname "$0")" && pwd)"
 
+# El colectivo se arma con tres sonidos CC0 antes de procesarlo (ver armar-colectivo.sh).
+"$aqui/armar-colectivo.sh" "$origen/libres-cc0" "$origen/libres-cc0/colectivo-armado.wav"
+
 # tipo | archivo en la Library | nombre en el repo
 while IFS='|' read -r tipo archivo nombre; do
   [[ -z "$tipo" || "$tipo" == \#* ]] && continue
@@ -35,4 +38,8 @@ ambiente|ruidos/pelotita picando.ogg|amb-pelotita.m4a
 ambiente|ruidos/ruido de calle.ogg|amb-calle.m4a
 ambiente|ruidos/moto.ogg|sfx-moto.m4a
 ambiente|ruidos/perros ladrando.ogg|sfx-perros.m4a
+# Sonidos libres (CC0, BigSoundBank). Fuente y licencia en fuentes-sonidos.md.
+ambiente|libres-cc0/bsb-0514.wav|sfx-clac-clac.m4a
+ambiente|libres-cc0/bsb-1567.wav|sfx-tic-tac.m4a
+ambiente|libres-cc0/colectivo-armado.wav|sfx-colectivo.m4a
 LISTA
