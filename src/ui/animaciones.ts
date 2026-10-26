@@ -46,6 +46,17 @@ export function aparecer(el: Element): void {
   animate(el, { opacity: [0, 1], scale: [0.6, 1] }, { type: 'spring', bounce: 0.4, duration: 0.6 });
 }
 
+/**
+ * El paso del día a la noche: cada imagen se ve un momento y se funde,
+ * dejando ver la siguiente, hasta que queda el fondo. Es solo opacidad, así
+ * que vale igual con movimiento reducido.
+ */
+export function fundirTransicion(capas: Element[]): void {
+  capas.forEach((capa, i) => {
+    animate(capa, { opacity: [1, 0] }, { duration: 1.6, delay: 1.4 + i * 2.8, ease: 'easeInOut' }).then(() => capa.remove());
+  });
+}
+
 /** Pulso lento que invita a tocar. Se detiene al descubrir el elemento. */
 export function invitarATocar(el: Element): () => void {
   if (movimientoReducido()) return () => {};

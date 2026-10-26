@@ -67,6 +67,11 @@ export interface Elemento {
 
 export interface Escenario {
   fondo: string;
+  /**
+   * Imágenes que tapan el fondo al entrar y se van fundiendo en orden hasta
+   * dejarlo ver (el paso del día a la noche, con los atardeceres).
+   */
+  transicion?: string[];
   elementos?: Elemento[];
 }
 
@@ -121,7 +126,8 @@ export interface PantallaMapa extends PantallaBase {
 
 export interface PantallaViaje extends PantallaBase {
   tipo: 'viaje';
-  capas: string[];
+  /** Lo que se ve por la ventana, en orden: pasa de derecha a izquierda una sola vez. */
+  paisaje: string[];
 }
 
 export interface PantallaCierre extends PantallaBase {

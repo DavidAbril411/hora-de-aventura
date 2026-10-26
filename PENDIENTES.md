@@ -6,34 +6,32 @@ Material que falta y placeholders en uso. Cada placeholder se ve en pantalla con
 
 ### Ilustraciones
 
-Material aprobado en la revisión con Lucila del 26/10 (lo marcado «cambiar» sin comentario se toma como aprobado; falta que Lucila lo confirme). Ya integrado, desde `material-tratado/webp/` del thread de material: Juan Pablo, Roberto, Camila, Alma, Diana, Rogelio, el viejo de la bolsa, el lobo, la cámara, los dientes, el pitbull y el Miami. Pou, «rogelio 2» y «extra» no se usan.
+Material aprobado en la revisión con Lucila del 26/10 (lo marcado «cambiar» sin comentario se toma como aprobado; falta que Lucila lo confirme). Pou, «rogelio 2» y «extra» no se usan. Ya integrado desde `material-tratado/` del thread de material:
 
-En la pantalla 2 cada dupla se muestra con sus dos personajes (`personajes` en `historia.json`) sobre el fondo de día de la dupla, así que ya no hacen falta dibujos de las parejas. En la noche de Diana y Rogelio, el truco de la varita se toca sobre Diana, que en su dibujo ya tiene la varita roja.
+- **Personajes y objetos:** Juan Pablo, Roberto, Camila, Alma, Diana, Rogelio, el viejo de la bolsa, el lobo, el celular de Alma, la cámara, los dientes, el pitbull y el Miami.
+- **Fondos del mural:** la isla sobre el cielo (p01); el bosque con casas (p03) y la selva (p05) de día; las noches oscurecidas en azul (p06, p08, y p07 con el espacio del mural, como propuesta); el paisaje del viaje (p10: casas, bosque, nubes y laguna, que pasan una sola vez por la ventana).
+- **Atardeceres:** al entrar a cada noche se ven los dos dibujos del atardecer, que se funden hasta dejar el fondo de noche (`transicion` en el escenario).
+
+En la pantalla 2 cada dupla se muestra con sus dos personajes (`personajes`) sobre su fondo de día (`fondo`), así que no hacen falta dibujos de las parejas. En la noche de Diana y Rogelio, el truco de la varita se toca sobre Diana, que en su dibujo ya tiene la varita roja.
 
 Siguen PENDIENTE:
 
 | id en `historia.json` | Qué muestra | Pantallas | Cuándo |
 |---|---|---|---|
-| `p01-intro-fondo` | Cielo e isla del mural | p01 | Hoy, del thread de material |
-| `p03-dia-jp-roberto-fondo` | Bosque con casas del mural | p02, p03 | Hoy, del thread de material |
-| `p05-dia-diana-rogelio-fondo` | Selva y mar del mural | p02, p05 | Hoy, del thread de material |
-| `p06-noche-jp-roberto-fondo`, `p08-noche-diana-rogelio-fondo` | El día de la dupla oscurecido en azul | p06, p08 | Hoy, del thread de material |
-| `p10-viaje-casas`, `p10-viaje-bosque`, `p10-viaje-laguna` | Capas del viaje recortadas del mural | p10 | Hoy, del thread de material |
-| `p04-dia-camila-alma-fondo`, `p07-noche-camila-alma-fondo` | Escena de Camila y Alma (la fiesta) | p02, p04, p07 | Con los secretos y el dibujo de la fiesta, 27/10 |
-| `objeto-celular-de-alma` | El celular de Alma | p04 | El thread de material lo regenera con ese nombre |
+| `p04-dia-camila-alma-fondo` | La fiesta del pueblo | p02, p04 | Con los secretos y el dibujo de la fiesta, 27/10 |
 | `objeto-flor`, `objeto-piedra`, `objeto-arbol`, `objeto-dormido` | Los cuatro secretos de cada escena de día | p03, p04, p05 | Con los secretos, 27/10 |
 | `objeto-sobre-herencia` | El sobre de la herencia lleno de pitbulls | p07 | Dibujo nuevo, 27/10 |
 | `p09-colectivo-fondo`, `p09-mapa` | El colectivo y el mapa del chofer | p09 | Dibujo nuevo, 27/10 |
 | `p11-cierre-fondo` | Los chicos bajando del colectivo | p11 | Dibujo nuevo, 27/10 |
 | `personaje-tulio` | Tulio, el amigo de Roberto (no está en ninguna pantalla todavía) | p03 | Foto nueva, 27/10 |
 
-Las posiciones de los elementos (`x`, `y`, `ancho` en `historia.json`) se ajustan cuando cada escena tenga su fondo.
+Los fondos del mural son fotos verticales y la escena es apaisada (4:3), así que se ve la franja del medio de cada una. Las posiciones de los elementos (`x`, `y`, `ancho` en `historia.json`) se vuelven a ajustar cuando lleguen los secretos.
 
 ### Audio
 
 Integrados los 12 audios tratados. Las tres narraciones de las duplas (`narracion-jp-roberto`, `narracion-camila-alma`, `narracion-diana-rogelio`) son **provisorias**: los chicos las vuelven a grabar leyendo el texto del cuento (27/10, o 27/11 según el comentario de Lucila; falta confirmar). Hasta entonces el audio no coincide palabra por palabra con el texto en pantalla. Cuando lleguen, alcanza con reemplazar los `.m4a` en `public/audio/`. La narración de la intro queda como está.
 
-Faltan los tres sonidos libres (CC0 o similar) que busca el thread de material, con la fuente y la licencia anotadas: `sfx-clac-clac` (el viejo, p06 a p08 y p11), `sfx-tic-tac` (el reloj, p06 a p08) y `sfx-colectivo` (p09).
+Integrados también los tres sonidos libres (CC0) que buscó el thread de material: `sfx-clac-clac`, `sfx-tic-tac` y `sfx-colectivo`. La fuente y la licencia de cada uno están en `scripts/fuentes-sonidos.md` de la rama del material.
 
 ### Contenido que tiene que indicar el equipo (no se inventa)
 

@@ -8,17 +8,15 @@ import { acciones, avisoAudioPendiente, boton, ilustracion, panelTexto, parrafos
 import { iconoSeguir } from '../iconos';
 
 /**
- * Pantalla 10. Vista por la ventana del colectivo: las capas se desplazan
- * a distinta velocidad (las cercanas, más rápido). El cartel muestra el
- * destino elegido en el mapa.
+ * Pantalla 10. Vista por la ventana del colectivo: el paisaje (las casas, el
+ * bosque, las nubes, la laguna) pasa una sola vez y termina en el último.
+ * El cartel muestra el destino elegido en el mapa.
  */
 export function viaje(ctx: Contexto<PantallaViaje>): HTMLElement {
   const { pantalla: p, estado } = ctx;
 
-  const capas = p.capas.map((id, i) =>
-    h('div', { class: 'ventana__capa', style: `--capa:${i}` }, ilustracion(id, 'ventana__imagen', p.momento), ilustracion(id, 'ventana__imagen', p.momento)),
-  );
-  const ventana = h('div', { class: 'escenario ventana' }, ...capas);
+  const paisaje = h('div', { class: 'ventana__paisaje' }, ...p.paisaje.map((id) => ilustracion(id, 'ventana__imagen', p.momento)));
+  const ventana = h('div', { class: 'escenario ventana' }, paisaje);
 
   const destinoId = estado.get().destino;
   const destino = historia.pantallas
@@ -27,10 +25,19 @@ export function viaje(ctx: Contexto<PantallaViaje>): HTMLElement {
   if (destino) ventana.append(h('p', { class: 'cartel' }, destino.nombre));
 
   if (!movimientoReducido()) {
-    const controles = capas.map((capa, i) =>
-      animate(capa, { x: ['0%', '-50%'] }, { duration: 36 - i * 9, ease: 'linear', repeat: Infinity }),
-    );
-    ctx.alSalir(() => controles.forEach((c) => c.stop()));
+    let activa = true;
+    let control: { stop(): void } | undefined;
+    // El recorrido depende del ancho de las imágenes: se mide cuando están listas.
+    void Promise.all([...paisaje.querySelectorAll('img')].map((img) => img.decode().catch(() => {})))
+      .then(() => new Promise(requestAnimationFrame))
+      .then(() => {
+        const recorrido = paisaje.scrollWidth - ventana.clientWidth;
+        if (activa && recorrido > 0) control = animate(paisaje, { x: [0, -recorrido] }, { duration: 40, ease: 'linear' });
+      });
+    ctx.alSalir(() => {
+      activa = false;
+      control?.stop();
+    });
   }
 
   const aviso = avisoAudioPendiente(p.narracion, ...(p.ambiente ?? []), ...(p.efectos ?? []));

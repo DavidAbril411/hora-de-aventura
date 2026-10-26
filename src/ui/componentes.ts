@@ -1,5 +1,6 @@
 import { historia, t, urlPublica } from '../engine/historia';
 import type { BloqueTexto, Dupla, Elemento, Escenario, Momento } from '../engine/tipos';
+import { fundirTransicion } from './animaciones';
 import { h, svg } from './dom';
 
 /** Una ilustración, o un recuadro PENDIENTE si todavía no llegó tratada. */
@@ -26,11 +27,13 @@ export function ilustracion(id: string, clase = '', momento?: Momento): HTMLElem
 
 /**
  * Los dos personajes de una dupla, uno al lado del otro, sobre el fondo de
- * la dupla. Si el fondo todavía no llegó se deja liso: el PENDIENTE ya se
- * ve en el escenario de la dupla.
+ * la dupla (salvo `conFondo` en false, cuando ya están dentro de otra escena).
+ * Si el fondo todavía no llegó se deja liso: el PENDIENTE ya se ve en el
+ * escenario de la dupla.
  */
-export function pareja(dupla: Dupla, clase = '', momento?: Momento): HTMLElement {
-  const fondo = dupla.fondo && !historia.imagenes[dupla.fondo]?.pendiente ? ilustracion(dupla.fondo, 'pareja__fondo', momento) : null;
+export function pareja(dupla: Dupla, clase = '', momento?: Momento, conFondo = true): HTMLElement {
+  const usarFondo = conFondo && dupla.fondo && !historia.imagenes[dupla.fondo]?.pendiente;
+  const fondo = usarFondo ? ilustracion(dupla.fondo!, 'pareja__fondo', momento) : null;
   return h(
     'div',
     { class: `pareja ${clase}`, role: 'img', 'aria-label': dupla.nombre },
@@ -106,7 +109,10 @@ export function escenario(
   momento: Momento,
   alTocar?: (el: Elemento, boton: HTMLButtonElement, figura: HTMLElement) => void,
 ): EscenarioDibujado {
-  const raiz = h('div', { class: 'escenario' }, ilustracion(datos.fondo, 'escenario__fondo', momento));
+  // La primera imagen de la transición va arriba de todo: es la que se ve primero.
+  const transicion = (datos.transicion ?? []).map((id) => ilustracion(id, 'escenario__fondo', momento));
+  const raiz = h('div', { class: 'escenario' }, ilustracion(datos.fondo, 'escenario__fondo', momento), ...[...transicion].reverse());
+  if (transicion.length) fundirTransicion(transicion);
   const elementos = new Map<string, { contenedor: HTMLElement; figura: HTMLElement }>();
   for (const el of datos.elementos ?? []) {
     const figura = h('span', { class: 'elemento__figura' }, ilustracion(el.imagen, 'elemento__imagen', momento));

@@ -43,6 +43,7 @@ export function validarHistoria(h: Historia = historia): string[] {
   };
   const escenario = (e: Escenario, donde: string) => {
     imagen(e.fondo, donde);
+    e.transicion?.forEach((id) => imagen(id, `${donde} › transición`));
     for (const el of e.elementos ?? []) {
       imagen(el.imagen, `${donde} › ${el.id}`);
       imagen(el.interaccion?.aparece, `${donde} › ${el.id}`);
@@ -74,7 +75,7 @@ export function validarHistoria(h: Historia = historia): string[] {
         imagen(p.mapa, p.id);
         break;
       case 'viaje':
-        p.capas.forEach((c) => imagen(c, p.id));
+        p.paisaje.forEach((c) => imagen(c, p.id));
         break;
       case 'eleccion-dupla':
         p.duplas.forEach((d) => {

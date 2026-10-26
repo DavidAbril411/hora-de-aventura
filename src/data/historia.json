@@ -79,7 +79,17 @@
         "Elegí con quién querés recorrer el pueblo, explorá sus senderos, descubrí sus secretos y ayudá a tus personajes a encontrar el camino de regreso."
       ],
       "escenario": {
-        "fondo": "p01-intro-fondo"
+        "fondo": "p01-intro-fondo",
+        "elementos": [
+          {
+            "id": "isla",
+            "nombre": "La isla que flota en el cielo",
+            "imagen": "p01-intro-isla",
+            "x": 50,
+            "y": 56,
+            "ancho": 78
+          }
+        ]
       },
       "narracion": "narracion-intro",
       "ambiente": [
@@ -347,17 +357,17 @@
             "id": "diana",
             "nombre": "Diana, el hada muñeca",
             "imagen": "personaje-diana",
-            "x": 28,
-            "y": 50,
-            "ancho": 11
+            "x": 30,
+            "y": 48,
+            "ancho": 16
           },
           {
             "id": "rogelio",
             "nombre": "Rogelio, el gato",
             "imagen": "personaje-rogelio",
-            "x": 58,
-            "y": 64,
-            "ancho": 11
+            "x": 56,
+            "y": 66,
+            "ancho": 17
           },
           {
             "id": "flor",
@@ -443,6 +453,10 @@
       ],
       "escenario": {
         "fondo": "p06-noche-jp-roberto-fondo",
+        "transicion": [
+          "p00-atardecer-1",
+          "p00-atardecer-2"
+        ],
         "elementos": [
           {
             "id": "miami",
@@ -516,6 +530,10 @@
       ],
       "escenario": {
         "fondo": "p07-noche-camila-alma-fondo",
+        "transicion": [
+          "p00-atardecer-1",
+          "p00-atardecer-2"
+        ],
         "elementos": [
           {
             "id": "alma",
@@ -585,6 +603,10 @@
       ],
       "escenario": {
         "fondo": "p08-noche-diana-rogelio-fondo",
+        "transicion": [
+          "p00-atardecer-1",
+          "p00-atardecer-2"
+        ],
         "elementos": [
           {
             "id": "rogelio",
@@ -592,7 +614,7 @@
             "imagen": "personaje-rogelio",
             "x": 22,
             "y": 72,
-            "ancho": 12
+            "ancho": 16
           },
           {
             "id": "varita",
@@ -600,7 +622,7 @@
             "imagen": "personaje-diana",
             "x": 46,
             "y": 60,
-            "ancho": 12,
+            "ancho": 15,
             "interaccion": {
               "tipo": "truco",
               "animacion": "destellos",
@@ -682,9 +704,10 @@
       "texto": [
         "Luego de elegir, suben y se acomodan en sus asientos, mientras el colectivo comienza a recorrer la isla, miran por la ventana. Las casas quedan atrás. El bosque se pierde entre las nubes. La laguna brilla por última vez bajo la luz de la luna. El viaje parece durar apenas unos minutos. O quizás mucho más. Hasta que, finalmente, el colectivo se detiene."
       ],
-      "capas": [
+      "paisaje": [
         "p10-viaje-casas",
         "p10-viaje-bosque",
+        "p10-viaje-cielo",
         "p10-viaje-laguna"
       ],
       "ambiente": [
@@ -769,8 +792,11 @@
   "imagenes": {
     "p01-intro-fondo": {
       "src": "img/p01-intro-fondo.webp",
-      "pendiente": true,
-      "descripcion": "La isla flotante y el pueblo visto desde arriba"
+      "descripcion": "El cielo del mural, con el sol de papel dorado y las nubes"
+    },
+    "p01-intro-isla": {
+      "src": "img/p01-intro-isla.webp",
+      "descripcion": "La isla del mural: casas, bosque, selva y mar"
     },
     "personaje-juan-pablo": {
       "src": "img/pj-juan-pablo.webp",
@@ -840,7 +866,6 @@
     },
     "objeto-celular-de-alma": {
       "src": "img/obj-celular-de-alma.webp",
-      "pendiente": true,
       "descripcion": "El celular de Alma"
     },
     "objeto-sobre-herencia": {
@@ -858,8 +883,7 @@
     },
     "p03-dia-jp-roberto-fondo": {
       "src": "img/p03-dia-jp-roberto-fondo.webp",
-      "pendiente": true,
-      "descripcion": "Las calles y los rincones del pueblo, de día"
+      "descripcion": "El bosque con casas del mural, de día"
     },
     "p04-dia-camila-alma-fondo": {
       "src": "img/p04-dia-camila-alma-fondo.webp",
@@ -868,23 +892,27 @@
     },
     "p05-dia-diana-rogelio-fondo": {
       "src": "img/p05-dia-diana-rogelio-fondo.webp",
-      "pendiente": true,
-      "descripcion": "El bosque y la laguna, de día"
+      "descripcion": "La selva del mural, de día"
+    },
+    "p00-atardecer-1": {
+      "src": "img/atardecer-1.webp",
+      "descripcion": "Casas, árboles y el sol, antes del atardecer"
+    },
+    "p00-atardecer-2": {
+      "src": "img/atardecer-2.webp",
+      "descripcion": "El atardecer del pueblo, con el sol naranja"
     },
     "p06-noche-jp-roberto-fondo": {
       "src": "img/p06-noche-jp-roberto-fondo.webp",
-      "pendiente": true,
-      "descripcion": "Las calles del pueblo de noche, con las casas iluminadas"
+      "descripcion": "El bosque con casas del mural, de noche"
     },
     "p07-noche-camila-alma-fondo": {
       "src": "img/p07-noche-camila-alma-fondo.webp",
-      "pendiente": true,
-      "descripcion": "La fiesta del pueblo, de noche"
+      "descripcion": "El espacio del mural de noche: la luna, planetas, celulares y una cámara"
     },
     "p08-noche-diana-rogelio-fondo": {
       "src": "img/p08-noche-diana-rogelio-fondo.webp",
-      "pendiente": true,
-      "descripcion": "El bosque y la laguna, de noche"
+      "descripcion": "La selva del mural, de noche"
     },
     "p09-colectivo-fondo": {
       "src": "img/p09-colectivo-fondo.webp",
@@ -898,18 +926,19 @@
     },
     "p10-viaje-casas": {
       "src": "img/p10-viaje-casas.webp",
-      "pendiente": true,
-      "descripcion": "Las casas del pueblo que quedan atrás"
+      "descripcion": "Las casas del pueblo, de noche"
     },
     "p10-viaje-bosque": {
       "src": "img/p10-viaje-bosque.webp",
-      "pendiente": true,
-      "descripcion": "El bosque entre las nubes"
+      "descripcion": "El bosque, de noche"
+    },
+    "p10-viaje-cielo": {
+      "src": "img/p10-viaje-cielo.webp",
+      "descripcion": "Las nubes y el sol del mural, de noche"
     },
     "p10-viaje-laguna": {
       "src": "img/p10-viaje-laguna.webp",
-      "pendiente": true,
-      "descripcion": "La laguna bajo la luz de la luna"
+      "descripcion": "La laguna, de noche"
     },
     "p11-cierre-fondo": {
       "src": "img/p11-cierre-fondo.webp",
@@ -981,19 +1010,16 @@
     "sfx-clac-clac": {
       "src": "audio/sfx-clac-clac.m4a",
       "tipo": "efecto",
-      "pendiente": true,
       "descripcion": "Clac, clac, clac del viejo de la bolsa (falta grabarlo)"
     },
     "sfx-tic-tac": {
       "src": "audio/sfx-tic-tac.m4a",
       "tipo": "efecto",
-      "pendiente": true,
       "descripcion": "Tic tac del reloj (falta grabarlo)"
     },
     "sfx-colectivo": {
       "src": "audio/sfx-colectivo.m4a",
       "tipo": "efecto",
-      "pendiente": true,
       "descripcion": "El colectivo que llega y frena (falta grabarlo)"
     }
   }

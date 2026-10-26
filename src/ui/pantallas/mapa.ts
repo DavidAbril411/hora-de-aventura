@@ -17,7 +17,7 @@ export function mapa(ctx: Contexto<PantallaMapa>): HTMLElement {
 
   const dupla = estado.get().dupla;
   if (dupla) {
-    const pasajeros = h('div', { class: 'pasajeros' }, pareja(historia.duplas[dupla], 'pasajeros__imagen', p.momento));
+    const pasajeros = h('div', { class: 'pasajeros' }, pareja(historia.duplas[dupla], 'pasajeros__imagen', p.momento, false));
     dibujo.raiz.append(pasajeros);
   }
 
