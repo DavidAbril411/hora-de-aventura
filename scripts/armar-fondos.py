@@ -6,11 +6,12 @@ tabla de la revisión del 26/10:
   Día JP-Roberto       bosque con casas
   Día Diana-Rogelio    selva
   Noches (p06 y p08)   el fondo de día de esa dupla, oscurecido con tono azul
+  Noche Camila-Alma    el espacio, oscurecido (propuesta: su día está a definir)
   Viaje (p10)          casas, bosque y laguna (mar), de noche
   Paso al atardecer    atardecer 1 y 2
   Capas para la noche  espacio, hada y estrellas
 
-Día y noche de Camila-Alma (p04, p07), el colectivo (p09) y el cierre (p11) quedan
+Día de Camila-Alma (p04), el colectivo (p09) y el cierre (p11) quedan
 sin fondo hasta que lleguen los dibujos y los secretos (ver PENDIENTES.md).
 
 Uso:
@@ -39,6 +40,7 @@ p03-dia-jp-roberto-fondo|mural-bosque-casas|dia
 p05-dia-diana-rogelio-fondo|mural-selva|dia
 p06-noche-jp-roberto-fondo|mural-bosque-casas|noche
 p08-noche-diana-rogelio-fondo|mural-selva|noche
+p07-noche-camila-alma-fondo|mural-espacio|noche
 p10-viaje-casas|mural-casas|noche
 p10-viaje-bosque|mural-bosque-casas|noche
 p10-viaje-laguna|mural-mar|noche

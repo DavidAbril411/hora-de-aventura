@@ -40,7 +40,7 @@ revisión. Están en la Library, en `material-tratado/pantallas/`.
 | 5 · Día diana-rogelio | Selva | Listo para revisar |
 | Paso al atardecer | Atardecer 1 y 2 | Listo para revisar |
 | 6 · Noche jp-roberto | Bosque con casas, oscurecido en azul | Listo para revisar |
-| 7 · Noche camila-alma | — | **A definir** junto con el día de Camila y Alma. Hay capas de espacio y de hada y estrellas para usar |
+| 7 · Noche camila-alma | Espacio, oscurecido en azul | Propuesta (celulares y cámara, como ellas). Se revisa cuando se defina su día |
 | 8 · Noche diana-rogelio | Selva, oscurecida en azul | Listo para revisar |
 | 9 · Colectivo | — | Espera el dibujo del colectivo |
 | 10 · Viaje | Capas de noche: casas, bosque con casas, laguna (mar) y cielo | Listo para revisar; se reemplaza si llega la vista por la ventana |
