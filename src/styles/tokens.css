@@ -1,0 +1,75 @@
+/*
+ * Tokens de diseño PROVISORIOS y neutros. La dirección visual sale de
+ * /design a partir de las ilustraciones reales; cuando llegue, se cambian
+ * estos valores y el resto de los estilos los sigue.
+ *
+ * Día: blanco neutro, apenas frío. Las ilustraciones salen del tratamiento
+ * con el papel blanqueado; un fondo crema al lado las haría ver sucias.
+ * Noche: azul profundo, con la luz amarilla de las casas como acento.
+ */
+:root {
+  --fuente: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', ui-sans-serif, sans-serif;
+
+  --papel: oklch(0.975 0.004 250);
+  --papel-hondo: oklch(0.935 0.008 250);
+  --tinta: oklch(0.25 0.02 255);
+  --tinta-suave: oklch(0.42 0.02 255);
+  --linea: oklch(0.83 0.012 250);
+  --accion: oklch(0.47 0.12 245);
+  --accion-hover: oklch(0.41 0.12 245);
+  --accion-tinta: oklch(0.985 0.005 85);
+  --resaltado: oklch(0.9 0.05 245);
+  --sombra: 0 0.5rem 1.5rem oklch(0.3 0.03 255 / 0.14), 0 0.1rem 0.3rem oklch(0.3 0.03 255 / 0.12);
+  --sombra-reloj: drop-shadow(0 0.3rem 0.6rem oklch(0.08 0.03 265 / 0.45));
+  --destello: oklch(0.99 0.02 90);
+  --polvo: oklch(0.85 0.03 80);
+  --ventana-cielo: oklch(0.3 0.06 265);
+  --ventana-marco: oklch(0.32 0.03 60);
+
+  --pendiente-a: oklch(0.9 0.09 85);
+  --pendiente-b: oklch(0.86 0.1 80);
+  --pendiente-tinta: oklch(0.3 0.06 70);
+
+  --moneda: oklch(0.84 0.15 85);
+  --moneda-borde: oklch(0.55 0.12 70);
+  --reloj-fondo: var(--papel);
+  --reloj-borde: var(--tinta);
+  --reloj-aguja: var(--tinta);
+  --foco: oklch(0.47 0.12 245);
+
+  --radio: 1rem;
+  --radio-chico: 0.6rem;
+  --toque: 3.75rem; /* 60px: más que los 56px mínimos */
+  --margen: clamp(1rem, 2.5vw, 2rem);
+
+  --texto: clamp(1.2rem, 1rem + 0.5vw, 1.375rem);
+  --texto-chico: clamp(1rem, 0.92rem + 0.25vw, 1.125rem);
+  --titulo: clamp(1.9rem, 1.4rem + 1.6vw, 2.6rem);
+  --titulo-portada: clamp(3rem, 2rem + 4vw, 5.5rem);
+
+  color-scheme: light;
+}
+
+:root[data-momento='noche'] {
+  --papel: oklch(0.23 0.045 265);
+  --papel-hondo: oklch(0.19 0.045 265);
+  --tinta: oklch(0.95 0.015 85);
+  --tinta-suave: oklch(0.82 0.03 85);
+  --linea: oklch(0.38 0.05 265);
+  --accion: oklch(0.85 0.13 85);
+  --accion-hover: oklch(0.9 0.12 85);
+  --accion-tinta: oklch(0.22 0.04 265);
+  --resaltado: oklch(0.32 0.06 265);
+  --sombra: 0 0.5rem 1.5rem oklch(0.08 0.03 265 / 0.5), 0 0.1rem 0.3rem oklch(0.08 0.03 265 / 0.4);
+
+  --pendiente-a: oklch(0.36 0.06 85);
+  --pendiente-b: oklch(0.31 0.06 80);
+  --pendiente-tinta: oklch(0.92 0.06 85);
+
+  --reloj-fondo: oklch(0.95 0.03 85);
+  --reloj-borde: oklch(0.22 0.04 265);
+  --reloj-aguja: oklch(0.22 0.04 265);
+  --foco: oklch(0.85 0.13 85);
+
+  color-scheme: dark;
+}

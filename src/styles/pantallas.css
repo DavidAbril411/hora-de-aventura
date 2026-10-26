@@ -1,0 +1,957 @@
+/* ---------- Estructura ---------- */
+
+.escena {
+  min-height: 100dvh;
+}
+
+/* Celular y tablet vertical: ilustración arriba, texto abajo. */
+.disposicion {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+/* El dibujo queda a la vista mientras se lee, y sus elementos, a mano. */
+.disposicion > .escenario {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  flex: none;
+  z-index: 6;
+}
+
+/*
+ * Tablet horizontal (la pantalla principal): la ilustración manda y queda
+ * fija; el texto corre al lado con el scroll de la página, así deslizar
+ * sobre el dibujo también hace avanzar la lectura (no hay scroll anidado).
+ */
+@media (orientation: landscape) and (min-width: 56rem) {
+  .disposicion {
+    display: grid;
+    grid-template-columns: minmax(0, 1.9fr) minmax(21rem, 1fr);
+    align-items: start;
+  }
+
+  .disposicion > .escenario {
+    position: sticky;
+    top: var(--margen);
+    justify-self: center;
+    width: min(100% - 2 * var(--margen), (100dvh - 2 * var(--margen)) * 4 / 3);
+    margin: var(--margen);
+  }
+
+  .panel {
+    min-height: 100dvh;
+  }
+}
+
+/* ---------- Escenario e ilustraciones ---------- */
+
+.escenario {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--papel-hondo);
+  isolation: isolate;
+}
+
+@media (orientation: landscape) and (min-width: 56rem) {
+  .escenario {
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+  }
+}
+
+.escenario__fondo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ilustracion.pendiente {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  text-align: center;
+  color: var(--pendiente-tinta);
+  background: repeating-linear-gradient(-45deg, var(--pendiente-a) 0 0.9rem, var(--pendiente-b) 0.9rem 1.8rem);
+  border: 0.15rem dashed currentColor;
+  font-size: var(--texto-chico);
+  line-height: 1.25;
+}
+
+.escenario__fondo.pendiente {
+  border-radius: inherit;
+  justify-content: flex-start;
+  padding-top: 5%;
+}
+
+.pendiente__marca {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.pendiente__texto {
+  max-width: 26ch;
+}
+
+/* El atardecer tapa la escena un momento; no frena los toques. */
+.escenario__transicion {
+  pointer-events: none;
+}
+
+/* Los dos personajes de una dupla, parados uno al lado del otro. */
+.pareja {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4%;
+  padding: 0 4% 5%;
+  overflow: hidden;
+  background: var(--papel-hondo);
+}
+
+.pareja__fondo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pareja__personaje {
+  position: relative;
+  min-width: 0;
+  max-width: 46%;
+  max-height: 88%;
+  object-fit: contain;
+}
+
+.pareja .ilustracion.pendiente {
+  width: 40%;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radio-chico);
+}
+
+/* Rogelio cambia de color de noche. El tono exacto lo define el equipo. */
+:root[data-momento='noche'] .cambia-de-noche {
+  filter: hue-rotate(190deg) saturate(1.8) brightness(1.6);
+}
+
+/* ---------- Elementos del escenario ---------- */
+
+.elemento {
+  position: absolute;
+  translate: -50% -50%;
+  min-width: var(--toque);
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.elemento__figura {
+  display: block;
+  transform-origin: 50% 85%;
+}
+
+.elemento__imagen {
+  width: 100%;
+}
+
+.elemento .ilustracion.pendiente {
+  aspect-ratio: 3 / 4;
+  min-height: var(--toque);
+  border-radius: var(--radio-chico);
+  font-size: 0.85rem;
+  padding: 0.35rem;
+  box-shadow: var(--sombra);
+}
+
+.elemento .pendiente__marca {
+  font-size: 0.75rem;
+}
+
+.elemento--tocable {
+  min-height: var(--toque);
+  cursor: pointer;
+  border-radius: var(--radio-chico);
+  touch-action: manipulation;
+}
+
+.elemento--tocable .ilustracion.pendiente {
+  border-style: solid;
+}
+
+.elemento__invitacion {
+  position: absolute;
+  inset: -0.5rem;
+  border: 0.2rem solid var(--accion);
+  border-radius: calc(var(--radio-chico) + 0.5rem);
+  pointer-events: none;
+}
+
+.elemento--descubierto .elemento__invitacion {
+  opacity: 0;
+}
+
+.elemento__marca {
+  position: absolute;
+  top: -0.7rem;
+  right: -0.7rem;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--accion);
+  color: var(--accion-tinta);
+  box-shadow: var(--sombra);
+}
+
+.elemento__marca svg {
+  width: 1.2rem;
+}
+
+.elemento--aparece {
+  pointer-events: none;
+}
+
+/* Secreto revelado: va del lado opuesto a lo que se tocó (lo decide exploracion.ts). */
+.revelacion {
+  position: absolute;
+  width: min(48%, 24rem);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.revelacion[data-lado='derecha'] {
+  right: 3%;
+}
+
+.revelacion[data-lado='izquierda'] {
+  left: 3%;
+}
+
+.revelacion[data-altura='arriba'] {
+  top: 4%;
+}
+
+.revelacion[data-altura='abajo'] {
+  bottom: 4%;
+}
+
+.revelacion__tarjeta {
+  position: relative;
+  width: 100%;
+  padding: 0.9rem 3.9rem 1rem 1.1rem;
+  border-radius: var(--radio);
+  background: var(--papel);
+  color: var(--tinta);
+  box-shadow: var(--sombra);
+  pointer-events: auto;
+}
+
+.revelacion__titulo {
+  font-size: 1.25em;
+  margin-bottom: 0.3rem;
+}
+
+.revelacion__pendiente {
+  font-size: var(--texto-chico);
+  color: var(--tinta-suave);
+}
+
+.revelacion__pendiente strong {
+  color: var(--pendiente-tinta);
+  background: var(--pendiente-a);
+  padding: 0.05rem 0.4rem;
+  border-radius: 0.3rem;
+  margin-right: 0.15rem;
+}
+
+.revelacion__cerrar {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  display: grid;
+  place-items: center;
+  width: var(--toque);
+  height: var(--toque);
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+}
+
+.revelacion__cerrar svg {
+  width: 1.6rem;
+}
+
+.revelacion__cerrar:hover {
+  background: var(--resaltado);
+}
+
+/* Reloj decorativo de la noche. */
+.reloj {
+  position: absolute;
+  top: 4%;
+  left: 4%;
+  width: max(4.5rem, 13%);
+  z-index: 2;
+  filter: var(--sombra-reloj);
+}
+
+.reloj__horas,
+.reloj__minutos {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+}
+
+.flash {
+  position: absolute;
+  inset: 0;
+  background: var(--destello);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.chispa {
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  margin: -0.5rem 0 0 -0.5rem;
+  background: var(--moneda);
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.polvo {
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  margin: -1rem 0 0 -1rem;
+  border-radius: 50%;
+  background: var(--polvo);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.moneda-volando {
+  position: fixed;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin: -1.125rem 0 0 -1.125rem;
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* ---------- Panel de lectura ---------- */
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.panel__lectura {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  padding: var(--margen);
+  padding-top: calc(var(--margen) + 0.5rem);
+}
+
+@media (orientation: landscape) and (min-width: 56rem) {
+  .panel__lectura {
+    /* Deja lugar a los controles fijos de arriba a la derecha. */
+    padding-top: calc(var(--toque) + 2 * var(--margen));
+    padding-right: calc(var(--margen) + 0.5rem);
+  }
+}
+
+.panel__lectura > p {
+  max-width: 56ch;
+}
+
+.panel__titulo {
+  font-size: var(--titulo);
+  margin-bottom: 0.15em;
+}
+
+.texto-destacado {
+  font-weight: 700;
+  padding: 0.75em 1em;
+  border-radius: var(--radio-chico);
+  background: var(--resaltado);
+}
+
+.aviso-pendiente {
+  font-size: var(--texto-chico);
+  color: var(--tinta-suave);
+  line-height: 1.4;
+}
+
+.aviso-pendiente strong {
+  color: var(--pendiente-tinta);
+  background: var(--pendiente-a);
+  padding: 0.05rem 0.4rem;
+  border-radius: 0.3rem;
+  margin-right: 0.15rem;
+  letter-spacing: 0.04em;
+}
+
+/* La acción de la pantalla, siempre a mano. */
+.acciones {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem 1rem;
+  margin-top: auto;
+  padding: 1rem var(--margen) max(1rem, env(safe-area-inset-bottom));
+  background: linear-gradient(to bottom, transparent, var(--papel) 1rem);
+  z-index: 5;
+}
+
+.acciones__pista {
+  flex: 1 1 12rem;
+  font-size: var(--texto-chico);
+  color: var(--tinta-suave);
+}
+
+.acciones__pista--elegido {
+  color: var(--tinta);
+  font-weight: 700;
+}
+
+/* ---------- Botones ---------- */
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: var(--toque);
+  padding: 0.6rem 1.6rem;
+  border: 0.15rem solid transparent;
+  border-radius: 999px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background-color 0.15s ease, opacity 0.15s ease, scale 0.1s ease;
+}
+
+.boton svg {
+  width: 1.5rem;
+  flex: none;
+}
+
+.boton--principal {
+  background: var(--accion);
+  color: var(--accion-tinta);
+  box-shadow: var(--sombra);
+}
+
+.boton--principal:hover {
+  background: var(--accion-hover);
+}
+
+.boton--secundario {
+  background: transparent;
+  border-color: var(--linea);
+  color: var(--tinta);
+}
+
+.boton--secundario:hover {
+  background: var(--resaltado);
+}
+
+.boton:active {
+  scale: 0.97;
+}
+
+.boton[aria-disabled='true'],
+.boton:disabled {
+  opacity: 0.45;
+  box-shadow: none;
+  cursor: not-allowed;
+  scale: 1;
+}
+
+.boton--principal[aria-disabled='true']:hover {
+  background: var(--accion);
+}
+
+/* ---------- Controles fijos ---------- */
+
+.barra {
+  position: fixed;
+  top: max(0.75rem, env(safe-area-inset-top));
+  right: max(0.75rem, env(safe-area-inset-right));
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  z-index: 10;
+}
+
+.control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: var(--toque);
+  height: var(--toque);
+  padding: 0 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--papel);
+  color: var(--tinta);
+  box-shadow: var(--sombra);
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.control svg {
+  width: 1.75rem;
+  flex: none;
+}
+
+.control--sonido {
+  padding: 0;
+}
+
+.control:hover {
+  background: var(--resaltado);
+}
+
+.control--sonido[aria-pressed='true'] {
+  background: var(--tinta);
+  color: var(--papel);
+}
+
+.monedas {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: var(--toque);
+  padding: 0 1.1rem 0 0.7rem;
+  border-radius: 999px;
+  background: var(--papel);
+  box-shadow: var(--sombra);
+  font-size: 1.4rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.monedas svg {
+  width: 2rem;
+}
+
+/* ---------- Pantalla 1: portada ---------- */
+
+.panel--portada {
+  justify-content: center;
+}
+
+.panel--portada .panel__lectura {
+  flex: none;
+}
+
+.panel--portada .panel__titulo {
+  font-size: var(--titulo-portada);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.panel--portada .acciones {
+  justify-content: flex-start;
+  position: static;
+  margin-top: 0;
+  background: none;
+  padding-top: 0;
+}
+
+@media not ((orientation: landscape) and (min-width: 56rem)) {
+  .pantalla--intro .panel--portada .panel__lectura {
+    flex: none;
+    padding-block: 1.5rem 0.5rem;
+  }
+}
+
+.intro__texto {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.intro__texto > p {
+  max-width: 56ch;
+}
+
+/* ---------- Pantalla 2: elección de dupla ---------- */
+
+.eleccion {
+  min-height: 100dvh;
+  padding: calc(var(--toque) + 2 * var(--margen)) var(--margen) var(--margen);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.eleccion__titulo {
+  font-size: var(--titulo);
+  max-width: 24ch;
+}
+
+.eleccion__lista {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: var(--margen);
+}
+
+.tarjeta-dupla {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  border: 0.15rem solid var(--linea);
+  border-radius: var(--radio);
+  background: var(--papel);
+  overflow: hidden;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--sombra);
+  transition: border-color 0.15s ease, translate 0.2s ease;
+}
+
+.tarjeta-dupla:hover {
+  border-color: var(--accion);
+  translate: 0 -0.2rem;
+}
+
+.tarjeta-dupla__imagen {
+  aspect-ratio: 4 / 3;
+  width: 100%;
+}
+
+.tarjeta-dupla__nombre {
+  display: flex;
+  align-items: center;
+  min-height: var(--toque);
+  padding: 0.75rem 1.1rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.eleccion > .disposicion {
+  margin: calc(-1 * (var(--toque) + 2 * var(--margen))) calc(-1 * var(--margen)) calc(-1 * var(--margen));
+}
+
+.escenario--retrato .escenario__fondo.pendiente {
+  justify-content: center;
+  padding-top: 0.75rem;
+}
+
+/* ---------- Pantalla 9: mapa ---------- */
+
+/* El mapa tapa casi todo el fondo: el aviso PENDIENTE del fondo va en una línea arriba. */
+.pantalla--mapa .escenario__fondo.pendiente {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 0 0.4rem;
+  padding-top: 0.35rem;
+  font-size: 0.8rem;
+}
+
+.mapa {
+  position: absolute;
+  top: 21%;
+  left: 50%;
+  width: 58%;
+  translate: -50% 0;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  z-index: 2;
+}
+
+.mapa .ilustracion.pendiente {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-end;
+  gap: 0 0.4rem;
+  padding-bottom: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.mapa__imagen {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+
+.destino {
+  position: absolute;
+  translate: -50% -50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: var(--toque);
+  padding: 0.5rem 1rem 0.5rem 0.6rem;
+  white-space: nowrap;
+  border: 0.15rem solid var(--linea);
+  border-radius: 999px;
+  background: var(--papel);
+  color: var(--tinta);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: left;
+  box-shadow: var(--sombra);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.destino__punto {
+  width: 1.4rem;
+  height: 1.4rem;
+  flex: none;
+  border-radius: 50%;
+  border: 0.2rem solid var(--accion);
+}
+
+.destino[aria-pressed='true'] {
+  background: var(--accion);
+  border-color: var(--accion);
+  color: var(--accion-tinta);
+}
+
+.destino[aria-pressed='true'] .destino__punto {
+  background: var(--accion-tinta);
+  border-color: var(--accion-tinta);
+}
+
+.pasajeros {
+  position: absolute;
+  left: 3%;
+  bottom: 3%;
+  width: 24%;
+  z-index: 3;
+}
+
+.pasajeros__imagen {
+  aspect-ratio: 4 / 3;
+  padding: 0;
+  background: none;
+}
+
+.pasajeros .ilustracion.pendiente {
+  border-radius: var(--radio-chico);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 30rem) {
+  .destino {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.7rem 0.4rem 0.45rem;
+  }
+
+}
+
+/* ---------- Pantalla 10: la ventana del colectivo ---------- */
+
+.ventana {
+  background: var(--ventana-cielo);
+  border: 0.75rem solid var(--ventana-marco);
+}
+
+@media (orientation: landscape) and (min-width: 56rem) {
+  .ventana {
+    border-radius: 2.5rem;
+  }
+}
+
+.ventana__paisaje {
+  position: absolute;
+  inset: 0 auto 0 0;
+  display: flex;
+  width: max-content;
+}
+
+.ventana__imagen {
+  flex: none;
+  width: auto;
+  height: 100%;
+}
+
+.ventana__paisaje--fundido {
+  inset: 0;
+  width: auto;
+}
+
+.ventana__paisaje--fundido > * {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ventana .ilustracion.pendiente {
+  aspect-ratio: 4 / 3;
+  border-radius: 0;
+}
+
+.cartel {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+  padding: 0.4rem 1.2rem 0.5rem;
+  border-radius: 0 0 var(--radio-chico) var(--radio-chico);
+  background: var(--accion);
+  color: var(--accion-tinta);
+  font-weight: 700;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+/* ---------- Pantalla 11: créditos ---------- */
+
+.creditos {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: calc(var(--toque) + 2 * var(--margen)) var(--margen) 0;
+  text-align: center;
+}
+
+.creditos__titulo {
+  font-size: var(--titulo-portada);
+  line-height: 1;
+  margin-bottom: 2rem;
+}
+
+.creditos__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 36rem;
+}
+
+.creditos__seccion h2 {
+  font-size: var(--texto-chico);
+  font-weight: 400;
+  color: var(--tinta-suave);
+  margin-bottom: 0.4rem;
+}
+
+.creditos__seccion ul {
+  list-style: none;
+  padding: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.creditos__detalle {
+  font-weight: 700;
+}
+
+.creditos__seccion .aviso-pendiente {
+  margin-top: 0.4rem;
+}
+
+.creditos .acciones {
+  justify-content: center;
+  width: 100%;
+  margin-top: 2.5rem;
+}
+
+/* ---------- Ajustes para vertical y celular ---------- */
+
+@media not ((orientation: landscape) and (min-width: 56rem)) {
+  /* La ilustración arranca debajo de los controles fijos, así no la tapan. */
+  .disposicion {
+    padding-top: calc(var(--toque) + 1.5rem);
+  }
+
+  .eleccion > .disposicion {
+    margin-top: calc(-1 * var(--toque) - 2 * var(--margen));
+  }
+}
+
+@media (max-width: 30rem) {
+  .elemento .ilustracion.pendiente {
+    font-size: 0.75rem;
+    padding: 0.2rem;
+    gap: 0;
+  }
+
+  .elemento .pendiente__marca {
+    font-size: 0.7rem;
+    letter-spacing: 0;
+  }
+
+  .boton {
+    padding-inline: 1.15rem;
+    font-size: 1.1rem;
+  }
+
+  .mapa {
+    width: 90%;
+    top: 9%;
+  }
+
+  .revelacion {
+    width: 60%;
+  }
+
+  .revelacion__tarjeta {
+    padding: 0.6rem 3.6rem 0.7rem 0.8rem;
+    font-size: 0.95rem;
+    line-height: 1.35;
+  }
+
+  .revelacion__pendiente {
+    font-size: 0.85rem;
+  }
+
+  .pasajeros {
+    width: 22%;
+    left: auto;
+    right: 2%;
+    bottom: 2%;
+  }
+}
+
+/* En los créditos no hacen falta las monedas. */
+:root[data-creditos] .monedas {
+  display: none;
+}
+
+@media (max-width: 30rem) {
+  /* "Volver" y la acción principal: cada uno ocupa su fila entera. */
+  .acciones:has(.boton--secundario) .boton {
+    flex: 1 1 100%;
+  }
+}
