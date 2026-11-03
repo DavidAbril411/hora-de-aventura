@@ -209,7 +209,9 @@ def limpiar_alfa(alfa, umbral=0.25):
         return alfa
     areas = stats[1:, cv2.CC_STAT_AREA]
     conservar = np.zeros(n, dtype=bool)
-    conservar[1:] = areas >= 0.03 * areas.max()
+    # Una parte grande suelta (la rueda del colectivo, separada por el guardabarros
+    # blanco) se conserva aunque el resto del dibujo sea mucho más grande.
+    conservar[1:] = areas >= min(0.03 * areas.max(), 0.005 * alfa.size)
     return alfa * conservar[etiquetas]
 
 
