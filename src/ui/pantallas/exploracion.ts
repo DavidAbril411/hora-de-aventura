@@ -1,7 +1,7 @@
 import type { Contexto } from '../../engine/motor';
 import { t } from '../../engine/historia';
 import type { Elemento, PantallaExploracion } from '../../engine/tipos';
-import { animarElemento, aparecer, invitarATocar, llamarAtencion, moverReloj, volarMonedas } from '../animaciones';
+import { animarElemento, aparecer, balancearReloj, invitarATocar, llamarAtencion, moverReloj, volarMonedas } from '../animaciones';
 import { h, svg } from '../dom';
 import { acciones, avisoAudioPendiente, boton, escenario, ilustracion, panelTexto, parrafos } from '../componentes';
 import { iconoCerrar, iconoDescubierto, iconoReloj, iconoSeguir } from '../iconos';
@@ -131,7 +131,12 @@ export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
   }
   ctx.alSalir(() => detenerInvitaciones.forEach((detener) => detener()));
 
-  if (p.reloj) {
+  if (p.reloj?.imagen) {
+    // El reloj que dibujaron los chicos: no tiene agujas que mover, se balancea con el tic tac.
+    const reloj = h('div', { class: 'reloj reloj--dibujo', role: 'img', 'aria-label': t('reloj') }, ilustracion(p.reloj.imagen, 'reloj__imagen', p.momento));
+    dibujo.raiz.append(reloj);
+    ctx.alSalir(balancearReloj(reloj));
+  } else if (p.reloj) {
     const reloj = h('div', { class: 'reloj', role: 'img', 'aria-label': t('reloj') }, svg(iconoReloj));
     dibujo.raiz.append(reloj);
     const horas = reloj.querySelector('.reloj__horas');

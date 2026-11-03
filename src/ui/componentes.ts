@@ -16,8 +16,9 @@ export function ilustracion(id: string, clase = '', momento?: Momento): HTMLElem
     );
   }
   const noche = momento === 'noche' && datos.cambiaDeColorDeNoche ? ' cambia-de-noche' : '';
+  const entero = datos.entero ? ' ilustracion--entera' : '';
   return h('img', {
-    class: `ilustracion ${clase}${noche}`,
+    class: `ilustracion ${clase}${noche}${entero}`,
     src: urlPublica(datos.src),
     alt: descripcion,
     decoding: 'async',

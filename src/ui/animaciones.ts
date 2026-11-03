@@ -194,6 +194,13 @@ export function moverReloj(horas: Element, minutos: Element, desde: string, hast
   animate(minutos, { rotate: [a.m, b.m] }, { duration: 50, ease: 'linear' });
 }
 
+/** El reloj dibujado se balancea al ritmo del tic tac. Con movimiento reducido queda quieto. */
+export function balancearReloj(el: Element): () => void {
+  if (movimientoReducido()) return () => {};
+  const control = animate(el, { rotate: [-4, 4] }, { duration: 1, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse' });
+  return () => control.stop();
+}
+
 /** La nube de polvo del viejo: se eleva y desaparece. */
 export async function nubeDePolvo(sobre: HTMLElement, escenario: HTMLElement): Promise<void> {
   const caja = sobre.getBoundingClientRect();

@@ -139,6 +139,11 @@
   border-radius: var(--radio-chico);
 }
 
+/* Escenas recortadas sobre fondo transparente: se ven enteras, sin cortar los bordes. */
+.ilustracion--entera {
+  object-fit: contain;
+}
+
 /* Rogelio cambia de color de noche. El tono exacto lo define el equipo. */
 :root[data-momento='noche'] .cambia-de-noche {
   filter: hue-rotate(190deg) saturate(1.8) brightness(1.6);
@@ -305,6 +310,16 @@
   width: max(4.5rem, 13%);
   z-index: 2;
   filter: var(--sombra-reloj);
+}
+
+.reloj--dibujo {
+  width: max(4rem, 11%);
+  transform-origin: 50% 90%;
+}
+
+.reloj__imagen {
+  display: block;
+  width: 100%;
 }
 
 .reloj__horas,
@@ -680,19 +695,21 @@
   font-size: 0.8rem;
 }
 
+/* El dibujo del colectivo con el mapa ocupa el alto de la escena; los destinos se ubican sobre él. */
 .mapa {
   position: absolute;
-  top: 21%;
+  top: 3%;
+  bottom: 3%;
   left: 50%;
-  width: 58%;
+  width: max-content;
   translate: -50% 0;
-  aspect-ratio: 4 / 3;
-  border-radius: var(--radio);
-  box-shadow: var(--sombra);
   z-index: 2;
 }
 
 .mapa .ilustracion.pendiente {
+  height: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radio);
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
@@ -703,10 +720,10 @@
 }
 
 .mapa__imagen {
-  width: 100%;
+  display: block;
+  width: auto;
   height: 100%;
-  border-radius: inherit;
-  object-fit: cover;
+  filter: drop-shadow(0 0.4rem 0.8rem oklch(0.08 0.03 265 / 0.5));
 }
 
 .destino {
@@ -915,11 +932,6 @@
   .boton {
     padding-inline: 1.15rem;
     font-size: 1.1rem;
-  }
-
-  .mapa {
-    width: 90%;
-    top: 9%;
   }
 
   .revelacion {

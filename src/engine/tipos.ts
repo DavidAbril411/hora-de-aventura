@@ -10,6 +10,8 @@ export interface Imagen {
   src: string;
   descripcion: string;
   pendiente?: boolean;
+  /** El dibujo entero tiene que verse, sin recortar (escenas con fondo transparente). */
+  entero?: boolean;
   /** Rogelio cambia de color de noche: se resuelve con un filtro. */
   cambiaDeColorDeNoche?: boolean;
 }
@@ -114,7 +116,8 @@ export interface PantallaExploracion extends PantallaBase {
   /** Cuántos elementos hay que tocar antes de habilitar "Seguir". */
   requiereInteracciones?: number;
   /** Reloj decorativo: no mide tiempo real. */
-  reloj?: { desde: string; hasta: string };
+  /** Reloj decorativo: el dibujo de los chicos, o uno con agujas que avanzan. */
+  reloj?: { desde: string; hasta: string; imagen?: string };
 }
 
 export interface PantallaMapa extends PantallaBase {

@@ -68,6 +68,7 @@ export function validarHistoria(h: Historia = historia): string[] {
       case 'exploracion':
       case 'cierre':
         escenario(p.escenario, p.id);
+        if (p.tipo === 'exploracion') imagen(p.reloj?.imagen, `${p.id} › reloj`);
         if (p.tipo === 'cierre' && !ids.has(p.reiniciarEn)) problemas.push(`${p.id}: "reiniciarEn" no existe`);
         break;
       case 'mapa':

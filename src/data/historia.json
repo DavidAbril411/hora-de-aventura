@@ -165,6 +165,14 @@
             "ancho": 7
           },
           {
+            "id": "tulio",
+            "nombre": "Tulio, el amigo de Roberto",
+            "imagen": "personaje-tulio",
+            "x": 72,
+            "y": 66,
+            "ancho": 20
+          },
+          {
             "id": "flor",
             "nombre": "Una flor",
             "imagen": "objeto-flor",
@@ -248,22 +256,6 @@
       "escenario": {
         "fondo": "p04-dia-camila-alma-fondo",
         "elementos": [
-          {
-            "id": "camila",
-            "nombre": "Camila",
-            "imagen": "personaje-camila",
-            "x": 28,
-            "y": 54,
-            "ancho": 13
-          },
-          {
-            "id": "alma",
-            "nombre": "Alma",
-            "imagen": "personaje-alma",
-            "x": 58,
-            "y": 54,
-            "ancho": 13
-          },
           {
             "id": "celular",
             "nombre": "El celular de Alma",
@@ -468,7 +460,8 @@
             "interaccion": {
               "tipo": "truco",
               "animacion": "miami",
-              "monedas": 3
+              "monedas": 3,
+              "aparece": "objeto-monedas"
             }
           },
           {
@@ -481,7 +474,8 @@
             "interaccion": {
               "tipo": "truco",
               "animacion": "mortal",
-              "monedas": 3
+              "monedas": 3,
+              "aparece": "objeto-monedas"
             }
           },
           {
@@ -496,7 +490,8 @@
       },
       "reloj": {
         "desde": "23:40",
-        "hasta": "23:58"
+        "hasta": "23:58",
+        "imagen": "objeto-reloj"
       },
       "ambiente": [
         "amb-viento"
@@ -569,7 +564,8 @@
       },
       "reloj": {
         "desde": "23:40",
-        "hasta": "23:58"
+        "hasta": "23:58",
+        "imagen": "objeto-reloj"
       },
       "ambiente": [
         "amb-viento"
@@ -642,7 +638,8 @@
       },
       "reloj": {
         "desde": "23:40",
-        "hasta": "23:58"
+        "hasta": "23:58",
+        "imagen": "objeto-reloj"
       },
       "ambiente": [
         "amb-viento"
@@ -671,20 +668,20 @@
         {
           "id": "escuela",
           "nombre": "Escuela San Martín",
-          "x": 30,
-          "y": 22
+          "x": 28,
+          "y": 47
         },
         {
           "id": "casa",
           "nombre": "Volver a casa",
-          "x": 68,
-          "y": 48
+          "x": 70,
+          "y": 68
         },
         {
           "id": "pueblos-lejanos",
           "nombre": "Otros pueblos lejanos",
-          "x": 40,
-          "y": 76
+          "x": 36,
+          "y": 90
         }
       ],
       "ambiente": [
@@ -730,20 +727,28 @@
         "fondo": "p11-cierre-fondo",
         "elementos": [
           {
+            "id": "colectivo",
+            "nombre": "Los chicos bajando del colectivo",
+            "imagen": "p11-chicos-bajando",
+            "x": 44,
+            "y": 60,
+            "ancho": 72
+          },
+          {
             "id": "perrito",
             "nombre": "El perrito pitbull",
             "imagen": "objeto-perro-pitbull",
             "x": 30,
-            "y": 74,
+            "y": 86,
             "ancho": 12
           },
           {
             "id": "viejo",
             "nombre": "El viejo de la bolsa",
             "imagen": "personaje-viejo-de-la-bolsa",
-            "x": 76,
-            "y": 58,
-            "ancho": 14
+            "x": 88,
+            "y": 60,
+            "ancho": 13
           }
         ]
       },
@@ -833,8 +838,7 @@
     },
     "personaje-tulio": {
       "src": "img/pj-tulio.webp",
-      "pendiente": true,
-      "descripcion": "Tulio, el amigo de Roberto (llega una foto nueva)"
+      "descripcion": "Tulio, el amigo de Roberto"
     },
     "objeto-flor": {
       "src": "img/objeto-flor.webp",
@@ -869,9 +873,8 @@
       "descripcion": "El celular de Alma"
     },
     "objeto-sobre-herencia": {
-      "src": "img/objeto-sobre-herencia.webp",
-      "pendiente": true,
-      "descripcion": "El sobre de la herencia lleno de pitbulls"
+      "src": "img/obj-sobre-herencia.webp",
+      "descripcion": "El sobre de la herencia"
     },
     "objeto-dientes": {
       "src": "img/obj-dientes.webp",
@@ -886,9 +889,9 @@
       "descripcion": "El bosque con casas del mural, de día"
     },
     "p04-dia-camila-alma-fondo": {
-      "src": "img/p04-dia-camila-alma-fondo.webp",
-      "pendiente": true,
-      "descripcion": "La fiesta del pueblo, con música, de día"
+      "src": "img/esc-fiesta-camila-alma.webp",
+      "descripcion": "La fiesta de Camila y Alma, con música y globos",
+      "entero": true
     },
     "p05-dia-diana-rogelio-fondo": {
       "src": "img/p05-dia-diana-rogelio-fondo.webp",
@@ -915,14 +918,12 @@
       "descripcion": "La selva del mural, de noche"
     },
     "p09-colectivo-fondo": {
-      "src": "img/p09-colectivo-fondo.webp",
-      "pendiente": true,
-      "descripcion": "El colectivo llegando con las luces encendidas"
+      "src": "img/p10-viaje-cielo.webp",
+      "descripcion": "El cielo de noche sobre la isla"
     },
     "p09-mapa": {
-      "src": "img/p09-mapa.webp",
-      "pendiente": true,
-      "descripcion": "El mapa que ofrece el chofer"
+      "src": "img/esc-colectivo-mapa.webp",
+      "descripcion": "El colectivo y el mapa que ofrece el chofer"
     },
     "p10-viaje-casas": {
       "src": "img/p10-viaje-casas.webp",
@@ -941,8 +942,19 @@
       "descripcion": "La laguna, de noche"
     },
     "p11-cierre-fondo": {
-      "src": "img/p11-cierre-fondo.webp",
-      "pendiente": true,
+      "src": "img/p10-viaje-cielo.webp",
+      "descripcion": "El cielo de noche sobre la isla"
+    },
+    "objeto-monedas": {
+      "src": "img/obj-monedas.webp",
+      "descripcion": "Monedas y billetes"
+    },
+    "objeto-reloj": {
+      "src": "img/obj-reloj.webp",
+      "descripcion": "El reloj"
+    },
+    "p11-chicos-bajando": {
+      "src": "img/esc-chicos-bajando.webp",
       "descripcion": "Los chicos bajando del colectivo"
     }
   },

@@ -14,16 +14,13 @@ Material aprobado en la revisión con Lucila del 26/10 (lo marcado «cambiar» s
 
 En la pantalla 2 cada dupla se muestra con sus dos personajes (`personajes`) sobre su fondo de día (`fondo`), así que no hacen falta dibujos de las parejas. En la noche de Diana y Rogelio, el truco de la varita se toca sobre Diana, que en su dibujo ya tiene la varita roja.
 
+Material del 3/11 (dibujos nuevos de los chicos), integrado cuando David lo aprobó en la página de revisión: la fiesta de Camila y Alma (fondo de p04, entera; ya trae a Camila y Alma dibujadas, así que sus recortes no se repiten ahí), el colectivo con el mapa del chofer (p09, con los tres destinos ubicados sobre el mapa), los chicos bajando del colectivo (p11), el sobre de la herencia (p07), las monedas (aparecen después del Miami y de la mortal), el reloj (en las tres noches, se balancea con el tic tac) y la foto nueva de Tulio (p03).
+
 Siguen PENDIENTE:
 
 | id en `historia.json` | Qué muestra | Pantallas | Cuándo |
 |---|---|---|---|
-| `p04-dia-camila-alma-fondo` | La fiesta del pueblo | p02, p04 | Con los secretos y el dibujo de la fiesta, 27/10 |
-| `objeto-flor`, `objeto-piedra`, `objeto-arbol`, `objeto-dormido` | Los cuatro secretos de cada escena de día | p03, p04, p05 | Con los secretos, 27/10 |
-| `objeto-sobre-herencia` | El sobre de la herencia lleno de pitbulls | p07 | Dibujo nuevo, 27/10 |
-| `p09-colectivo-fondo`, `p09-mapa` | El colectivo y el mapa del chofer | p09 | Dibujo nuevo, 27/10 |
-| `p11-cierre-fondo` | Los chicos bajando del colectivo | p11 | Dibujo nuevo, 27/10 |
-| `personaje-tulio` | Tulio, el amigo de Roberto (no está en ninguna pantalla todavía) | p03 | Foto nueva, 27/10 |
+| `objeto-flor`, `objeto-piedra`, `objeto-arbol`, `objeto-dormido` | Los cuatro secretos de cada escena de día | p03, p04, p05 | Cuando el equipo los mande |
 
 Los fondos del mural son fotos verticales y la escena es apaisada (4:3), así que se ve la franja del medio de cada una. Las posiciones de los elementos (`x`, `y`, `ancho` en `historia.json`) se vuelven a ajustar cuando lleguen los secretos.
 
