@@ -20,13 +20,13 @@ Siguen PENDIENTE:
 
 | id en `historia.json` | Qué muestra | Pantallas | Cuándo |
 |---|---|---|---|
-| `objeto-flor`, `objeto-piedra`, `objeto-arbol`, `objeto-dormido` | Los cuatro secretos de cada escena de día | p03, p04, p05 | Cuando el equipo los mande |
+| `objeto-flor`, `objeto-piedra`, `objeto-arbol`, `objeto-dormido` | Los cuatro secretos de cada escena de día | p03, p04, p05 | No van a llegar (David, 11/11): falta decidir qué se hace |
 
 Los fondos del mural son fotos verticales y la escena es apaisada (4:3), así que se ve la franja del medio de cada una. Las posiciones de los elementos (`x`, `y`, `ancho` en `historia.json`) se vuelven a ajustar cuando lleguen los secretos.
 
 ### Audio
 
-Integrados los 12 audios tratados. Las tres narraciones de las duplas (`narracion-jp-roberto`, `narracion-camila-alma`, `narracion-diana-rogelio`) son **provisorias**: los chicos las vuelven a grabar leyendo el texto del cuento (27/10, o 27/11 según el comentario de Lucila; falta confirmar). Hasta entonces el audio no coincide palabra por palabra con el texto en pantalla. Cuando lleguen, alcanza con reemplazar los `.m4a` en `public/audio/`. La narración de la intro queda como está.
+Integrados los 12 audios tratados. La narración de Juan Pablo y Roberto es la regrabación del 11/11: ya cuenta lo de Roberto (que lo echen de su casa y Tulio), pero sigue en primera persona, así que el audio no coincide palabra por palabra con el texto en pantalla. Las de Camila y Alma y de Diana y Rogelio quedan como están: no se van a regrabar. La narración de la intro lee el texto tal cual.
 
 Integrados también los tres sonidos libres (CC0) que buscó el thread de material: `sfx-clac-clac`, `sfx-tic-tac` y `sfx-colectivo`. La fuente y la licencia de cada uno están en `scripts/fuentes-sonidos.md` de la rama del material.
 
