@@ -5,7 +5,7 @@ la app se marca visiblemente con la palabra `PENDIENTE` y se anota acá.
 
 Fuente: inventario de la Library del 23/10/2026 (`scripts/inventario.csv`) contra
 `especificacion.md` y `Hora_de_aventura.pdf`, actualizado con la revisión de Lucila
-del 26/10/2026 y el material que llegó el 3/11/2026.
+del 26/10/2026 y el material que llegó el 3/11/2026 (el último).
 
 ## Llegó el 3/11
 
@@ -23,15 +23,22 @@ Los siete dibujos que faltaban y el Tulio nuevo, en la Library en
 | El reloj | `obj-reloj.webp` | 6 · 7 · 8 |
 | Tulio (dibujo nuevo) | `pj-tulio.webp` | 3 (reemplaza al de lápiz claro) |
 
-## Sigue faltando
+## Narración nueva (llegó el 3/11, se sumó el 11/11)
 
-| Qué | Para qué pantalla | Qué hacemos cuando llegue |
+La regrabación de Juan Pablo y Roberto (`SONIDOS/nuevos-2026-11-03/`), tratada como
+`narracion-jp-roberto.m4a`. Reemplaza a la primera versión (guardada en
+`material-tratado/descartados/audio/`) e incluye lo que faltaba de Roberto. Sigue en primera
+persona, no es el texto exacto del PDF. Espera aprobación.
+
+## No va a llegar
+
+David avisó el 11/11 que ya es todo el material.
+
+| Qué | Pantalla | Cómo queda |
 |---|---|---|
-| Los secretos de las escenas de día | 3 · 4 · 5 | Cruzarlos con las fichas «No es un… / Es…» (sin Pou) y armar las escenas de día |
-| Narraciones de las tres duplas, regrabadas leyendo el texto exacto del PDF | 3 · 4 · 5 | Tratarlas igual que las actuales y reemplazarlas. **Fecha a confirmar:** el comentario de Lucila dice «27 de noviembre» |
-
-Se puede pedir ya: **la lista de dibujos dados vuelta** (la tiene Lucila). Al tratarlos se
-giraron cuatro que venían de costado o al revés; con la lista se corrigen los que falten.
+| Los secretos de las escenas de día | 3 · 4 · 5 | Sin contenido propio. No se inventa: hay que decidir con el equipo qué hacer con esas pantallas |
+| Regrabación de Camila y Alma y de Diana y Rogelio | 3 · 4 · 5 | Quedan las narraciones actuales, que no leen el texto exacto del PDF |
+| Lista de dibujos dados vuelta | — | Quedan como están (se giraron los cuatro que se veían mal) |
 
 ## Fondos de cada pantalla
 
@@ -54,7 +61,7 @@ revisión. Están en la Library, en `material-tratado/pantallas/`.
 
 ## Contenido que falta (no se inventa)
 
-- **Pantallas 3 a 5:** qué revela cada secreto. No llegó con el material del 3/11 (ver «Sigue faltando»).
+- **Pantallas 3 a 5:** qué revela cada secreto. No va a llegar (ver «No va a llegar»).
   - La ficha del pulpo tiene pistas escritas a mano («curiosidad: tiene un hermano», «no le gusta que le toquen los tentáculos»): pueden ser el contenido de su secreto.
   - Si alguno de los dibujos de Pou era un secreto, hay que reemplazarlo.
 - **Pantalla 10:** si el viaje cambia según el destino (el PDF no lo diferencia).
@@ -81,7 +88,6 @@ Resueltos con sonidos libres (decisión del 26/10): `sfx-clac-clac`, `sfx-tic-ta
   Time*. Preguntar dónde se va a publicar; si es abierto, sugerir sumarle algo al nombre.
 - **Chica endemoniada:** las puntas de los cuernos quedan apenas cortadas (tocaban el título
   impreso de la ficha). Si molesta, pedir una foto nueva.
-- **Narraciones:** no llegaron con el material del 3/11; lo más probable es el 27/11, como decía el comentario de Lucila. Confirmar.
 
 ## Decidido en la revisión del 26/10
 

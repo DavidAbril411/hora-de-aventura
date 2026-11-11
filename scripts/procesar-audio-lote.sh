@@ -27,7 +27,7 @@ while IFS='|' read -r tipo archivo nombre; do
   "$aqui/procesar-audio.sh" "$tipo" "$origen/$archivo" "$destino/$nombre"
 done <<'LISTA'
 narracion|audios hora de aventura/Intro (Lucas).m4a.mp4|narracion-intro.m4a
-narracion|audios hora de aventura/Juan Pablo y roberto (Jere).m4a.mp4|narracion-jp-roberto.m4a
+narracion|nuevos-2026-11-03/WhatsApp Audio 2026-11-03 at 10.40.42 AM 1.mp4|narracion-jp-roberto.m4a
 narracion|audios hora de aventura/Alma y Camila (Juli).m4a.mp4|narracion-camila-alma.m4a
 narracion|audios hora de aventura/Diana y Rogelio (Ana Paula).m4a.mp4|narracion-diana-rogelio.m4a
 ambiente|ruidos/viento.ogg|amb-viento.m4a
