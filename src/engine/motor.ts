@@ -91,6 +91,7 @@ export class Motor {
       this.actual = null;
       anterior.limpiezas.forEach((l) => l());
       this.sonido.saltear();
+      this.sonido.detenerEfectos();
       await salirPantalla(anterior.el);
       anterior.el.remove();
     }
@@ -121,7 +122,7 @@ export class Motor {
     // La intro arranca su narración con "Empezar"; el resto, al entrar.
     if (this.sonido.desbloqueado) {
       if (pantalla.narracion && pantalla.tipo !== 'intro') void this.sonido.narrar(pantalla.narracion);
-      pantalla.efectos?.forEach((e) => void this.sonido.efecto(e));
+      this.sonido.efectos(pantalla.efectos ?? []);
     }
     await entrarPantalla(el);
   }

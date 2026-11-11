@@ -48,6 +48,8 @@ export type Animacion =
 export interface Interaccion {
   tipo: 'secreto' | 'truco';
   animacion: Animacion;
+  /** Título de la tarjeta del secreto, si no es el nombre del elemento. */
+  titulo?: string;
   /** Texto del secreto. null = el equipo todavía no lo indicó (PENDIENTE). */
   secreto?: string | null;
   monedas?: number;
@@ -59,10 +61,10 @@ export interface Elemento {
   id: string;
   nombre: string;
   imagen: string;
-  /** Centro del elemento, en % del escenario. */
+  /** Centro del elemento, en % del área de juego (la escena sin la franja de subtítulos). */
   x: number;
   y: number;
-  /** Ancho en % del escenario. */
+  /** Ancho, en % del promedio entre el ancho y el alto del área de juego. */
   ancho: number;
   interaccion?: Interaccion;
 }
@@ -115,8 +117,7 @@ export interface PantallaExploracion extends PantallaBase {
   escenario: Escenario;
   /** Cuántos elementos hay que tocar antes de habilitar "Seguir". */
   requiereInteracciones?: number;
-  /** Reloj decorativo: no mide tiempo real. */
-  /** Reloj decorativo: el dibujo de los chicos, o uno con agujas que avanzan. */
+  /** Reloj decorativo (no mide tiempo real): el dibujo de los chicos, o uno con agujas que avanzan. */
   reloj?: { desde: string; hasta: string; imagen?: string };
 }
 
@@ -129,8 +130,8 @@ export interface PantallaMapa extends PantallaBase {
 
 export interface PantallaViaje extends PantallaBase {
   tipo: 'viaje';
-  /** Lo que se ve por la ventana, en orden: pasa de derecha a izquierda una sola vez. */
-  paisaje: string[];
+  /** El dibujo de la ventana del colectivo, que se mece con el andar. */
+  ventana: string;
 }
 
 export interface PantallaCierre extends PantallaBase {

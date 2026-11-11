@@ -4,62 +4,25 @@
   min-height: 100dvh;
 }
 
-/* Celular y tablet vertical: ilustración arriba, texto abajo. */
-.disposicion {
-  display: flex;
-  flex-direction: column;
-  min-height: 100dvh;
-}
-
-/* El dibujo queda a la vista mientras se lee, y sus elementos, a mano. */
-.disposicion > .escenario {
-  position: sticky;
-  top: 0;
-  width: 100%;
-  flex: none;
-  z-index: 6;
-}
-
 /*
- * Tablet horizontal (la pantalla principal): la ilustración manda y queda
- * fija; el texto corre al lado con el scroll de la página, así deslizar
- * sobre el dibujo también hace avanzar la lectura (no hay scroll anidado).
+ * Cada pantalla del cuento ocupa la pantalla entera: la imagen la cubre y el
+ * texto va encima, abajo, como subtítulos. No hay scroll.
  */
-@media (orientation: landscape) and (min-width: 56rem) {
-  .disposicion {
-    display: grid;
-    grid-template-columns: minmax(0, 1.9fr) minmax(21rem, 1fr);
-    align-items: start;
-  }
-
-  .disposicion > .escenario {
-    position: sticky;
-    top: var(--margen);
-    justify-self: center;
-    width: min(100% - 2 * var(--margen), (100dvh - 2 * var(--margen)) * 4 / 3);
-    margin: var(--margen);
-  }
-
-  .panel {
-    min-height: 100dvh;
-  }
+.disposicion {
+  position: relative;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--papel-hondo);
 }
 
 /* ---------- Escenario e ilustraciones ---------- */
 
 .escenario {
-  position: relative;
-  aspect-ratio: 4 / 3;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
   background: var(--papel-hondo);
   isolation: isolate;
-}
-
-@media (orientation: landscape) and (min-width: 56rem) {
-  .escenario {
-    border-radius: var(--radio);
-    box-shadow: var(--sombra);
-  }
 }
 
 .escenario__fondo {
@@ -68,6 +31,19 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/*
+ * El área de juego: la escena sin la franja de subtítulos. Ahí se ubican los
+ * elementos, en % de su tamaño. Como la pantalla puede ser apaisada o
+ * vertical, los anchos se miden en una unidad que promedia ancho y alto:
+ * así un personaje pesa parecido en la tablet y en el celular.
+ */
+.escenario__juego {
+  --u: (0.5cqw + 0.5cqh);
+  position: absolute;
+  inset: 0 0 var(--alto-subtitulos, 13rem);
+  container-type: size;
 }
 
 .ilustracion.pendiente {
@@ -86,9 +62,8 @@
 }
 
 .escenario__fondo.pendiente {
-  border-radius: inherit;
   justify-content: flex-start;
-  padding-top: 5%;
+  padding-top: calc(var(--toque) + 2rem);
 }
 
 .pendiente__marca {
@@ -107,29 +82,16 @@
 
 /* Los dos personajes de una dupla, parados uno al lado del otro. */
 .pareja {
-  position: relative;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   gap: 4%;
-  padding: 0 4% 5%;
-  overflow: hidden;
-  background: var(--papel-hondo);
-}
-
-.pareja__fondo {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .pareja__personaje {
-  position: relative;
   min-width: 0;
   max-width: 46%;
-  max-height: 88%;
+  max-height: 100%;
   object-fit: contain;
 }
 
@@ -137,6 +99,11 @@
   width: 40%;
   aspect-ratio: 3 / 4;
   border-radius: var(--radio-chico);
+}
+
+.escenario__pareja {
+  position: absolute;
+  inset: calc(var(--toque) + 1.5rem) 8% 2%;
 }
 
 /* Escenas recortadas sobre fondo transparente: se ven enteras, sin cortar los bordes. */
@@ -154,6 +121,7 @@
 .elemento {
   position: absolute;
   translate: -50% -50%;
+  width: min(calc(var(--ancho) * var(--u)), 96cqw);
   min-width: var(--toque);
   padding: 0;
   border: 0;
@@ -243,8 +211,9 @@
   left: 3%;
 }
 
+/* Arriba, la tarjeta queda por debajo de los controles fijos. */
 .revelacion[data-altura='arriba'] {
-  top: 4%;
+  top: calc(var(--toque) + 1.75rem);
 }
 
 .revelacion[data-altura='abajo'] {
@@ -305,15 +274,15 @@
 /* Reloj decorativo de la noche. */
 .reloj {
   position: absolute;
-  top: 4%;
-  left: 4%;
-  width: max(4.5rem, 13%);
+  top: max(4%, 0.75rem);
+  left: max(4%, 0.75rem);
+  width: max(4.5rem, calc(12 * var(--u)));
   z-index: 2;
   filter: var(--sombra-reloj);
 }
 
 .reloj--dibujo {
-  width: max(4rem, 11%);
+  width: max(4rem, calc(10 * var(--u)));
   transform-origin: 50% 90%;
 }
 
@@ -367,44 +336,150 @@
   z-index: 20;
 }
 
-/* ---------- Panel de lectura ---------- */
+/* ---------- Subtítulos ---------- */
 
-.panel {
+/*
+ * El texto de la pantalla, sobre la imagen. La franja tiene siempre el mismo
+ * alto (una cantidad fija de renglones), así la escena no se mueve al pasar
+ * de un subtítulo al otro. Lo que no entra se lee con las flechas.
+ */
+.subtitulos {
+  --sub-renglones: 3;
+  --sub-interlinea: 1.4;
+  --sub-fondo: color-mix(in oklch, var(--papel-hondo) 90%, transparent);
+  position: relative;
+  z-index: 6;
+  padding: 0.75rem var(--margen) max(1rem, env(safe-area-inset-bottom));
+  background: var(--sub-fondo);
+  color: var(--tinta);
+}
+
+.subtitulos::before {
+  content: '';
+  position: absolute;
+  inset: auto 0 100%;
+  height: 2.5rem;
+  background: linear-gradient(to top, var(--sub-fondo), transparent);
+  pointer-events: none;
+}
+
+.disposicion > .subtitulos {
+  position: absolute;
+  inset: auto 0 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    'cabecera'
+    'texto'
+    'acciones';
+  align-items: end;
+  gap: 0.35rem 1rem;
+}
+
+.subtitulos__cabecera {
+  grid-area: cabecera;
   display: flex;
-  flex-direction: column;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
   min-width: 0;
 }
 
-.panel__lectura {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-  padding: var(--margen);
-  padding-top: calc(var(--margen) + 0.5rem);
+.subtitulos__titulo {
+  font-size: var(--texto-chico);
+  color: var(--accion);
 }
 
-@media (orientation: landscape) and (min-width: 56rem) {
-  .panel__lectura {
-    /* Deja lugar a los controles fijos de arriba a la derecha. */
-    padding-top: calc(var(--toque) + 2 * var(--margen));
-    padding-right: calc(var(--margen) + 0.5rem);
-  }
+.subtitulos__cuenta {
+  font-size: var(--texto-chico);
+  color: var(--tinta-suave);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
-.panel__lectura > p {
-  max-width: 56ch;
+.subtitulos__texto {
+  grid-area: texto;
+  position: relative;
+  height: calc(var(--sub-renglones) * var(--sub-interlinea) * 1em);
+  overflow: hidden;
+  font-size: var(--texto);
+  line-height: var(--sub-interlinea);
 }
 
-.panel__titulo {
-  font-size: var(--titulo);
-  margin-bottom: 0.15em;
+.subtitulo {
+  white-space: pre-line;
+  text-wrap: wrap;
 }
 
-.texto-destacado {
+.subtitulo--destacado {
   font-weight: 700;
-  padding: 0.75em 1em;
-  border-radius: var(--radio-chico);
+  color: var(--accion);
+}
+
+/* Copia invisible con la que se mide cuánto texto entra en la franja. */
+.subtitulo--medida {
+  position: absolute;
+  inset: 0 0 auto;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Las flechas comparten el renglón de abajo con la acción: ellas a la izquierda, la acción a la derecha. */
+.subtitulos__nav {
+  grid-area: acciones;
+  justify-self: start;
+  z-index: 1;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.subtitulos__paso {
+  display: grid;
+  place-items: center;
+  width: var(--toque);
+  height: var(--toque);
+  padding: 0;
+  border: 0.15rem solid var(--linea);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--tinta);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background-color 0.15s ease, opacity 0.15s ease, scale 0.1s ease;
+}
+
+.subtitulos__paso svg {
+  width: 1.9rem;
+}
+
+.subtitulos__paso--siguiente {
   background: var(--resaltado);
+  border-color: var(--tinta-suave);
+}
+
+.subtitulos__paso:hover {
+  background: var(--linea);
+}
+
+.subtitulos__paso:active {
+  scale: 0.94;
+}
+
+.subtitulos__paso[aria-disabled='true'] {
+  opacity: 0.35;
+  cursor: default;
+  scale: 1;
+  background: transparent;
+}
+
+/* Con un solo subtítulo no hay nada que pasar. */
+.subtitulos--una .subtitulos__nav,
+.subtitulos--portada .subtitulos__nav {
+  display: none;
+}
+
+.subtitulos .aviso-pendiente {
+  grid-column: 1 / -1;
 }
 
 .aviso-pendiente {
@@ -424,28 +499,112 @@
 
 /* La acción de la pantalla, siempre a mano. */
 .acciones {
-  position: sticky;
-  bottom: 0;
+  grid-area: acciones;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
-  gap: 0.75rem 1rem;
-  margin-top: auto;
-  padding: 1rem var(--margen) max(1rem, env(safe-area-inset-bottom));
-  background: linear-gradient(to bottom, transparent, var(--papel) 1rem);
-  z-index: 5;
+  gap: 0.5rem 1rem;
+  min-width: 0;
 }
 
+/* Guarda el lugar de las flechas en el renglón de los botones. */
+.acciones::before {
+  content: '';
+  order: 1;
+  flex: none;
+  width: calc(2 * var(--toque) + 0.5rem);
+  margin-right: auto;
+}
+
+.subtitulos--una .acciones::before,
+.subtitulos--portada .acciones::before {
+  content: none;
+}
+
+.acciones > .boton {
+  order: 2;
+}
+
+/* La pista ocupa su renglón aunque esté vacía: así la franja no cambia de alto. */
 .acciones__pista {
-  flex: 1 1 12rem;
+  flex: 1 1 100%;
+  min-height: 1.4em;
+  text-align: right;
   font-size: var(--texto-chico);
+  line-height: 1.4;
   color: var(--tinta-suave);
 }
 
 .acciones__pista--elegido {
   color: var(--tinta);
   font-weight: 700;
+}
+
+/*
+ * Pantallas anchas (la tablet apaisada, que es la principal): el texto en el
+ * medio, con una flecha de cada lado, y la acción a la derecha.
+ */
+@media (min-width: 56rem) {
+  .disposicion > .subtitulos {
+    grid-template-columns: auto minmax(0, 62ch) auto minmax(max-content, 1fr);
+    grid-template-areas:
+      '. cabecera . acciones'
+      'anterior texto siguiente acciones';
+    align-items: center;
+    row-gap: 0.25rem;
+  }
+
+  .subtitulos__nav {
+    display: contents;
+  }
+
+  .acciones::before {
+    content: none;
+  }
+
+  .subtitulos__paso--anterior {
+    grid-area: anterior;
+  }
+
+  .subtitulos__paso--siguiente {
+    grid-area: siguiente;
+  }
+
+  /* Las flechas guardan su lugar aunque no hagan falta, para que el texto no se corra. */
+  .subtitulos--una .subtitulos__nav,
+  .subtitulos--portada .subtitulos__nav {
+    display: contents;
+    visibility: hidden;
+  }
+
+  .acciones:has(.acciones__pista) {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .acciones__pista {
+    flex: none;
+    max-width: 17rem;
+    text-wrap: balance;
+  }
+}
+
+/* Celular: renglones más cortos, así que entra uno más. */
+@media (max-width: 30rem) {
+  .subtitulos {
+    --sub-renglones: 4;
+    --sub-interlinea: 1.35;
+  }
+}
+
+/* Celular apaisado: poco alto, la franja se achica. */
+@media (max-height: 30rem) {
+  .subtitulos {
+    --sub-renglones: 2;
+  }
 }
 
 /* ---------- Botones ---------- */
@@ -576,139 +735,167 @@
 
 /* ---------- Pantalla 1: portada ---------- */
 
-.panel--portada {
-  justify-content: center;
+/* Antes de "Empezar", la franja muestra solo el título, grande, en el lugar del texto. */
+.subtitulos--portada .subtitulos__cabecera {
+  grid-area: auto;
+  grid-row: 1 / span 2;
+  grid-column: 1 / -1;
+  align-self: center;
 }
 
-.panel--portada .panel__lectura {
-  flex: none;
-}
-
-.panel--portada .panel__titulo {
+.subtitulos--portada .subtitulos__titulo {
   font-size: var(--titulo-portada);
   line-height: 1;
   letter-spacing: -0.02em;
+  color: var(--tinta);
 }
 
-.panel--portada .acciones {
-  justify-content: flex-start;
-  position: static;
-  margin-top: 0;
-  background: none;
-  padding-top: 0;
+.subtitulos--portada .subtitulos__texto,
+.subtitulos--portada .subtitulos__cuenta {
+  visibility: hidden;
 }
 
-@media not ((orientation: landscape) and (min-width: 56rem)) {
-  .pantalla--intro .panel--portada .panel__lectura {
-    flex: none;
-    padding-block: 1.5rem 0.5rem;
+@media (min-width: 56rem) {
+  .subtitulos--portada .subtitulos__cabecera {
+    grid-column: 2;
   }
-}
-
-.intro__texto {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-}
-
-.intro__texto > p {
-  max-width: 56ch;
 }
 
 /* ---------- Pantalla 2: elección de dupla ---------- */
 
+/* Las tres duplas se reparten la pantalla: columnas en apaisado, filas en vertical. */
 .eleccion {
-  min-height: 100dvh;
-  padding: calc(var(--toque) + 2 * var(--margen)) var(--margen) var(--margen);
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-}
-
-.eleccion__titulo {
-  font-size: var(--titulo);
-  max-width: 24ch;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--papel-hondo);
 }
 
 .eleccion__lista {
-  list-style: none;
+  flex: 1;
+  min-height: 0;
+  margin: 0;
   padding: 0;
+  list-style: none;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
-  gap: var(--margen);
+  grid-auto-rows: minmax(0, 1fr);
+  gap: 0.2rem;
+}
+
+@media (orientation: landscape) {
+  .eleccion__lista {
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+  }
+}
+
+.eleccion__lista > li {
+  display: grid;
+  min-width: 0;
+  min-height: 0;
 }
 
 .tarjeta-dupla {
-  display: flex;
-  flex-direction: column;
+  position: relative;
+  display: block;
   width: 100%;
+  height: 100%;
   padding: 0;
-  border: 0.15rem solid var(--linea);
-  border-radius: var(--radio);
-  background: var(--papel);
+  border: 0;
   overflow: hidden;
-  text-align: left;
+  background: var(--papel-hondo);
   cursor: pointer;
-  box-shadow: var(--sombra);
-  transition: border-color 0.15s ease, translate 0.2s ease;
+  touch-action: manipulation;
 }
 
-.tarjeta-dupla:hover {
-  border-color: var(--accion);
-  translate: 0 -0.2rem;
+.tarjeta-dupla:focus-visible {
+  outline-offset: -0.35rem;
 }
 
-.tarjeta-dupla__imagen {
-  aspect-ratio: 4 / 3;
+.tarjeta-dupla__fondo {
+  position: absolute;
+  inset: 0;
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: scale 0.4s ease;
+}
+
+.tarjeta-dupla__pareja {
+  position: absolute;
+  inset: 8% 6% calc(var(--toque) + 0.5rem);
+  transition: translate 0.25s ease;
+}
+
+.tarjeta-dupla:hover .tarjeta-dupla__pareja {
+  translate: 0 -0.3rem;
 }
 
 .tarjeta-dupla__nombre {
+  position: absolute;
+  inset: auto 0 0;
   display: flex;
   align-items: center;
+  justify-content: center;
   min-height: var(--toque);
-  padding: 0.75rem 1.1rem;
+  padding: 0.6rem 1rem;
+  background: color-mix(in oklch, var(--papel-hondo) 90%, transparent);
+  color: var(--tinta);
   font-size: 1.4rem;
   font-weight: 700;
+  line-height: 1.15;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.eleccion > .disposicion {
-  margin: calc(-1 * (var(--toque) + 2 * var(--margen))) calc(-1 * var(--margen)) calc(-1 * var(--margen));
+.tarjeta-dupla:hover .tarjeta-dupla__nombre {
+  background: var(--accion);
+  color: var(--accion-tinta);
 }
 
-.escenario--retrato .escenario__fondo.pendiente {
-  justify-content: center;
-  padding-top: 0.75rem;
+/* La consigna, abajo, con el mismo aspecto que los subtítulos. */
+.subtitulos--consigna {
+  flex: none;
+  text-align: center;
+  background: var(--papel-hondo);
+}
+
+.subtitulos--consigna::before {
+  content: none;
+}
+
+.subtitulos__consigna {
+  font-size: clamp(1.3rem, 1rem + 1.2vw, 1.9rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tarjeta-dupla:hover .tarjeta-dupla__pareja {
+    translate: none;
+  }
 }
 
 /* ---------- Pantalla 9: mapa ---------- */
 
-/* El mapa tapa casi todo el fondo: el aviso PENDIENTE del fondo va en una línea arriba. */
-.pantalla--mapa .escenario__fondo.pendiente {
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  align-content: flex-start;
-  gap: 0 0.4rem;
-  padding-top: 0.35rem;
-  font-size: 0.8rem;
-}
-
-/* El dibujo del colectivo con el mapa ocupa el alto de la escena; los destinos se ubican sobre él. */
+/*
+ * El dibujo del colectivo con el mapa se ve entero, lo más grande que entre
+ * en el área de juego; los destinos se ubican sobre él. La proporción real
+ * del dibujo la pone mapa.ts cuando la imagen carga.
+ */
 .mapa {
+  --proporcion: 0.86;
   position: absolute;
-  top: 3%;
-  bottom: 3%;
+  top: 50%;
   left: 50%;
-  width: max-content;
-  translate: -50% 0;
+  translate: -50% -50%;
+  height: min(96cqh, 94cqw / var(--proporcion));
+  aspect-ratio: var(--proporcion);
   z-index: 2;
 }
 
 .mapa .ilustracion.pendiente {
   height: 100%;
-  aspect-ratio: 4 / 3;
   border-radius: var(--radio);
   flex-direction: row;
   flex-wrap: wrap;
@@ -721,8 +908,9 @@
 
 .mapa__imagen {
   display: block;
-  width: auto;
+  width: 100%;
   height: 100%;
+  object-fit: contain;
   filter: drop-shadow(0 0.4rem 0.8rem oklch(0.08 0.03 265 / 0.5));
 }
 
@@ -771,14 +959,12 @@
   position: absolute;
   left: 3%;
   bottom: 3%;
-  width: 24%;
+  width: calc(22 * var(--u));
   z-index: 3;
 }
 
 .pasajeros__imagen {
   aspect-ratio: 4 / 3;
-  padding: 0;
-  background: none;
 }
 
 .pasajeros .ilustracion.pendiente {
@@ -786,70 +972,54 @@
   font-size: 0.8rem;
 }
 
-@media (max-width: 30rem) {
-  .destino {
-    font-size: 0.9rem;
-    padding: 0.4rem 0.7rem 0.4rem 0.45rem;
-  }
-
-}
-
 /* ---------- Pantalla 10: la ventana del colectivo ---------- */
 
+/* Adentro del colectivo, de noche: la pared a oscuras y la luz que entra por la ventana. */
+.escenario--interior {
+  background: radial-gradient(circle at 50% 38%, var(--ventana-luz), var(--papel-hondo) 70%);
+}
+
+/* El dibujo de la ventana, entero, debajo de los controles y del cartel. */
 .ventana {
-  background: var(--ventana-cielo);
-  border: 0.75rem solid var(--ventana-marco);
-}
-
-@media (orientation: landscape) and (min-width: 56rem) {
-  .ventana {
-    border-radius: 2.5rem;
-  }
-}
-
-.ventana__paisaje {
   position: absolute;
-  inset: 0 auto 0 0;
-  display: flex;
-  width: max-content;
+  inset: calc(var(--toque) + 5.25rem) 5% 4%;
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
 }
 
 .ventana__imagen {
-  flex: none;
-  width: auto;
-  height: 100%;
-}
-
-.ventana__paisaje--fundido {
-  inset: 0;
-  width: auto;
-}
-
-.ventana__paisaje--fundido > * {
-  position: absolute;
-  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  filter: drop-shadow(0 0.6rem 1.4rem oklch(0.08 0.03 265 / 0.6));
 }
 
 .ventana .ilustracion.pendiente {
-  aspect-ratio: 4 / 3;
-  border-radius: 0;
+  border-radius: var(--radio);
 }
 
 .cartel {
   position: absolute;
-  top: 0;
+  top: calc(var(--toque) + 1.75rem);
   left: 50%;
   translate: -50% 0;
   padding: 0.4rem 1.2rem 0.5rem;
-  border-radius: 0 0 var(--radio-chico) var(--radio-chico);
+  border-radius: var(--radio-chico);
   background: var(--accion);
   color: var(--accion-tinta);
   font-weight: 700;
   white-space: nowrap;
   z-index: 2;
+}
+
+@media (min-width: 56rem) {
+  .ventana {
+    top: 4.5rem;
+  }
+
+  .cartel {
+    top: 0.75rem;
+  }
 }
 
 /* ---------- Pantalla 11: créditos ---------- */
@@ -904,18 +1074,7 @@
   margin-top: 2.5rem;
 }
 
-/* ---------- Ajustes para vertical y celular ---------- */
-
-@media not ((orientation: landscape) and (min-width: 56rem)) {
-  /* La ilustración arranca debajo de los controles fijos, así no la tapan. */
-  .disposicion {
-    padding-top: calc(var(--toque) + 1.5rem);
-  }
-
-  .eleccion > .disposicion {
-    margin-top: calc(-1 * var(--toque) - 2 * var(--margen));
-  }
-}
+/* ---------- Ajustes para celular ---------- */
 
 @media (max-width: 30rem) {
   .elemento .ilustracion.pendiente {
@@ -935,7 +1094,7 @@
   }
 
   .revelacion {
-    width: 60%;
+    width: 62%;
   }
 
   .revelacion__tarjeta {
@@ -948,22 +1107,23 @@
     font-size: 0.85rem;
   }
 
+  .destino {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.7rem 0.4rem 0.45rem;
+  }
+
   .pasajeros {
-    width: 22%;
     left: auto;
     right: 2%;
     bottom: 2%;
+  }
+
+  .tarjeta-dupla__nombre {
+    font-size: 1.2rem;
   }
 }
 
 /* En los créditos no hacen falta las monedas. */
 :root[data-creditos] .monedas {
   display: none;
-}
-
-@media (max-width: 30rem) {
-  /* "Volver" y la acción principal: cada uno ocupa su fila entera. */
-  .acciones:has(.boton--secundario) .boton {
-    flex: 1 1 100%;
-  }
 }

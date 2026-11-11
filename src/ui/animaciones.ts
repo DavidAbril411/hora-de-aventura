@@ -17,12 +17,9 @@ export function movimientoReducido(): boolean {
   return consulta.matches;
 }
 
+/** Las pantallas ocupan todo: entran con un fundido, sin desplazarse. */
 export async function entrarPantalla(el: HTMLElement): Promise<void> {
-  if (movimientoReducido()) {
-    await animate(el, { opacity: [0, 1] }, { duration: 0.2 });
-    return;
-  }
-  await animate(el, { opacity: [0, 1], y: [16, 0] }, { duration: 0.45, ease: SALIDA });
+  await animate(el, { opacity: [0, 1] }, { duration: movimientoReducido() ? 0.2 : 0.45, ease: 'easeOut' });
 }
 
 export async function salirPantalla(el: HTMLElement): Promise<void> {
@@ -198,6 +195,22 @@ export function moverReloj(horas: Element, minutos: Element, desde: string, hast
 export function balancearReloj(el: Element): () => void {
   if (movimientoReducido()) return () => {};
   const control = animate(el, { rotate: [-4, 4] }, { duration: 1, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse' });
+  return () => control.stop();
+}
+
+/** El subtítulo nuevo aparece con un fundido corto. */
+export function cambiarSubtitulo(el: Element): void {
+  animate(el, { opacity: [0, 1] }, { duration: 0.25, ease: 'easeOut' });
+}
+
+/** La ventana se mece con el andar del colectivo. Con movimiento reducido queda quieta. */
+export function mecerVentana(el: Element): () => void {
+  if (movimientoReducido()) return () => {};
+  const control = animate(
+    el,
+    { rotate: [-0.8, 0.8], y: [0, -6] },
+    { duration: 1.7, ease: 'easeInOut', repeat: Infinity, repeatType: 'mirror' },
+  );
   return () => control.stop();
 }
 

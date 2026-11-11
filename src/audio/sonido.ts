@@ -1,24 +1,41 @@
 import { historia, urlPublica } from '../engine/historia';
 import type { Audio } from '../engine/tipos';
 
-// Volúmenes relativos. Los archivos ya vienen normalizados por
-// scripts/procesar-audio.sh (voz a −16 LUFS, ambiente a −26 LUFS).
-const AMBIENTE_NORMAL = 1;
-const AMBIENTE_CON_VOZ = 0.3; // ducking mientras habla un narrador
+/*
+ * La mezcla. Los archivos ya vienen normalizados por scripts/procesar-audio.sh
+ * (voz a −16 LUFS; ambiente y efectos a −26 LUFS). Acá se decide quién va
+ * adelante: primero la voz, después el efecto del momento y, de fondo, el
+ * ambiente. Lo que no es lo principal baja para no taparlo.
+ */
+const MAESTRO = 0.9; // margen para que la suma no sature
+const AMBIENTE = 0.7;
+const AMBIENTE_CON_EFECTO = 0.4;
+const AMBIENTE_CON_VOZ = 0.2; // unos 24 LU por debajo de la voz
+const EFECTO = 0.9;
+const EFECTO_CON_VOZ = 0.3;
+// Con varios loops de ambiente, el primero es la base y los demás acompañan.
+const PESO_ACOMPANIA = 0.5;
 const RAMPA = 0.4; // segundos
+const PAUSA_ENTRE_EFECTOS = 400; // milisegundos
 
 export type FinNarracion = 'terminada' | 'salteada' | 'pendiente';
 type Oyente = (narrando: boolean) => void;
 
-interface Loop {
+interface Sonando {
   fuente: AudioBufferSourceNode;
   ganancia: GainNode;
+}
+
+interface Narracion extends Sonando {
+  inicio: number;
+  duracion: number;
+  fin: (f: FinNarracion) => void;
 }
 
 /**
  * Narraciones, ambiente en loop y efectos, con Web Audio API.
  * Se usa Web Audio (y no <audio>.volume) porque en Safari de iPad el
- * volumen de un elemento <audio> no se puede cambiar, y el ducking lo necesita.
+ * volumen de un elemento <audio> no se puede cambiar, y la mezcla lo necesita.
  * El navegador no deja sonar nada hasta que el lector toca algo: por eso
  * todo arranca recién con desbloquear(), que llama el botón "Empezar".
  */
@@ -26,11 +43,14 @@ export class Sonido {
   private ctx: AudioContext | null = null;
   private maestro!: GainNode;
   private busAmbiente!: GainNode;
+  private busEfectos!: GainNode;
   private busVoz!: GainNode;
   private buffers = new Map<string, Promise<AudioBuffer | null>>();
-  private loops = new Map<string, Loop>();
+  private loops = new Map<string, Sonando>();
   private ambientePedido: string[] = [];
-  private narracion: { fuente: AudioBufferSourceNode; fin: (f: FinNarracion) => void } | null = null;
+  private narracion: Narracion | null = null;
+  private efectoActual: Sonando | null = null;
+  private turnoEfectos = 0;
   private oyentes = new Set<Oyente>();
   silenciado = false;
 
@@ -42,12 +62,11 @@ export class Sonido {
     if (!this.ctx) {
       this.ctx = new AudioContext();
       this.maestro = this.ctx.createGain();
-      this.maestro.gain.value = this.silenciado ? 0 : 1;
+      this.maestro.gain.value = this.silenciado ? 0 : MAESTRO;
       this.maestro.connect(this.ctx.destination);
-      this.busAmbiente = this.ctx.createGain();
-      this.busAmbiente.connect(this.maestro);
-      this.busVoz = this.ctx.createGain();
-      this.busVoz.connect(this.maestro);
+      this.busAmbiente = this.bus(AMBIENTE);
+      this.busEfectos = this.bus(EFECTO);
+      this.busVoz = this.bus(1);
     }
     if (this.ctx.state === 'suspended') await this.ctx.resume();
     this.ambiente(this.ambientePedido);
@@ -55,7 +74,7 @@ export class Sonido {
 
   setSilenciado(silenciado: boolean): void {
     this.silenciado = silenciado;
-    if (this.ctx) this.rampa(this.maestro.gain, silenciado ? 0 : 1, 0.15);
+    if (this.ctx) this.rampa(this.maestro.gain, silenciado ? 0 : MAESTRO, 0.15);
   }
 
   escuchar(oyente: Oyente): () => void {
@@ -67,35 +86,40 @@ export class Sonido {
     return this.narracion !== null;
   }
 
-  /** Reproduce una narración. Baja el ambiente mientras dura. */
+  /** Cuánto de la narración ya sonó, de 0 a 1. null si no hay narración. */
+  get avanceNarracion(): number | null {
+    if (!this.narracion || !this.ctx) return null;
+    const { inicio, duracion } = this.narracion;
+    return Math.min(1, Math.max(0, (this.ctx.currentTime - inicio) / duracion));
+  }
+
+  /** Reproduce una narración. Mientras dura, todo lo demás queda de fondo. */
   async narrar(id: string | undefined): Promise<FinNarracion> {
     this.saltear();
     const datos = id ? historia.audios[id] : undefined;
     if (!datos || datos.pendiente || !this.ctx) return 'pendiente';
     const buffer = await this.cargar(id!, datos);
     if (!buffer || !this.ctx) return 'pendiente';
+    // Si mientras cargaba arrancó otra narración, queda una sola.
+    this.saltear();
 
-    const fuente = this.ctx.createBufferSource();
-    fuente.buffer = buffer;
-    fuente.connect(this.busVoz);
-    this.rampa(this.busAmbiente.gain, AMBIENTE_CON_VOZ, RAMPA);
-
+    const sonando = this.sonar(buffer, this.busVoz);
     return new Promise<FinNarracion>((resolver) => {
       let resuelta = false;
       const fin = (f: FinNarracion) => {
         if (resuelta) return;
         resuelta = true;
-        fuente.onended = null;
-        if (this.narracion?.fuente === fuente) {
+        sonando.fuente.onended = null;
+        if (this.narracion?.fuente === sonando.fuente) {
           this.narracion = null;
-          this.rampa(this.busAmbiente.gain, AMBIENTE_NORMAL, RAMPA);
+          this.mezclar();
           this.avisar();
         }
         resolver(f);
       };
-      fuente.onended = () => fin('terminada');
-      this.narracion = { fuente, fin };
-      fuente.start();
+      sonando.fuente.onended = () => fin('terminada');
+      this.narracion = { ...sonando, inicio: this.ctx!.currentTime, duracion: buffer.duration, fin };
+      this.mezclar();
       this.avisar();
     });
   }
@@ -104,11 +128,7 @@ export class Sonido {
     const actual = this.narracion;
     if (!actual) return;
     actual.fin('salteada');
-    try {
-      actual.fuente.stop();
-    } catch {
-      // ya estaba detenida
-    }
+    this.apagar(actual, 0.12);
   }
 
   /** Deja sonando exactamente estos loops de ambiente, con fundido. */
@@ -118,38 +138,50 @@ export class Sonido {
     for (const [id, loop] of this.loops) {
       if (ids.includes(id)) continue;
       this.loops.delete(id);
-      this.rampa(loop.ganancia.gain, 0, 1);
-      loop.fuente.stop(this.ctx.currentTime + 1.1);
+      this.apagar(loop, 1);
     }
     for (const id of ids) {
-      if (this.loops.has(id)) continue;
+      const sonando = this.loops.get(id);
+      if (sonando) {
+        this.rampa(sonando.ganancia.gain, this.pesoAmbiente(id), 1);
+        continue;
+      }
       const datos = historia.audios[id];
       if (!datos || datos.pendiente) continue;
       void this.cargar(id, datos).then((buffer) => {
         if (!buffer || !this.ctx || this.loops.has(id) || !this.ambientePedido.includes(id)) return;
-        const fuente = this.ctx.createBufferSource();
-        fuente.buffer = buffer;
-        fuente.loop = true;
-        const ganancia = this.ctx.createGain();
-        ganancia.gain.value = 0;
-        fuente.connect(ganancia).connect(this.busAmbiente);
-        fuente.start();
-        this.rampa(ganancia.gain, 1, 1.5);
-        this.loops.set(id, { fuente, ganancia });
+        const loop = this.sonar(buffer, this.busAmbiente, { loop: true, volumen: 0 });
+        this.rampa(loop.ganancia.gain, this.pesoAmbiente(id), 1.5);
+        this.loops.set(id, loop);
       });
     }
   }
 
-  /** Sonido corto, una sola vez. */
-  async efecto(id: string): Promise<void> {
-    const datos = historia.audios[id];
-    if (!datos || datos.pendiente || !this.ctx) return;
-    const buffer = await this.cargar(id, datos);
-    if (!buffer || !this.ctx) return;
-    const fuente = this.ctx.createBufferSource();
-    fuente.buffer = buffer;
-    fuente.connect(this.busVoz);
-    fuente.start();
+  /**
+   * Los efectos de una pantalla: suenan de a uno, en el orden pedido, y
+   * reemplazan a los que hubiera sonando de la pantalla anterior.
+   */
+  efectos(ids: string[]): void {
+    this.detenerEfectos();
+    if (!this.ctx || !ids.length) return;
+    const turno = this.turnoEfectos;
+    void (async () => {
+      for (const id of ids) {
+        if (turno !== this.turnoEfectos) return;
+        await this.efecto(id, turno);
+        await new Promise((listo) => window.setTimeout(listo, PAUSA_ENTRE_EFECTOS));
+      }
+    })();
+  }
+
+  detenerEfectos(): void {
+    this.turnoEfectos += 1;
+    const actual = this.efectoActual;
+    if (!actual) return;
+    this.efectoActual = null;
+    actual.fuente.onended = null;
+    this.apagar(actual, 0.3);
+    this.mezclar();
   }
 
   /** Precarga en segundo plano los audios de una pantalla. */
@@ -158,6 +190,71 @@ export class Sonido {
     for (const id of ids) {
       const datos = id ? historia.audios[id] : undefined;
       if (id && datos && !datos.pendiente) void this.cargar(id, datos);
+    }
+  }
+
+  /** Un efecto, entero. La promesa se cumple cuando termina (o si no pudo sonar). */
+  private async efecto(id: string, turno: number): Promise<void> {
+    const datos = historia.audios[id];
+    if (!datos || datos.pendiente || !this.ctx) return;
+    const buffer = await this.cargar(id, datos);
+    if (!buffer || !this.ctx || turno !== this.turnoEfectos) return;
+    const sonando = this.sonar(buffer, this.busEfectos);
+    this.efectoActual = sonando;
+    this.mezclar();
+    await new Promise<void>((listo) => {
+      sonando.fuente.onended = () => {
+        if (this.efectoActual === sonando) {
+          this.efectoActual = null;
+          this.mezclar();
+        }
+        listo();
+      };
+    });
+  }
+
+  /** Pone cada bus en su lugar según lo que esté sonando: voz, efecto o solo ambiente. */
+  private mezclar(): void {
+    if (!this.ctx) return;
+    const voz = this.narracion !== null;
+    const efecto = this.efectoActual !== null;
+    this.rampa(this.busAmbiente.gain, voz ? AMBIENTE_CON_VOZ : efecto ? AMBIENTE_CON_EFECTO : AMBIENTE, RAMPA);
+    this.rampa(this.busEfectos.gain, voz ? EFECTO_CON_VOZ : EFECTO, RAMPA);
+  }
+
+  /** Volumen de un loop para que varios juntos sumen lo mismo que uno solo. */
+  private pesoAmbiente(id: string): number {
+    const pesos = this.ambientePedido.map((_, i) => (i === 0 ? 1 : PESO_ACOMPANIA));
+    const total = Math.sqrt(pesos.reduce((suma, p) => suma + p * p, 0)) || 1;
+    return (pesos[this.ambientePedido.indexOf(id)] ?? 0) / total;
+  }
+
+  private bus(volumen: number): GainNode {
+    const nodo = this.ctx!.createGain();
+    nodo.gain.value = volumen;
+    nodo.connect(this.maestro);
+    return nodo;
+  }
+
+  private sonar(buffer: AudioBuffer, destino: GainNode, { loop = false, volumen = 1 } = {}): Sonando {
+    const fuente = this.ctx!.createBufferSource();
+    fuente.buffer = buffer;
+    fuente.loop = loop;
+    const ganancia = this.ctx!.createGain();
+    ganancia.gain.value = volumen;
+    fuente.connect(ganancia).connect(destino);
+    fuente.start();
+    return { fuente, ganancia };
+  }
+
+  /** Corta un sonido con un fundido corto, para que no haga "clic". */
+  private apagar({ fuente, ganancia }: Sonando, segundos: number): void {
+    if (!this.ctx) return;
+    this.rampa(ganancia.gain, 0, segundos);
+    try {
+      fuente.stop(this.ctx.currentTime + segundos + 0.05);
+    } catch {
+      // ya estaba detenida
     }
   }
 

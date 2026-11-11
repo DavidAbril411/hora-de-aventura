@@ -3,8 +3,9 @@ import { historia, t } from '../../engine/historia';
 import type { PantallaCierre } from '../../engine/tipos';
 import { aparecerEnCascada, nubeDePolvo } from '../animaciones';
 import { h } from '../dom';
-import { acciones, avisoAudioPendiente, boton, escenario, panelTexto, parrafos } from '../componentes';
+import { acciones, avisoAudioPendiente, boton, escenario } from '../componentes';
 import { iconoSeguir, iconoVolver } from '../iconos';
+import { subtitulos } from '../subtitulos';
 
 /**
  * Pantalla 11. El final: el viejo se va en una nube de polvo. Después,
@@ -15,32 +16,18 @@ export function cierre(ctx: Contexto<PantallaCierre>): HTMLElement {
   const raiz = h('main', { class: 'disposicion' });
   const dibujo = escenario(p.escenario, p.momento);
 
-  const bloques = parrafos(p.texto);
-  const finDeLectura = h('span', { class: 'fin-de-lectura', 'aria-hidden': 'true' });
+  // El viejo desaparece cuando el lector llega al final del texto, no antes.
   const viejo = dibujo.elementos.get('viejo')?.contenedor;
-  if (viejo) {
-    // El viejo desaparece cuando el lector llega al final del texto, no antes.
-    let listo = false;
-    const desaparecer = () => {
-      if (listo) return;
-      listo = true;
-      observador.disconnect();
-      void nubeDePolvo(viejo, dibujo.raiz);
-    };
-    let espera = 0;
-    const observador = new IntersectionObserver((entradas) => {
-      window.clearTimeout(espera);
-      if (entradas.some((e) => e.isIntersecting)) espera = window.setTimeout(desaparecer, 1800);
-    });
-    observador.observe(finDeLectura);
-    ctx.alSalir(() => {
-      observador.disconnect();
-      window.clearTimeout(espera);
-    });
-  }
+  let espera = 0;
+  const alTerminar = () => {
+    if (viejo) espera = window.setTimeout(() => void nubeDePolvo(viejo, dibujo.raiz), 1800);
+  };
+  ctx.alSalir(() => window.clearTimeout(espera));
 
   const mostrarCreditos = () => {
     sonido.saltear();
+    lectura.destruir();
+    window.clearTimeout(espera);
     const { creditos } = historia;
     const secciones = creditos.secciones.map((s) =>
       h(
@@ -66,8 +53,15 @@ export function cierre(ctx: Contexto<PantallaCierre>): HTMLElement {
     raiz.querySelector<HTMLElement>('h1')?.focus({ preventScroll: true });
   };
 
-  const aviso = avisoAudioPendiente(p.narracion, ...(p.ambiente ?? []), ...(p.efectos ?? []));
-  const panel = panelTexto(p.titulo, [...bloques, aviso, finDeLectura], acciones(boton(t('verCreditos'), mostrarCreditos, { icono: iconoSeguir })));
-  raiz.append(dibujo.raiz, panel);
+  const lectura = subtitulos({
+    titulo: p.titulo,
+    texto: p.texto,
+    acciones: acciones(boton(t('verCreditos'), mostrarCreditos, { icono: iconoSeguir })),
+    avisos: [avisoAudioPendiente(p.narracion, ...(p.ambiente ?? []), ...(p.efectos ?? []))],
+    sonido,
+    alTerminar,
+  });
+  ctx.alSalir(lectura.destruir);
+  raiz.append(dibujo.raiz, lectura.raiz);
   return raiz;
 }

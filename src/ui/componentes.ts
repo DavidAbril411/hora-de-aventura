@@ -1,5 +1,5 @@
 import { historia, t, urlPublica } from '../engine/historia';
-import type { BloqueTexto, Dupla, Elemento, Escenario, Momento } from '../engine/tipos';
+import type { Dupla, Elemento, Escenario, Momento } from '../engine/tipos';
 import { fundirTransicion } from './animaciones';
 import { h, svg } from './dom';
 
@@ -26,19 +26,11 @@ export function ilustracion(id: string, clase = '', momento?: Momento): HTMLElem
   });
 }
 
-/**
- * Los dos personajes de una dupla, uno al lado del otro, sobre el fondo de
- * la dupla (salvo `conFondo` en false, cuando ya están dentro de otra escena).
- * Si el fondo todavía no llegó se deja liso: el PENDIENTE ya se ve en el
- * escenario de la dupla.
- */
-export function pareja(dupla: Dupla, clase = '', momento?: Momento, conFondo = true): HTMLElement {
-  const usarFondo = conFondo && dupla.fondo && !historia.imagenes[dupla.fondo]?.pendiente;
-  const fondo = usarFondo ? ilustracion(dupla.fondo!, 'pareja__fondo', momento) : null;
+/** Los dos personajes de una dupla, parados uno al lado del otro. */
+export function pareja(dupla: Dupla, clase = '', momento?: Momento): HTMLElement {
   return h(
     'div',
     { class: `pareja ${clase}`, role: 'img', 'aria-label': dupla.nombre },
-    fondo,
     ...dupla.personajes.map((id) => ilustracion(id, 'pareja__personaje', momento)),
   );
 }
@@ -57,12 +49,6 @@ export function avisoAudioPendiente(...ids: (string | undefined)[]): HTMLElement
   );
 }
 
-export function parrafos(bloques: BloqueTexto[]): HTMLElement[] {
-  return bloques.map((b) =>
-    typeof b === 'string' ? h('p', {}, b) : h('p', { class: `texto-${b.estilo}` }, b.texto),
-  );
-}
-
 export function boton(
   texto: string,
   alTocar: () => void,
@@ -77,40 +63,36 @@ export function boton(
   );
 }
 
-/** Panel de lectura: título, avisos, texto y la acción de la pantalla. */
-export function panelTexto(titulo: string, cuerpo: (HTMLElement | null)[], acciones: HTMLElement): HTMLElement {
-  return h(
-    'section',
-    { class: 'panel' },
-    h(
-      'div',
-      { class: 'panel__lectura' },
-      h('h1', { class: 'panel__titulo', tabindex: '-1' }, titulo),
-      ...cuerpo,
-    ),
-    acciones,
-  );
-}
-
 export function acciones(...hijos: (HTMLElement | null)[]): HTMLElement {
   return h('div', { class: 'acciones' }, ...hijos);
 }
 
 export interface EscenarioDibujado {
   raiz: HTMLElement;
+  /** El área donde van los elementos: la escena sin la franja de subtítulos. */
+  juego: HTMLElement;
   elementos: Map<string, { contenedor: HTMLElement; figura: HTMLElement }>;
 }
 
 /**
- * Fondo + elementos posicionados en % (personajes, objetos).
- * Los elementos interactivos son botones; los demás, figuras quietas.
+ * La escena a pantalla completa: el fondo la cubre entera y los elementos
+ * (personajes, objetos) se ubican en % dentro del área de juego. Los
+ * interactivos son botones; los demás, figuras quietas. Sin `fondo`, la
+ * escena queda lisa (el interior del colectivo).
  */
 export function escenario(
-  datos: Escenario,
+  datos: Partial<Escenario>,
   momento: Momento,
   alTocar?: (el: Elemento, boton: HTMLButtonElement, figura: HTMLElement) => void,
 ): EscenarioDibujado {
-  const raiz = h('div', { class: 'escenario' }, ilustracion(datos.fondo, 'escenario__fondo', momento));
+  const juego = h('div', { class: 'escenario__juego' });
+  const raiz = h('div', { class: 'escenario' });
+  if (datos.fondo) {
+    const fondo = ilustracion(datos.fondo, 'escenario__fondo', momento);
+    // Un dibujo que tiene que verse entero va en el área de juego, para que los subtítulos no lo tapen.
+    (historia.imagenes[datos.fondo]?.entero ? juego : raiz).append(fondo);
+  }
+  raiz.append(juego);
   const elementos = new Map<string, { contenedor: HTMLElement; figura: HTMLElement }>();
   for (const el of datos.elementos ?? []) {
     const figura = h('span', { class: 'elemento__figura' }, ilustracion(el.imagen, 'elemento__imagen', momento));
@@ -127,10 +109,8 @@ export function escenario(
     } else {
       contenedor = h('div', { class: 'elemento', 'data-elemento': el.id }, figura);
     }
-    contenedor.style.left = `${el.x}%`;
-    contenedor.style.top = `${el.y}%`;
-    contenedor.style.width = `${el.ancho}%`;
-    raiz.append(contenedor);
+    ubicar(contenedor, el.x, el.y, el.ancho);
+    juego.append(contenedor);
     elementos.set(el.id, { contenedor, figura });
   }
   // La transición tapa toda la escena, personajes incluidos, y se funde para
@@ -140,5 +120,12 @@ export function escenario(
     raiz.append(...[...transicion].reverse());
     fundirTransicion(transicion);
   }
-  return { raiz, elementos };
+  return { raiz, juego, elementos };
+}
+
+/** Ubica un elemento en el área de juego: centro en % y ancho en unidades de escena. */
+export function ubicar(el: HTMLElement, x: number, y: number, ancho: number): void {
+  el.style.left = `${x}%`;
+  el.style.top = `${y}%`;
+  el.style.setProperty('--ancho', String(ancho));
 }

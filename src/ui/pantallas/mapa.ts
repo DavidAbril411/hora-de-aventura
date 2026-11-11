@@ -3,8 +3,9 @@ import { historia, t } from '../../engine/historia';
 import type { PantallaMapa } from '../../engine/tipos';
 import { aparecer, llamarAtencion } from '../animaciones';
 import { h } from '../dom';
-import { acciones, avisoAudioPendiente, boton, escenario, ilustracion, pareja, panelTexto, parrafos } from '../componentes';
+import { acciones, avisoAudioPendiente, boton, escenario, ilustracion, pareja } from '../componentes';
 import { iconoSeguir } from '../iconos';
+import { subtitulos } from '../subtitulos';
 
 /**
  * Pantalla 9. El colectivo llega y el chofer ofrece el mapa: tocar un
@@ -17,8 +18,8 @@ export function mapa(ctx: Contexto<PantallaMapa>): HTMLElement {
 
   const dupla = estado.get().dupla;
   if (dupla) {
-    const pasajeros = h('div', { class: 'pasajeros' }, pareja(historia.duplas[dupla], 'pasajeros__imagen', p.momento, false));
-    dibujo.raiz.append(pasajeros);
+    const pasajeros = h('div', { class: 'pasajeros' }, pareja(historia.duplas[dupla], 'pasajeros__imagen', p.momento));
+    dibujo.juego.append(pasajeros);
   }
 
   const subir = boton(t('subirAlColectivo'), () => {
@@ -62,10 +63,19 @@ export function mapa(ctx: Contexto<PantallaMapa>): HTMLElement {
   if (previo && p.destinos.some((d) => d.id === previo)) elegir(previo);
   else actualizar();
 
-  const plano = h('div', { class: 'mapa' }, ilustracion(p.mapa, 'mapa__imagen', p.momento), ...botones);
-  dibujo.raiz.append(plano);
+  const imagen = ilustracion(p.mapa, 'mapa__imagen', p.momento);
+  const plano = h('div', { class: 'mapa' }, imagen, ...botones);
+  // El mapa se ve entero en cualquier pantalla: para eso hace falta su proporción real.
+  if (imagen instanceof HTMLImageElement) {
+    void imagen.decode().then(
+      () => plano.style.setProperty('--proporcion', String(imagen.naturalWidth / imagen.naturalHeight)),
+      () => {},
+    );
+  }
+  dibujo.juego.append(plano);
 
   const aviso = avisoAudioPendiente(p.narracion, ...(p.ambiente ?? []), ...(p.efectos ?? []));
-  const panel = panelTexto(p.titulo, [...parrafos(p.texto), aviso], acciones(pista, subir));
-  return h('main', { class: 'disposicion' }, dibujo.raiz, panel);
+  const lectura = subtitulos({ titulo: p.titulo, texto: p.texto, acciones: acciones(pista, subir), avisos: [aviso], sonido: ctx.sonido });
+  ctx.alSalir(lectura.destruir);
+  return h('main', { class: 'disposicion' }, dibujo.raiz, lectura.raiz);
 }

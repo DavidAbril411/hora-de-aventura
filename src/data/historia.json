@@ -24,7 +24,9 @@
     "de": "de",
     "descubierto": "descubierto",
     "elegirDestino": "Tocá un lugar del mapa",
-    "inicio": "Inicio"
+    "inicio": "Inicio",
+    "leerAnterior": "Leer lo anterior",
+    "leerSiguiente": "Seguir leyendo"
   },
   "duplas": {
     "jp-roberto": {
@@ -175,53 +177,57 @@
           {
             "id": "flor",
             "nombre": "Una flor",
-            "imagen": "objeto-flor",
-            "x": 12,
-            "y": 72,
-            "ancho": 14,
+            "imagen": "ficha-flor",
+            "x": 10,
+            "y": 74,
+            "ancho": 13,
             "interaccion": {
               "tipo": "secreto",
               "animacion": "crecer",
-              "secreto": null
+              "titulo": "No es un sombrero",
+              "secreto": "Es… una flor"
             }
           },
           {
-            "id": "piedra",
-            "nombre": "Una piedra",
-            "imagen": "objeto-piedra",
-            "x": 46,
-            "y": 84,
-            "ancho": 11,
-            "interaccion": {
-              "tipo": "secreto",
-              "animacion": "brillar",
-              "secreto": null
-            }
-          },
-          {
-            "id": "arbol",
-            "nombre": "Un árbol",
-            "imagen": "objeto-arbol",
-            "x": 80,
-            "y": 36,
-            "ancho": 17,
+            "id": "auto",
+            "nombre": "Un auto",
+            "imagen": "ficha-auto",
+            "x": 44,
+            "y": 88,
+            "ancho": 12,
             "interaccion": {
               "tipo": "secreto",
               "animacion": "sacudir",
-              "secreto": null
+              "titulo": "No es un helado",
+              "secreto": "Es… un auto"
             }
           },
           {
-            "id": "dormido",
-            "nombre": "Un objeto que despierta",
-            "imagen": "objeto-dormido",
-            "x": 88,
-            "y": 80,
+            "id": "gorra",
+            "nombre": "Una gorra",
+            "imagen": "ficha-gorra",
+            "x": 84,
+            "y": 40,
+            "ancho": 13,
+            "interaccion": {
+              "tipo": "secreto",
+              "animacion": "brillar",
+              "titulo": "No es un paraguas",
+              "secreto": "Es… una gorra"
+            }
+          },
+          {
+            "id": "fantasma",
+            "nombre": "Fantasma",
+            "imagen": "ficha-fantasma",
+            "x": 90,
+            "y": 82,
             "ancho": 11,
             "interaccion": {
               "tipo": "secreto",
               "animacion": "despertar",
-              "secreto": null
+              "titulo": "No es un helado",
+              "secreto": "Es… fantasma"
             }
           }
         ]
@@ -265,55 +271,59 @@
             "ancho": 9
           },
           {
-            "id": "flor",
-            "nombre": "Una flor",
-            "imagen": "objeto-flor",
-            "x": 12,
-            "y": 72,
-            "ancho": 14,
+            "id": "muffins",
+            "nombre": "Muffins",
+            "imagen": "ficha-muffins",
+            "x": 10,
+            "y": 76,
+            "ancho": 11,
             "interaccion": {
               "tipo": "secreto",
               "animacion": "crecer",
-              "secreto": null
+              "titulo": "No es un helado",
+              "secreto": "Es… muffins"
             }
           },
           {
-            "id": "piedra",
-            "nombre": "Una piedra",
-            "imagen": "objeto-piedra",
-            "x": 46,
-            "y": 84,
-            "ancho": 11,
+            "id": "vincha",
+            "nombre": "Una vincha mágica",
+            "imagen": "ficha-vincha",
+            "x": 88,
+            "y": 28,
+            "ancho": 13,
             "interaccion": {
               "tipo": "secreto",
               "animacion": "brillar",
-              "secreto": null
+              "titulo": "No es una estrella",
+              "secreto": "Es… una vincha mágica"
             }
           },
           {
-            "id": "arbol",
-            "nombre": "Un árbol",
-            "imagen": "objeto-arbol",
-            "x": 80,
-            "y": 36,
-            "ancho": 17,
-            "interaccion": {
-              "tipo": "secreto",
-              "animacion": "sacudir",
-              "secreto": null
-            }
-          },
-          {
-            "id": "dormido",
-            "nombre": "Un objeto que despierta",
-            "imagen": "objeto-dormido",
-            "x": 88,
-            "y": 80,
-            "ancho": 11,
+            "id": "globo",
+            "nombre": "Un globo",
+            "imagen": "ficha-globo",
+            "x": 10,
+            "y": 30,
+            "ancho": 7,
             "interaccion": {
               "tipo": "secreto",
               "animacion": "despertar",
-              "secreto": null
+              "titulo": "No es un huevo",
+              "secreto": "Es… un globo"
+            }
+          },
+          {
+            "id": "zanahoria",
+            "nombre": "Zanahoria",
+            "imagen": "ficha-zanahoria",
+            "x": 88,
+            "y": 82,
+            "ancho": 13,
+            "interaccion": {
+              "tipo": "secreto",
+              "animacion": "sacudir",
+              "titulo": "No es una mariposa",
+              "secreto": "Es… zanahoria"
             }
           }
         ]
@@ -362,55 +372,59 @@
             "ancho": 17
           },
           {
-            "id": "flor",
-            "nombre": "Una flor",
-            "imagen": "objeto-flor",
+            "id": "pato",
+            "nombre": "Pato",
+            "imagen": "ficha-pato",
             "x": 12,
-            "y": 72,
-            "ancho": 14,
-            "interaccion": {
-              "tipo": "secreto",
-              "animacion": "crecer",
-              "secreto": null
-            }
-          },
-          {
-            "id": "piedra",
-            "nombre": "Una piedra",
-            "imagen": "objeto-piedra",
-            "x": 46,
-            "y": 84,
-            "ancho": 11,
-            "interaccion": {
-              "tipo": "secreto",
-              "animacion": "brillar",
-              "secreto": null
-            }
-          },
-          {
-            "id": "arbol",
-            "nombre": "Un árbol",
-            "imagen": "objeto-arbol",
-            "x": 80,
-            "y": 36,
-            "ancho": 17,
-            "interaccion": {
-              "tipo": "secreto",
-              "animacion": "sacudir",
-              "secreto": null
-            }
-          },
-          {
-            "id": "dormido",
-            "nombre": "Un objeto que despierta",
-            "imagen": "objeto-dormido",
-            "x": 88,
-            "y": 80,
-            "ancho": 11,
+            "y": 76,
+            "ancho": 13,
             "interaccion": {
               "tipo": "secreto",
               "animacion": "despertar",
-              "secreto": null
+              "titulo": "No es un sombrero",
+              "secreto": "Es… pato"
+            }
+          },
+          {
+            "id": "barco",
+            "nombre": "Un barco",
+            "imagen": "ficha-barco",
+            "x": 84,
+            "y": 34,
+            "ancho": 12,
+            "interaccion": {
+              "tipo": "secreto",
+              "animacion": "sacudir",
+              "titulo": "No es una estrella",
+              "secreto": "Es… un barco"
+            }
+          },
+          {
+            "id": "mariquita",
+            "nombre": "Una mariquita",
+            "imagen": "ficha-mariquita",
+            "x": 42,
+            "y": 88,
+            "ancho": 6,
+            "interaccion": {
+              "tipo": "secreto",
+              "animacion": "crecer",
+              "titulo": "No es un huevo",
+              "secreto": "Es… una mariquita"
+            }
+          },
+          {
+            "id": "pulpo",
+            "nombre": "Un pulpo",
+            "imagen": "ficha-pulpo",
+            "x": 88,
+            "y": 82,
+            "ancho": 12,
+            "interaccion": {
+              "tipo": "secreto",
+              "animacion": "brillar",
+              "titulo": "No es un helado",
+              "secreto": "Es… un pulpo"
             }
           }
         ]
@@ -701,12 +715,7 @@
       "texto": [
         "Luego de elegir, suben y se acomodan en sus asientos, mientras el colectivo comienza a recorrer la isla, miran por la ventana. Las casas quedan atrás. El bosque se pierde entre las nubes. La laguna brilla por última vez bajo la luz de la luna. El viaje parece durar apenas unos minutos. O quizás mucho más. Hasta que, finalmente, el colectivo se detiene."
       ],
-      "paisaje": [
-        "p10-viaje-casas",
-        "p10-viaje-bosque",
-        "p10-viaje-cielo",
-        "p10-viaje-laguna"
-      ],
+      "ventana": "p10-ventana",
       "ambiente": [
         "amb-viento"
       ],
@@ -730,25 +739,25 @@
             "id": "colectivo",
             "nombre": "Los chicos bajando del colectivo",
             "imagen": "p11-chicos-bajando",
-            "x": 44,
-            "y": 60,
-            "ancho": 72
+            "x": 50,
+            "y": 44,
+            "ancho": 66
           },
           {
             "id": "perrito",
             "nombre": "El perrito pitbull",
             "imagen": "objeto-perro-pitbull",
-            "x": 30,
-            "y": 86,
+            "x": 28,
+            "y": 82,
             "ancho": 12
           },
           {
             "id": "viejo",
             "nombre": "El viejo de la bolsa",
             "imagen": "personaje-viejo-de-la-bolsa",
-            "x": 88,
-            "y": 60,
-            "ancho": 13
+            "x": 82,
+            "y": 78,
+            "ancho": 14
           }
         ]
       },
@@ -840,26 +849,6 @@
       "src": "img/pj-tulio.webp",
       "descripcion": "Tulio, el amigo de Roberto"
     },
-    "objeto-flor": {
-      "src": "img/objeto-flor.webp",
-      "pendiente": true,
-      "descripcion": "Una flor"
-    },
-    "objeto-piedra": {
-      "src": "img/objeto-piedra.webp",
-      "pendiente": true,
-      "descripcion": "Una piedra"
-    },
-    "objeto-arbol": {
-      "src": "img/objeto-arbol.webp",
-      "pendiente": true,
-      "descripcion": "Un árbol"
-    },
-    "objeto-dormido": {
-      "src": "img/objeto-dormido.webp",
-      "pendiente": true,
-      "descripcion": "Un objeto que parece dormido"
-    },
     "objeto-camara": {
       "src": "img/obj-camara.webp",
       "descripcion": "La cámara de fotos de Camila"
@@ -925,21 +914,9 @@
       "src": "img/esc-colectivo-mapa.webp",
       "descripcion": "El colectivo y el mapa que ofrece el chofer"
     },
-    "p10-viaje-casas": {
-      "src": "img/p10-viaje-casas.webp",
-      "descripcion": "Las casas del pueblo, de noche"
-    },
-    "p10-viaje-bosque": {
-      "src": "img/p10-viaje-bosque.webp",
-      "descripcion": "El bosque, de noche"
-    },
     "p10-viaje-cielo": {
       "src": "img/p10-viaje-cielo.webp",
       "descripcion": "Las nubes y el sol del mural, de noche"
-    },
-    "p10-viaje-laguna": {
-      "src": "img/p10-viaje-laguna.webp",
-      "descripcion": "La laguna, de noche"
     },
     "p11-cierre-fondo": {
       "src": "img/p10-viaje-cielo.webp",
@@ -952,6 +929,58 @@
     "objeto-reloj": {
       "src": "img/obj-reloj.webp",
       "descripcion": "El reloj"
+    },
+    "ficha-flor": {
+      "src": "img/obj-flor.webp",
+      "descripcion": "Dibujo de la ficha «No es un sombrero»: una flor"
+    },
+    "ficha-auto": {
+      "src": "img/obj-auto.webp",
+      "descripcion": "Dibujo de la ficha «No es un helado»: un auto"
+    },
+    "ficha-gorra": {
+      "src": "img/obj-gorra.webp",
+      "descripcion": "Dibujo de la ficha «No es un paraguas»: una gorra"
+    },
+    "ficha-fantasma": {
+      "src": "img/obj-fantasma.webp",
+      "descripcion": "Dibujo de la ficha «No es un helado»: fantasma"
+    },
+    "ficha-muffins": {
+      "src": "img/obj-muffins.webp",
+      "descripcion": "Dibujo de la ficha «No es un helado»: muffins"
+    },
+    "ficha-vincha": {
+      "src": "img/obj-vincha.webp",
+      "descripcion": "Dibujo de la ficha «No es una estrella»: una vincha mágica"
+    },
+    "ficha-globo": {
+      "src": "img/obj-globo.webp",
+      "descripcion": "Dibujo de la ficha «No es un huevo»: un globo"
+    },
+    "ficha-zanahoria": {
+      "src": "img/obj-zanahoria.webp",
+      "descripcion": "Dibujo de la ficha «No es una mariposa»: zanahoria"
+    },
+    "ficha-pato": {
+      "src": "img/obj-pato.webp",
+      "descripcion": "Dibujo de la ficha «No es un sombrero»: pato"
+    },
+    "ficha-barco": {
+      "src": "img/obj-barco.webp",
+      "descripcion": "Dibujo de la ficha «No es una estrella»: un barco"
+    },
+    "ficha-mariquita": {
+      "src": "img/obj-mariquita.webp",
+      "descripcion": "Dibujo de la ficha «No es un huevo»: una mariquita"
+    },
+    "ficha-pulpo": {
+      "src": "img/obj-pulpo.webp",
+      "descripcion": "Dibujo de la ficha «No es un helado»: un pulpo"
+    },
+    "p10-ventana": {
+      "src": "img/esc-ventana.webp",
+      "descripcion": "La ventana del colectivo, dibujada por los chicos"
     },
     "p11-chicos-bajando": {
       "src": "img/esc-chicos-bajando.webp",

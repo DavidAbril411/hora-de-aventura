@@ -76,7 +76,7 @@ export function validarHistoria(h: Historia = historia): string[] {
         imagen(p.mapa, p.id);
         break;
       case 'viaje':
-        p.paisaje.forEach((c) => imagen(c, p.id));
+        imagen(p.ventana, p.id);
         break;
       case 'eleccion-dupla':
         p.duplas.forEach((d) => {

@@ -11,6 +11,10 @@ export const iconoSeguir = `<svg ${base}><path d="M5 12h13"/><path d="m13 6 6 6-
 
 export const iconoVolver = `<svg ${base}><path d="M19 12H6"/><path d="m11 6-6 6 6 6"/></svg>`;
 
+export const iconoAnterior = `<svg ${base}><path d="m14.5 6-6 6 6 6"/></svg>`;
+
+export const iconoSiguiente = `<svg ${base}><path d="m9.5 6 6 6-6 6"/></svg>`;
+
 export const iconoCerrar = `<svg ${base}><path d="m6 6 12 12"/><path d="M18 6 6 18"/></svg>`;
 
 export const iconoDescubierto = `<svg ${base}><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>`;

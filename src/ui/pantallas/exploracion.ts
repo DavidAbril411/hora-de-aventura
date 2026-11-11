@@ -3,8 +3,9 @@ import { t } from '../../engine/historia';
 import type { Elemento, PantallaExploracion } from '../../engine/tipos';
 import { animarElemento, aparecer, balancearReloj, invitarATocar, llamarAtencion, moverReloj, volarMonedas } from '../animaciones';
 import { h, svg } from '../dom';
-import { acciones, avisoAudioPendiente, boton, escenario, ilustracion, panelTexto, parrafos } from '../componentes';
+import { acciones, avisoAudioPendiente, boton, escenario, ilustracion, ubicar } from '../componentes';
 import { iconoCerrar, iconoDescubierto, iconoReloj, iconoSeguir } from '../iconos';
+import { subtitulos } from '../subtitulos';
 
 /**
  * Pantallas 3 a 8: el escenario de la dupla, de día o de noche.
@@ -70,10 +71,8 @@ export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
 
     if (i.aparece && primeraVez) {
       const objeto = h('div', { class: 'elemento elemento--aparece' }, h('span', { class: 'elemento__figura' }, ilustracion(i.aparece, 'elemento__imagen', p.momento)));
-      objeto.style.left = `${Math.min(el.x + el.ancho, 88)}%`;
-      objeto.style.top = `${Math.max(el.y - 18, 14)}%`;
-      objeto.style.width = `${el.ancho}%`;
-      dibujo.raiz.append(objeto);
+      ubicar(objeto, Math.min(el.x + el.ancho, 88), Math.max(el.y - 18, 14), el.ancho);
+      dibujo.juego.append(objeto);
       aparecer(objeto);
     }
     if (i.monedas && primeraVez) {
@@ -102,7 +101,7 @@ export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
     const cuerpo = secreto
       ? h('p', {}, secreto)
       : h('p', { class: 'revelacion__pendiente' }, h('strong', {}, t('pendiente')), ` ${t('secretoPendiente')}`);
-    const contenido = h('div', { class: 'revelacion__tarjeta' }, h('h2', { class: 'revelacion__titulo' }, el.nombre), cuerpo, cerrar);
+    const contenido = h('div', { class: 'revelacion__tarjeta' }, h('h2', { class: 'revelacion__titulo' }, el.interaccion?.titulo ?? el.nombre), cuerpo, cerrar);
     // La tarjeta va del lado opuesto a lo que se tocó, para no taparlo.
     tarjeta.dataset.lado = el.x < 50 ? 'derecha' : 'izquierda';
     tarjeta.dataset.altura = el.y < 50 ? 'abajo' : 'arriba';
@@ -111,7 +110,7 @@ export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
   };
 
   const dibujo = escenario(p.escenario, p.momento, (el, b, f) => void alTocar(el, b, f));
-  dibujo.raiz.append(tarjeta);
+  dibujo.juego.append(tarjeta);
   // Tocar cualquier otra parte del dibujo cierra el secreto.
   dibujo.raiz.addEventListener('click', (e) => {
     const destino = e.target as Element;
@@ -134,17 +133,18 @@ export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
   if (p.reloj?.imagen) {
     // El reloj que dibujaron los chicos: no tiene agujas que mover, se balancea con el tic tac.
     const reloj = h('div', { class: 'reloj reloj--dibujo', role: 'img', 'aria-label': t('reloj') }, ilustracion(p.reloj.imagen, 'reloj__imagen', p.momento));
-    dibujo.raiz.append(reloj);
+    dibujo.juego.append(reloj);
     ctx.alSalir(balancearReloj(reloj));
   } else if (p.reloj) {
     const reloj = h('div', { class: 'reloj', role: 'img', 'aria-label': t('reloj') }, svg(iconoReloj));
-    dibujo.raiz.append(reloj);
+    dibujo.juego.append(reloj);
     const horas = reloj.querySelector('.reloj__horas');
     const minutos = reloj.querySelector('.reloj__minutos');
     if (horas && minutos) moverReloj(horas, minutos, p.reloj.desde, p.reloj.hasta);
   }
 
   const aviso = avisoAudioPendiente(p.narracion, ...(p.ambiente ?? []), ...(p.efectos ?? []));
-  const panel = panelTexto(p.titulo, [...parrafos(p.texto), aviso], acciones(pista, seguir));
-  return h('main', { class: 'disposicion' }, dibujo.raiz, panel);
+  const lectura = subtitulos({ titulo: p.titulo, texto: p.texto, acciones: acciones(pista, seguir), avisos: [aviso], sonido: ctx.sonido });
+  ctx.alSalir(lectura.destruir);
+  return h('main', { class: 'disposicion' }, dibujo.raiz, lectura.raiz);
 }
