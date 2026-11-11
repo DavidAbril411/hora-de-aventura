@@ -9,20 +9,48 @@ Material que falta y placeholders en uso. Cada placeholder se ve en pantalla con
 Material aprobado en la revisión con Lucila del 26/10 (lo marcado «cambiar» sin comentario se toma como aprobado; falta que Lucila lo confirme). Pou, «rogelio 2» y «extra» no se usan. Ya integrado desde `material-tratado/` del thread de material:
 
 - **Personajes y objetos:** Juan Pablo, Roberto, Camila, Alma, Diana, Rogelio, el viejo de la bolsa, el lobo, el celular de Alma, la cámara, los dientes, el pitbull y el Miami.
-- **Fondos del mural:** la isla sobre el cielo (p01); el bosque con casas (p03) y la selva (p05) de día; las noches oscurecidas en azul (p06, p08, y p07 con el espacio del mural, como propuesta); el paisaje del viaje (p10: casas, bosque, nubes y laguna, que pasan una sola vez por la ventana).
+- **Fondos del mural:** la isla sobre el cielo (p01); el bosque con casas (p03) y la selva (p05) de día; las noches oscurecidas en azul (p06, p08, y p07 con el espacio del mural, como propuesta); el cielo de nubes para el colectivo (p09) y el final (p11).
 - **Atardeceres:** al entrar a cada noche se ven los dos dibujos del atardecer, que se funden hasta dejar el fondo de noche (`transicion` en el escenario).
 
 En la pantalla 2 cada dupla se muestra con sus dos personajes (`personajes`) sobre su fondo de día (`fondo`), así que no hacen falta dibujos de las parejas. En la noche de Diana y Rogelio, el truco de la varita se toca sobre Diana, que en su dibujo ya tiene la varita roja.
 
-Material del 3/11 (dibujos nuevos de los chicos), integrado cuando David lo aprobó en la página de revisión: la fiesta de Camila y Alma (fondo de p04, entera; ya trae a Camila y Alma dibujadas, así que sus recortes no se repiten ahí), el colectivo con el mapa del chofer (p09, con los tres destinos ubicados sobre el mapa), los chicos bajando del colectivo (p11), el sobre de la herencia (p07), las monedas (aparecen después del Miami y de la mortal), el reloj (en las tres noches, se balancea con el tic tac) y la foto nueva de Tulio (p03).
+Material del 3/11 (dibujos nuevos de los chicos), aprobado por David el 11/11: la fiesta de Camila y Alma (fondo de p04, entera; ya trae a Camila y Alma dibujadas, así que sus recortes no se repiten ahí), el colectivo con el mapa del chofer (p09, con los tres destinos ubicados sobre el mapa), los chicos bajando del colectivo (p11), el sobre de la herencia (p07), las monedas (aparecen después del Miami y de la mortal), el reloj (en las tres noches, se balancea con el tic tac), la foto nueva de Tulio (p03) y la ventana del colectivo (p10).
 
-Siguen PENDIENTE:
+**El viaje (p10)** muestra la ventana que dibujaron los chicos, entera, que se mece con el andar del colectivo (quieta con movimiento reducido). El paisaje del mural ya no se usa ahí.
 
-| id en `historia.json` | Qué muestra | Pantallas | Cuándo |
-|---|---|---|---|
-| `objeto-flor`, `objeto-piedra`, `objeto-arbol`, `objeto-dormido` | Los cuatro secretos de cada escena de día | p03, p04, p05 | No van a llegar (David, 11/11): falta decidir qué se hace |
+**Los secretos de día** son doce fichas «No es un… / Es…» de los chicos, cuatro por escena (decisión de David, 11/11). La tarjeta muestra el título impreso de la ficha y lo que escribió cada chico, sin agregar nada:
 
-Los fondos del mural son fotos verticales y la escena es apaisada (4:3), así que se ve la franja del medio de cada una. Las posiciones de los elementos (`x`, `y`, `ancho` en `historia.json`) se vuelven a ajustar cuando lleguen los secretos.
+| Escena | Ficha | Tarjeta |
+|---|---|---|
+| p03 (Juan Pablo y Roberto) | flor | No es un sombrero · Es… una flor |
+| | auto | No es un helado · Es… un auto |
+| | gorra | No es un paraguas · Es… una gorra |
+| | fantasma | No es un helado · Es… fantasma |
+| p04 (Camila y Alma) | muffins | No es un helado · Es… muffins |
+| | vincha | No es una estrella · Es… una vincha mágica |
+| | globo | No es un huevo · Es… un globo |
+| | zanahoria | No es una mariposa · Es… zanahoria |
+| p05 (Diana y Rogelio) | pato | No es un sombrero · Es… pato |
+| | barco | No es una estrella · Es… un barco |
+| | mariquita | No es un huevo · Es… una mariquita |
+| | pulpo | No es un helado · Es… un pulpo |
+
+Para revisar con Lucila sobre las fichas:
+
+- En la vincha se agregó la tilde de «mágica» (la ficha dice «magica»). Es el único cambio respecto de lo escrito a mano.
+- La ficha del pulpo tiene además tres globitos escritos a mano (una «curiosidad» sobre un hermano, «algo ruidoso» y algo sobre sus tentáculos) que no se leen con seguridad en la foto: no se cargaron. Si el equipo los transcribe, se suman en `interaccion.secreto`.
+- Fichas que no se usan todavía (9): abeja, calabaza, carpa, chica endemoniada, economía, físico culturista, globo aerostático, una luz y pata de oso. Las que tienen la letra dudosa o una falta de ortografía (calabaza, abeja, carpa, físico culturista, globo aerostático, pata de oso) necesitan que el equipo confirme cómo se escribe antes de mostrarlas. La de la economía espera que David elija el retoque; la de la luz es un lápiz muy suave.
+- El texto de las escenas de día sigue nombrando «una flor», «una piedra» y «un árbol». La flor está en p03; piedra y árbol no hay entre las fichas.
+
+No queda ninguna ilustración PENDIENTE.
+
+### Disposición: pantalla completa y subtítulos (pedido de David, 11/11)
+
+- Cada escena ocupa la pantalla entera. El fondo la cubre y los elementos se ubican en el área que queda arriba de los subtítulos. `x` e `y` son % de esa área; `ancho` está en una unidad que promedia su ancho y su alto, para que un personaje pese parecido en la tablet apaisada y en el celular vertical.
+- Los dibujos que tienen que verse enteros (la fiesta de p04, el mapa de p09, la ventana de p10) no se recortan: se muestran completos dentro de esa área.
+- El texto va abajo, como subtítulos, de a un tramo que entra en la franja (3 renglones en tablet, 4 en celular). El resto se lee con las flechas. El corte es automático, por oraciones, y no cambia ninguna palabra. El texto completo sigue disponible para lectores de pantalla.
+- Donde hay narración (la intro y la presentación de cada dupla), los subtítulos avanzan solos, repartidos según el largo del texto. Como no hay marcas de tiempo, el acompañamiento es aproximado; y las narraciones de las duplas son adaptaciones, así que la voz no dice palabra por palabra lo que muestra el subtítulo. Si el equipo quiere sincronía exacta hacen falta los tiempos de cada frase.
+- Las escenas de día y de noche no tienen narración: ahí el texto se pasa a mano.
 
 ### Audio
 
@@ -30,9 +58,10 @@ Integrados los 12 audios tratados. La narración de Juan Pablo y Roberto es la r
 
 Integrados también los tres sonidos libres (CC0) que buscó el thread de material: `sfx-clac-clac`, `sfx-tic-tac` y `sfx-colectivo`. La fuente y la licencia de cada uno están en `scripts/fuentes-sonidos.md` de la rama del material.
 
+**La mezcla** (pedido de David, 11/11) está en `src/audio/sonido.ts`: la voz va siempre adelante. Mientras habla un narrador, el ambiente baja al 20 % y los efectos al 30 %. Los efectos de una pantalla suenan de a uno, en el orden de `efectos`, y se cortan al pasar de pantalla. Cuando hay varios ambientes juntos (la calle, los vecinos y la pelotita en p03), el primero es la base y los otros acompañan más bajo. Falta escucharlo en una tablet real: el navegador de prueba no reproduce los `.m4a`, así que los niveles se midieron, no se oyeron.
+
 ### Contenido que tiene que indicar el equipo (no se inventa)
 
-- **Qué revela cada secreto del día** (p03 a p05). Llegan el 27/10. Cada escena tiene cuatro elementos tocables sacados del texto (una flor, una piedra, un árbol, un objeto que despierta). La tarjeta del secreto dice PENDIENTE. Se carga en `interaccion.secreto` de cada elemento.
 - **Créditos:** los nombres de los chicos (autores, ilustradores y narradores) y del equipo UNVM, tal como los indiquen el equipo y Lucila.
 - **De qué color se pone Rogelio de noche.** Está resuelto con un filtro (`.cambia-de-noche` en `src/styles/pantallas.css`); falta saber el color.
 - **Variación por destino en el viaje (p10).** Por ahora solo cambia el cartel del colectivo, que muestra el nombre del destino elegido. No se agregó texto. A confirmar con el equipo.
@@ -44,8 +73,9 @@ Integrados también los tres sonidos libres (CC0) que buscó el thread de materi
 
 ### Para la sesión de `/design`
 
-- La critique de Impeccable marcó que en tablet horizontal el texto le compite al dibujo. Ya se agrandó la ilustración (dos tercios del ancho, fija mientras se lee) y se sacó el scroll anidado. Queda abierto para `/design` si el texto va al costado, como un epígrafe sobre el dibujo o en páginas que se pasan tocando. En cualquier caso las palabras no cambian, solo cómo se muestran.
-- Los créditos son hoy una lista al final. Es el momento en que los autores se ven a sí mismos: vale la pena diseñarlo con los dibujos y los nombres reales.
+- Los colores y la tipografía siguen siendo provisorios (`src/styles/tokens.css`). La franja de subtítulos usa la paleta de noche sobre cualquier imagen.
+- Los créditos son hoy una lista al final. Es el momento en que los autores se ven a sí mismos: vale la pena diseñarlo con los dibujos y los nombres reales. Las fichas que no entraron como secretos pueden ir ahí.
+- No hay forma de volver a la pantalla anterior ni de empezar de nuevo antes del final (para tablets compartidas).
 
 ### Técnico
 

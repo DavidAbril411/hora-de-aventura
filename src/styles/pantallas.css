@@ -542,10 +542,11 @@
 }
 
 /*
- * Pantallas anchas (la tablet apaisada, que es la principal): el texto en el
- * medio, con una flecha de cada lado, y la acción a la derecha.
+ * Pantallas anchas (la tablet apaisada, que es la principal) y celular
+ * apaisado: el texto en el medio, con una flecha de cada lado, y la acción a
+ * la derecha. Así la franja ocupa menos alto.
  */
-@media (min-width: 56rem) {
+@media (min-width: 56rem), (orientation: landscape) and (max-height: 30rem) {
   .disposicion > .subtitulos {
     grid-template-columns: auto minmax(0, 62ch) auto minmax(max-content, 1fr);
     grid-template-areas:
@@ -755,7 +756,7 @@
   visibility: hidden;
 }
 
-@media (min-width: 56rem) {
+@media (min-width: 56rem), (orientation: landscape) and (max-height: 30rem) {
   .subtitulos--portada .subtitulos__cabecera {
     grid-column: 2;
   }
@@ -911,7 +912,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 0.4rem 0.8rem oklch(0.08 0.03 265 / 0.5));
+  filter: var(--sombra-dibujo);
 }
 
 .destino {
@@ -991,7 +992,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 0.6rem 1.4rem oklch(0.08 0.03 265 / 0.6));
+  filter: var(--sombra-dibujo);
 }
 
 .ventana .ilustracion.pendiente {
@@ -1012,7 +1013,7 @@
   z-index: 2;
 }
 
-@media (min-width: 56rem) {
+@media (min-width: 56rem), (orientation: landscape) and (max-height: 30rem) {
   .ventana {
     top: 4.5rem;
   }
