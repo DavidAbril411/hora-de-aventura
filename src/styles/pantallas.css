@@ -1,0 +1,1168 @@
+/* ---------- Estructura ---------- */
+
+.escena {
+  min-height: 100dvh;
+}
+
+/*
+ * Cada pantalla del cuento ocupa la pantalla entera: la imagen la cubre y el
+ * texto va encima, abajo, como subtítulos. No hay scroll.
+ */
+.disposicion {
+  position: relative;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--papel-hondo);
+}
+
+/* ---------- Escenario e ilustraciones ---------- */
+
+.escenario {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--papel-hondo);
+  isolation: isolate;
+}
+
+.escenario__fondo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/*
+ * El área de juego: la escena sin la franja de subtítulos. Ahí se ubican los
+ * elementos, en % de su tamaño. Como la pantalla puede ser apaisada o
+ * vertical, los anchos se miden en una unidad que promedia ancho y alto:
+ * así un personaje pesa parecido en la tablet y en el celular.
+ */
+.escenario__juego {
+  --u: (0.5cqw + 0.5cqh);
+  position: absolute;
+  inset: 0 0 var(--alto-subtitulos, 13rem);
+  container-type: size;
+}
+
+.ilustracion.pendiente {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  text-align: center;
+  color: var(--pendiente-tinta);
+  background: repeating-linear-gradient(-45deg, var(--pendiente-a) 0 0.9rem, var(--pendiente-b) 0.9rem 1.8rem);
+  border: 0.15rem dashed currentColor;
+  font-size: var(--texto-chico);
+  line-height: 1.25;
+}
+
+.escenario__fondo.pendiente {
+  justify-content: flex-start;
+  padding-top: calc(var(--toque) + 2rem);
+}
+
+.pendiente__marca {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.pendiente__texto {
+  max-width: 26ch;
+}
+
+/* El atardecer tapa la escena un momento: mientras dura, lo que está debajo no se puede tocar. */
+.escenario__transicion {
+  z-index: 5;
+}
+
+/* Los dos personajes de una dupla, parados uno al lado del otro. */
+.pareja {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4%;
+}
+
+.pareja__personaje {
+  min-width: 0;
+  max-width: 46%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.pareja .ilustracion.pendiente {
+  width: 40%;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radio-chico);
+}
+
+.escenario__pareja {
+  position: absolute;
+  inset: calc(var(--toque) + 1.5rem) 8% 2%;
+}
+
+/* Escenas recortadas sobre fondo transparente: se ven enteras, sin cortar los bordes. */
+.ilustracion--entera {
+  object-fit: contain;
+}
+
+/* Rogelio cambia de color de noche. El tono exacto lo define el equipo. */
+:root[data-momento='noche'] .cambia-de-noche {
+  filter: hue-rotate(190deg) saturate(1.8) brightness(1.6);
+}
+
+/* ---------- Elementos del escenario ---------- */
+
+.elemento {
+  position: absolute;
+  translate: -50% -50%;
+  width: min(calc(var(--ancho) * var(--u)), 96cqw);
+  min-width: var(--toque);
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.elemento__figura {
+  display: block;
+  transform-origin: 50% 85%;
+}
+
+.elemento__imagen {
+  width: 100%;
+}
+
+.elemento .ilustracion.pendiente {
+  aspect-ratio: 3 / 4;
+  min-height: var(--toque);
+  border-radius: var(--radio-chico);
+  font-size: 0.85rem;
+  padding: 0.35rem;
+  box-shadow: var(--sombra);
+}
+
+.elemento .pendiente__marca {
+  font-size: 0.75rem;
+}
+
+.elemento--tocable {
+  min-height: var(--toque);
+  cursor: pointer;
+  border-radius: var(--radio-chico);
+  touch-action: manipulation;
+}
+
+.elemento--tocable .ilustracion.pendiente {
+  border-style: solid;
+}
+
+.elemento__invitacion {
+  position: absolute;
+  inset: -0.5rem;
+  border: 0.2rem solid var(--accion);
+  border-radius: calc(var(--radio-chico) + 0.5rem);
+  pointer-events: none;
+}
+
+.elemento--descubierto .elemento__invitacion {
+  opacity: 0;
+}
+
+.elemento__marca {
+  position: absolute;
+  top: -0.7rem;
+  right: -0.7rem;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--accion);
+  color: var(--accion-tinta);
+  box-shadow: var(--sombra);
+}
+
+.elemento__marca svg {
+  width: 1.2rem;
+}
+
+.elemento--aparece {
+  pointer-events: none;
+}
+
+/* Secreto revelado: va del lado opuesto a lo que se tocó (lo decide exploracion.ts). */
+.revelacion {
+  position: absolute;
+  width: min(48%, 24rem);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.revelacion[data-lado='derecha'] {
+  right: 3%;
+}
+
+.revelacion[data-lado='izquierda'] {
+  left: 3%;
+}
+
+/* Arriba, la tarjeta queda por debajo de los controles fijos. */
+.revelacion[data-altura='arriba'] {
+  top: calc(var(--toque) + 1.75rem);
+}
+
+.revelacion[data-altura='abajo'] {
+  bottom: 4%;
+}
+
+.revelacion__tarjeta {
+  position: relative;
+  width: 100%;
+  padding: 0.9rem 3.9rem 1rem 1.1rem;
+  border-radius: var(--radio);
+  background: var(--papel);
+  color: var(--tinta);
+  box-shadow: var(--sombra);
+  pointer-events: auto;
+}
+
+/* Primero lo que parece; después, más grande, lo que es. */
+.revelacion__titulo {
+  font-size: 1em;
+  font-weight: 400;
+  color: var(--tinta-suave);
+  margin-bottom: 0.15rem;
+}
+
+.revelacion__tarjeta > p:not(.revelacion__pendiente) {
+  font-size: 1.3em;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.revelacion__pendiente {
+  font-size: var(--texto-chico);
+  color: var(--tinta-suave);
+}
+
+.revelacion__pendiente strong {
+  color: var(--pendiente-tinta);
+  background: var(--pendiente-a);
+  padding: 0.05rem 0.4rem;
+  border-radius: 0.3rem;
+  margin-right: 0.15rem;
+}
+
+.revelacion__cerrar {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  display: grid;
+  place-items: center;
+  width: var(--toque);
+  height: var(--toque);
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+}
+
+.revelacion__cerrar svg {
+  width: 1.6rem;
+}
+
+.revelacion__cerrar:hover {
+  background: var(--resaltado);
+}
+
+/* Reloj decorativo de la noche. */
+.reloj {
+  position: absolute;
+  top: max(4%, 0.75rem);
+  left: max(4%, 0.75rem);
+  width: max(4.5rem, calc(12 * var(--u)));
+  z-index: 2;
+  filter: var(--sombra-reloj);
+}
+
+.reloj--dibujo {
+  width: max(4rem, calc(10 * var(--u)));
+  transform-origin: 50% 90%;
+}
+
+.reloj__imagen {
+  display: block;
+  width: 100%;
+}
+
+.reloj__horas,
+.reloj__minutos {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+}
+
+.flash {
+  position: absolute;
+  inset: 0;
+  background: var(--destello);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.chispa {
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  margin: -0.5rem 0 0 -0.5rem;
+  background: var(--moneda);
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.polvo {
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  margin: -1rem 0 0 -1rem;
+  border-radius: 50%;
+  background: var(--polvo);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.moneda-volando {
+  position: fixed;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin: -1.125rem 0 0 -1.125rem;
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* ---------- Subtítulos ---------- */
+
+/*
+ * El texto de la pantalla, sobre la imagen. La franja tiene siempre el mismo
+ * alto (una cantidad fija de renglones), así la escena no se mueve al pasar
+ * de un subtítulo al otro. Lo que no entra se lee con las flechas.
+ */
+.subtitulos {
+  --sub-renglones: 3;
+  --sub-interlinea: 1.4;
+  --sub-fondo: color-mix(in oklch, var(--papel-hondo) 90%, transparent);
+  position: relative;
+  z-index: 6;
+  padding: 0.75rem var(--margen) max(1rem, env(safe-area-inset-bottom));
+  background: var(--sub-fondo);
+  color: var(--tinta);
+}
+
+.subtitulos::before {
+  content: '';
+  position: absolute;
+  inset: auto 0 100%;
+  height: 2.5rem;
+  background: linear-gradient(to top, var(--sub-fondo), transparent);
+  pointer-events: none;
+}
+
+.disposicion > .subtitulos {
+  position: absolute;
+  inset: auto 0 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    'cabecera'
+    'texto'
+    'acciones';
+  align-items: end;
+  gap: 0.35rem 1rem;
+}
+
+.subtitulos__cabecera {
+  grid-area: cabecera;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.subtitulos__titulo {
+  font-size: var(--texto-chico);
+  color: var(--accion);
+}
+
+.subtitulos__cuenta {
+  font-size: var(--texto-chico);
+  color: var(--tinta-suave);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.subtitulos__texto {
+  grid-area: texto;
+  position: relative;
+  height: calc(var(--sub-renglones) * var(--sub-interlinea) * 1em);
+  overflow: hidden;
+  font-size: var(--texto);
+  line-height: var(--sub-interlinea);
+}
+
+.subtitulo {
+  white-space: pre-line;
+  text-wrap: wrap;
+}
+
+.subtitulo--destacado {
+  font-weight: 700;
+  color: var(--accion);
+}
+
+/* Copia invisible con la que se mide cuánto texto entra en la franja. */
+.subtitulo--medida {
+  position: absolute;
+  inset: 0 0 auto;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Las flechas comparten el renglón de abajo con la acción: ellas a la izquierda, la acción a la derecha. */
+.subtitulos__nav {
+  grid-area: acciones;
+  justify-self: start;
+  z-index: 1;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.subtitulos__paso {
+  display: grid;
+  place-items: center;
+  width: var(--toque);
+  height: var(--toque);
+  padding: 0;
+  border: 0.15rem solid var(--linea);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--tinta);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background-color 0.15s ease, opacity 0.15s ease, scale 0.1s ease;
+}
+
+.subtitulos__paso svg {
+  width: 1.9rem;
+}
+
+.subtitulos__paso--siguiente {
+  background: var(--resaltado);
+  border-color: var(--tinta-suave);
+}
+
+.subtitulos__paso:hover {
+  background: var(--linea);
+}
+
+.subtitulos__paso:active {
+  scale: 0.94;
+}
+
+/* Mientras queda texto por leer, seguir leyendo es la acción que más se ve y la de la pantalla espera su turno. */
+.subtitulos--leyendo:not(.subtitulos--portada) .subtitulos__paso--siguiente {
+  background: var(--accion);
+  border-color: var(--accion);
+  color: var(--accion-tinta);
+}
+
+.subtitulos--leyendo:not(.subtitulos--portada) .subtitulos__paso--siguiente:hover {
+  background: var(--accion-hover);
+}
+
+.subtitulos--leyendo:not(.subtitulos--portada) .acciones .boton--principal {
+  background: transparent;
+  border-color: var(--tinta-suave);
+  color: var(--tinta);
+  box-shadow: none;
+}
+
+.subtitulos--leyendo:not(.subtitulos--portada) .acciones .boton--principal:hover {
+  background: var(--resaltado);
+}
+
+.subtitulos__paso[aria-disabled='true'] {
+  opacity: 0.35;
+  cursor: default;
+  scale: 1;
+  background: transparent;
+}
+
+/* Con un solo subtítulo no hay nada que pasar. */
+.subtitulos--una .subtitulos__nav,
+.subtitulos--portada .subtitulos__nav {
+  display: none;
+}
+
+.subtitulos .aviso-pendiente {
+  grid-column: 1 / -1;
+}
+
+.aviso-pendiente {
+  font-size: var(--texto-chico);
+  color: var(--tinta-suave);
+  line-height: 1.4;
+}
+
+.aviso-pendiente strong {
+  color: var(--pendiente-tinta);
+  background: var(--pendiente-a);
+  padding: 0.05rem 0.4rem;
+  border-radius: 0.3rem;
+  margin-right: 0.15rem;
+  letter-spacing: 0.04em;
+}
+
+/* La acción de la pantalla, siempre a mano. */
+.acciones {
+  grid-area: acciones;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem 1rem;
+  min-width: 0;
+}
+
+/* Guarda el lugar de las flechas en el renglón de los botones. */
+.acciones::before {
+  content: '';
+  order: 1;
+  flex: none;
+  width: calc(2 * var(--toque) + 0.5rem);
+  margin-right: auto;
+}
+
+.subtitulos--una .acciones::before,
+.subtitulos--portada .acciones::before {
+  content: none;
+}
+
+.acciones > .boton {
+  order: 2;
+}
+
+/* La pista ocupa su renglón aunque esté vacía: así la franja no cambia de alto. */
+.acciones__pista {
+  flex: 1 1 100%;
+  min-height: 1.4em;
+  text-align: right;
+  font-size: var(--texto-chico);
+  line-height: 1.4;
+  color: var(--tinta-suave);
+}
+
+.acciones__pista--elegido {
+  color: var(--tinta);
+  font-weight: 700;
+}
+
+/*
+ * Pantallas anchas (la tablet apaisada, que es la principal) y celular
+ * apaisado: el texto en el medio, con una flecha de cada lado, y la acción a
+ * la derecha. Así la franja ocupa menos alto.
+ */
+@media (min-width: 56rem), (orientation: landscape) and (max-height: 30rem) {
+  .disposicion > .subtitulos {
+    grid-template-columns: auto minmax(0, 62ch) auto minmax(max-content, 1fr);
+    grid-template-areas:
+      '. cabecera . acciones'
+      'anterior texto siguiente acciones';
+    align-items: center;
+    row-gap: 0.25rem;
+  }
+
+  .subtitulos__nav {
+    display: contents;
+  }
+
+  .acciones::before {
+    content: none;
+  }
+
+  .subtitulos__paso--anterior {
+    grid-area: anterior;
+  }
+
+  .subtitulos__paso--siguiente {
+    grid-area: siguiente;
+  }
+
+  /* Las flechas guardan su lugar aunque no hagan falta, para que el texto no se corra. */
+  .subtitulos--una .subtitulos__nav,
+  .subtitulos--portada .subtitulos__nav {
+    display: contents;
+    visibility: hidden;
+  }
+
+  .acciones:has(.acciones__pista) {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  /* Ancho y alto fijos: al cambiar la pista, ni el texto ni los botones se corren. */
+  .acciones__pista {
+    flex: none;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    width: 17rem;
+    min-height: 2.8em;
+    text-wrap: balance;
+  }
+}
+
+/* Celular: renglones más cortos, así que entra uno más. */
+@media (max-width: 30rem) {
+  .subtitulos {
+    --sub-renglones: 4;
+    --sub-interlinea: 1.35;
+  }
+}
+
+/* Celular apaisado: poco alto, la franja se achica. */
+@media (max-height: 30rem) {
+  .subtitulos {
+    --sub-renglones: 2;
+  }
+}
+
+/* ---------- Botones ---------- */
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: var(--toque);
+  padding: 0.6rem 1.6rem;
+  border: 0.15rem solid transparent;
+  border-radius: 999px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background-color 0.15s ease, opacity 0.15s ease, scale 0.1s ease;
+}
+
+.boton svg {
+  width: 1.5rem;
+  flex: none;
+}
+
+.boton--principal {
+  background: var(--accion);
+  color: var(--accion-tinta);
+  box-shadow: var(--sombra);
+}
+
+.boton--principal:hover {
+  background: var(--accion-hover);
+}
+
+.boton--secundario {
+  background: transparent;
+  border-color: var(--linea);
+  color: var(--tinta);
+}
+
+.boton--secundario:hover {
+  background: var(--resaltado);
+}
+
+.boton:active {
+  scale: 0.97;
+}
+
+.boton[aria-disabled='true'],
+.boton:disabled {
+  opacity: 0.45;
+  box-shadow: none;
+  cursor: not-allowed;
+  scale: 1;
+}
+
+.boton--principal[aria-disabled='true']:hover {
+  background: var(--accion);
+}
+
+/* ---------- Controles fijos ---------- */
+
+.barra {
+  position: fixed;
+  top: max(0.75rem, env(safe-area-inset-top));
+  right: max(0.75rem, env(safe-area-inset-right));
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  z-index: 10;
+}
+
+.control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: var(--toque);
+  height: var(--toque);
+  padding: 0 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--papel);
+  color: var(--tinta);
+  box-shadow: var(--sombra);
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.control svg {
+  width: 1.75rem;
+  flex: none;
+}
+
+.control--sonido {
+  padding: 0;
+}
+
+.control:hover {
+  background: var(--resaltado);
+}
+
+.control--sonido[aria-pressed='true'] {
+  background: var(--tinta);
+  color: var(--papel);
+}
+
+.monedas {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: var(--toque);
+  padding: 0 1.1rem 0 0.7rem;
+  border-radius: 999px;
+  background: var(--papel);
+  box-shadow: var(--sombra);
+  font-size: 1.4rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.monedas svg {
+  width: 2rem;
+}
+
+/* ---------- Pantalla 1: portada ---------- */
+
+/* Antes de "Empezar", la franja muestra solo el título, grande, en el lugar del texto. */
+.subtitulos--portada .subtitulos__cabecera {
+  grid-area: auto;
+  grid-row: 1 / span 2;
+  grid-column: 1 / -1;
+  align-self: center;
+}
+
+.subtitulos--portada .subtitulos__titulo {
+  font-size: var(--titulo-portada);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--tinta);
+}
+
+.subtitulos--portada .subtitulos__texto,
+.subtitulos--portada .subtitulos__cuenta {
+  visibility: hidden;
+}
+
+@media (min-width: 56rem), (orientation: landscape) and (max-height: 30rem) {
+  .subtitulos--portada .subtitulos__cabecera {
+    grid-column: 2;
+  }
+}
+
+/* ---------- Pantalla 2: elección de dupla ---------- */
+
+/* Las tres duplas se reparten la pantalla: columnas en apaisado, filas en vertical. */
+.eleccion {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--papel-hondo);
+}
+
+.eleccion__lista {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-auto-rows: minmax(0, 1fr);
+  gap: 0.2rem;
+}
+
+@media (orientation: landscape) {
+  .eleccion__lista {
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+  }
+}
+
+.eleccion__lista > li {
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+}
+
+.tarjeta-dupla {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  background: var(--papel-hondo);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.tarjeta-dupla:focus-visible {
+  outline-offset: -0.35rem;
+}
+
+.tarjeta-dupla__fondo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: scale 0.4s ease;
+}
+
+.tarjeta-dupla__pareja {
+  position: absolute;
+  inset: 8% 6% calc(var(--toque) + 0.5rem);
+  transition: translate 0.25s ease;
+}
+
+@media (hover: hover) {
+  .tarjeta-dupla:hover .tarjeta-dupla__pareja {
+    translate: 0 -0.3rem;
+  }
+
+  .tarjeta-dupla:hover .tarjeta-dupla__nombre {
+    background: var(--accion);
+    color: var(--accion-tinta);
+  }
+}
+
+.tarjeta-dupla__nombre {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--toque);
+  padding: 0.6rem 1rem;
+  background: color-mix(in oklch, var(--papel-hondo) 90%, transparent);
+  color: var(--tinta);
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.15;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* La consigna, abajo, con el mismo aspecto que los subtítulos. */
+.subtitulos--consigna {
+  flex: none;
+  text-align: center;
+  background: var(--papel-hondo);
+}
+
+.subtitulos--consigna::before {
+  content: none;
+}
+
+.subtitulos__consigna {
+  font-size: clamp(1.3rem, 1rem + 1.2vw, 1.9rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tarjeta-dupla:hover .tarjeta-dupla__pareja {
+    translate: none;
+  }
+}
+
+/* ---------- Pantalla 9: mapa ---------- */
+
+/*
+ * El dibujo del colectivo con el mapa se ve entero, lo más grande que entre
+ * en el área de juego; los destinos se ubican sobre él. La proporción real
+ * del dibujo la pone mapa.ts cuando la imagen carga.
+ */
+.mapa {
+  --proporcion: 0.86;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  height: min(96cqh, 94cqw / var(--proporcion));
+  aspect-ratio: var(--proporcion);
+  z-index: 2;
+}
+
+.mapa .ilustracion.pendiente {
+  height: 100%;
+  border-radius: var(--radio);
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-end;
+  gap: 0 0.4rem;
+  padding-bottom: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.mapa__imagen {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: var(--sombra-dibujo);
+}
+
+.destino {
+  position: absolute;
+  translate: -50% -50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: var(--toque);
+  padding: 0.5rem 1rem 0.5rem 0.6rem;
+  white-space: nowrap;
+  border: 0.15rem solid var(--linea);
+  border-radius: 999px;
+  background: var(--papel);
+  color: var(--tinta);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: left;
+  box-shadow: var(--sombra);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.destino__punto {
+  width: 1.4rem;
+  height: 1.4rem;
+  flex: none;
+  border-radius: 50%;
+  border: 0.2rem solid var(--accion);
+}
+
+.destino[aria-pressed='true'] {
+  background: var(--accion);
+  border-color: var(--accion);
+  color: var(--accion-tinta);
+}
+
+.destino[aria-pressed='true'] .destino__punto {
+  background: var(--accion-tinta);
+  border-color: var(--accion-tinta);
+}
+
+.pasajeros {
+  position: absolute;
+  left: 3%;
+  bottom: 3%;
+  width: calc(22 * var(--u));
+  z-index: 3;
+}
+
+.pasajeros__imagen {
+  aspect-ratio: 4 / 3;
+}
+
+.pasajeros .ilustracion.pendiente {
+  border-radius: var(--radio-chico);
+  font-size: 0.8rem;
+}
+
+/* ---------- Pantalla 10: la ventana del colectivo ---------- */
+
+/* Adentro del colectivo, de noche: la pared a oscuras y la luz que entra por la ventana. */
+.escenario--interior {
+  background: radial-gradient(circle at 50% 38%, var(--ventana-luz), var(--papel-hondo) 70%);
+}
+
+/* El dibujo de la ventana, entero, debajo de los controles y del cartel. */
+.ventana {
+  position: absolute;
+  inset: calc(var(--toque) + 5.25rem) 5% 4%;
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+}
+
+.ventana__imagen {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: var(--sombra-dibujo);
+}
+
+.ventana .ilustracion.pendiente {
+  border-radius: var(--radio);
+}
+
+.cartel {
+  position: absolute;
+  top: calc(var(--toque) + 1.75rem);
+  left: 50%;
+  translate: -50% 0;
+  padding: 0.4rem 1.2rem 0.5rem;
+  border-radius: var(--radio-chico);
+  background: var(--accion);
+  color: var(--accion-tinta);
+  font-weight: 700;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+@media (min-width: 56rem), (orientation: landscape) and (max-height: 30rem) {
+  .ventana {
+    top: 4.5rem;
+  }
+
+  .cartel {
+    top: 0.75rem;
+  }
+}
+
+/* ---------- Pantalla 11: créditos ---------- */
+
+.creditos {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: calc(var(--toque) + 2 * var(--margen)) var(--margen) 0;
+  text-align: center;
+}
+
+.creditos__titulo {
+  font-size: var(--titulo-portada);
+  line-height: 1;
+  margin-bottom: 2rem;
+}
+
+.creditos__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 36rem;
+}
+
+.creditos__seccion h2 {
+  font-size: var(--texto-chico);
+  font-weight: 400;
+  color: var(--tinta-suave);
+  margin-bottom: 0.4rem;
+}
+
+.creditos__seccion ul {
+  list-style: none;
+  padding: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.creditos__detalle {
+  font-weight: 700;
+}
+
+.creditos__seccion .aviso-pendiente {
+  margin-top: 0.4rem;
+}
+
+.creditos .acciones {
+  justify-content: center;
+  width: 100%;
+  margin-top: 2.5rem;
+}
+
+/* ---------- Ajustes para celular ---------- */
+
+@media (max-width: 30rem) {
+  .elemento .ilustracion.pendiente {
+    font-size: 0.75rem;
+    padding: 0.2rem;
+    gap: 0;
+  }
+
+  .elemento .pendiente__marca {
+    font-size: 0.7rem;
+    letter-spacing: 0;
+  }
+
+  .boton {
+    padding-inline: 1.15rem;
+    font-size: 1.1rem;
+  }
+
+  .revelacion {
+    width: 62%;
+  }
+
+  .revelacion__tarjeta {
+    padding: 0.6rem 3.6rem 0.7rem 0.8rem;
+    font-size: 0.95rem;
+    line-height: 1.35;
+  }
+
+  .revelacion__pendiente {
+    font-size: 0.85rem;
+  }
+
+  .destino {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.7rem 0.4rem 0.45rem;
+  }
+
+  .pasajeros {
+    left: auto;
+    right: 2%;
+    bottom: 2%;
+  }
+
+  .tarjeta-dupla__nombre {
+    font-size: 1.2rem;
+  }
+}
+
+/* En los créditos no hacen falta las monedas. */
+:root[data-creditos] .monedas {
+  display: none;
+}

@@ -1,0 +1,19 @@
+# Se levanta con: docker compose -f despliegue/compose.yml up -d --build
+# Solo escucha en 127.0.0.1: desde afuera se entra por el proxy del VPS.
+name: hora-de-aventura
+services:
+  web:
+    build:
+      context: ..
+    image: hora-de-aventura:latest
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${PUERTO:-8090}:80"
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx
+      - /var/run
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 128m
