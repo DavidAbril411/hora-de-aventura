@@ -51,6 +51,9 @@ No queda ninguna ilustración PENDIENTE.
 - El texto va abajo, como subtítulos, de a un tramo que entra en la franja (3 renglones en tablet, 4 en celular). El resto se lee con las flechas. El corte es automático, por oraciones, y no cambia ninguna palabra. El texto completo sigue disponible para lectores de pantalla.
 - Donde hay narración (la intro y la presentación de cada dupla), los subtítulos avanzan solos, repartidos según el largo del texto. Como no hay marcas de tiempo, el acompañamiento es aproximado; y las narraciones de las duplas son adaptaciones, así que la voz no dice palabra por palabra lo que muestra el subtítulo. Si el equipo quiere sincronía exacta hacen falta los tiempos de cada frase.
 - Las escenas de día y de noche no tienen narración: ahí el texto se pasa a mano.
+- Mientras queda texto por leer, la flecha de seguir leyendo es el botón amarillo y la acción de la pantalla («Seguir») queda en contorno; al llegar al último tramo se invierte. Se puede avanzar igual en cualquier momento.
+- Si el lector toca una flecha mientras suena la narración, los subtítulos esperan 8 segundos y vuelven a seguir la voz.
+- En el final, el viejo desaparece cuando el lector llega a «el viejo ya no está» (`desaparece.alLeer` en `historia.json`).
 
 ### Audio
 
@@ -73,9 +76,15 @@ Integrados también los tres sonidos libres (CC0) que buscó el thread de materi
 
 ### Para la sesión de `/design`
 
+Lo que dejó abierto la critique de Impeccable del 11/11 (22/32; el detalle está en `.impeccable/critique/`):
+
 - Los colores y la tipografía siguen siendo provisorios (`src/styles/tokens.css`). La franja de subtítulos usa la paleta de noche sobre cualquier imagen.
+- La invitación a tocar es un marco rectangular encima del dibujo; sobre los collages oscuros se ve poco. Conviene que la marca salga del propio dibujo.
+- La tarjeta del secreto aparece en la esquina opuesta a lo que se tocó. Queda mejor pegada al dibujo.
+- El contador de monedas usa una moneda genérica y las que vuelan son las de los chicos.
 - Los créditos son hoy una lista al final. Es el momento en que los autores se ven a sí mismos: vale la pena diseñarlo con los dibujos y los nombres reales. Las fichas que no entraron como secretos pueden ir ahí.
-- No hay forma de volver a la pantalla anterior ni de empezar de nuevo antes del final (para tablets compartidas).
+- No hay forma de volver a la pantalla anterior ni de empezar de nuevo antes del final (para tablets compartidas), ni se ve por dónde va el lector en el cuento.
+- El texto de las noches es largo para leerlo por subtítulos (de 9 a 14 tramos). Sin narración, depende de una decisión del equipo.
 
 ### Técnico
 

@@ -70,6 +70,12 @@ export function validarHistoria(h: Historia = historia): string[] {
         escenario(p.escenario, p.id);
         if (p.tipo === 'exploracion') imagen(p.reloj?.imagen, `${p.id} › reloj`);
         if (p.tipo === 'cierre' && !ids.has(p.reiniciarEn)) problemas.push(`${p.id}: "reiniciarEn" no existe`);
+        if (p.tipo === 'cierre' && p.desaparece) {
+          const { elemento, alLeer } = p.desaparece;
+          if (!p.escenario.elementos?.some((el) => el.id === elemento)) problemas.push(`${p.id}: "desaparece" nombra "${elemento}", que no está en la escena`);
+          const texto = p.texto.map((b) => (typeof b === 'string' ? b : b.texto)).join(' ');
+          if (!texto.includes(alLeer)) problemas.push(`${p.id}: "desaparece.alLeer" no aparece en el texto`);
+        }
         break;
       case 'mapa':
         escenario(p.escenario, p.id);

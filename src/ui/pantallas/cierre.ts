@@ -16,11 +16,11 @@ export function cierre(ctx: Contexto<PantallaCierre>): HTMLElement {
   const raiz = h('main', { class: 'disposicion' });
   const dibujo = escenario(p.escenario, p.momento);
 
-  // El viejo desaparece cuando el lector llega al final del texto, no antes.
-  const viejo = dibujo.elementos.get('viejo')?.contenedor;
+  // El viejo desaparece cuando el texto lo cuenta, no antes.
+  const seVa = p.desaparece ? dibujo.elementos.get(p.desaparece.elemento)?.contenedor : undefined;
   let espera = 0;
-  const alTerminar = () => {
-    if (viejo) espera = window.setTimeout(() => void nubeDePolvo(viejo, dibujo.raiz), 1800);
+  const desaparecer = () => {
+    if (seVa) espera = window.setTimeout(() => void nubeDePolvo(seVa, dibujo.raiz), 900);
   };
   ctx.alSalir(() => window.clearTimeout(espera));
 
@@ -59,7 +59,7 @@ export function cierre(ctx: Contexto<PantallaCierre>): HTMLElement {
     acciones: acciones(boton(t('verCreditos'), mostrarCreditos, { icono: iconoSeguir })),
     avisos: [avisoAudioPendiente(p.narracion, ...(p.ambiente ?? []), ...(p.efectos ?? []))],
     sonido,
-    alTerminar,
+    alLeer: [{ fragmento: p.desaparece?.alLeer, hacer: desaparecer }],
   });
   ctx.alSalir(lectura.destruir);
   raiz.append(dibujo.raiz, lectura.raiz);

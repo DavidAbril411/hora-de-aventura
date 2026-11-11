@@ -17,6 +17,8 @@ interface Pagina {
   destacado: boolean;
   /** Caracteres del texto hasta el final de esta página, para seguir a la narración. */
   hasta: number;
+  /** Lo mismo, contando solo letras y signos: para ubicar un fragmento del texto. */
+  letras: number;
 }
 
 export interface Subtitulos {
@@ -31,9 +33,17 @@ interface Opciones {
   acciones: HTMLElement;
   avisos?: (HTMLElement | null)[];
   sonido: Sonido;
-  /** Se llama una vez, cuando el lector llega al último subtítulo. */
-  alTerminar?: () => void;
+  /**
+   * Avisos atados al texto: `hacer` se llama una vez, cuando el lector llega
+   * al subtítulo que contiene `fragmento` (o al último, si no aparece).
+   */
+  alLeer?: { fragmento?: string; hacer: () => void }[];
 }
+
+/** Segundos sin tocar las flechas después de los cuales el subtítulo vuelve a seguir la voz. */
+const RETOMAR_NARRACION = 8000;
+
+const sinEspacios = (texto: string) => texto.replace(/\s+/g, '');
 
 /**
  * Parte un párrafo en oraciones sin tocar el texto: corta después de un
@@ -61,16 +71,22 @@ function oraciones(bloque: BloqueTexto): Oracion[] {
 /**
  * El texto de la pantalla como subtítulos sobre la imagen: se muestra de a
  * un tramo que entra en la franja, y el resto se lee con las flechas. Si
- * suena una narración, los subtítulos la acompañan solos hasta que el
- * lector toca una flecha. El texto completo queda disponible para lectores
- * de pantalla.
+ * suena una narración, los subtítulos la acompañan solos; si el lector toca
+ * una flecha, esperan unos segundos y la retoman. El texto completo queda
+ * disponible para lectores de pantalla.
  */
-export function subtitulos({ titulo, texto, acciones, avisos = [], sonido, alTerminar }: Opciones): Subtitulos {
+export function subtitulos({ titulo, texto, acciones, avisos = [], sonido, alLeer = [] }: Opciones): Subtitulos {
   const todas = texto.flatMap(oraciones);
   let paginas: Pagina[] = [];
   let actual = 0;
-  let manual = false;
-  let avisado = false;
+  let ultimoToque = -Infinity;
+  // Hasta qué punto del texto (contando letras, sin espacios) hay que leer para cada aviso.
+  const entero = sinEspacios(todas.map((o) => o.texto).join(''));
+  const marcas = alLeer.map(({ fragmento, hacer }) => {
+    const buscado = fragmento ? sinEspacios(fragmento) : '';
+    const donde = buscado ? entero.indexOf(buscado) : -1;
+    return { hasta: donde === -1 ? entero.length : donde + buscado.length, hacer, hecho: false };
+  });
 
   const linea = h('p', { class: 'subtitulo' });
   const medida = h('p', { class: 'subtitulo subtitulo--medida' });
@@ -114,12 +130,14 @@ export function subtitulos({ titulo, texto, acciones, avisos = [], sonido, alTer
     const desde = actual > 0 ? (paginas[actual - 1]?.hasta ?? 0) : 0;
     const nuevas: Pagina[] = [];
     let largo = 0;
+    let letras = 0;
     let pagina = '';
     let destacada = false;
     const cerrar = () => {
       if (!pagina) return;
       largo += pagina.length;
-      nuevas.push({ texto: pagina, destacado: destacada, hasta: largo });
+      letras += sinEspacios(pagina).length;
+      nuevas.push({ texto: pagina, destacado: destacada, hasta: largo, letras });
       pagina = '';
     };
     for (const oracion of todas) {
@@ -189,15 +207,21 @@ export function subtitulos({ titulo, texto, acciones, avisos = [], sonido, alTer
     cuenta.textContent = varias ? `${indice + 1} / ${paginas.length}` : '';
     anterior.setAttribute('aria-disabled', String(indice === 0));
     siguiente.setAttribute('aria-disabled', String(indice === paginas.length - 1));
-    if (indice === paginas.length - 1 && !avisado && !raiz.classList.contains('subtitulos--portada')) {
-      avisado = true;
-      alTerminar?.();
+    // Mientras queda texto por leer, la flecha de seguir leyendo es lo que más se ve.
+    const ultima = indice === paginas.length - 1;
+    if (ultima) raiz.classList.add('subtitulos--leido');
+    raiz.classList.toggle('subtitulos--leyendo', !ultima && !raiz.classList.contains('subtitulos--leido'));
+    if (raiz.classList.contains('subtitulos--portada')) return;
+    for (const marca of marcas) {
+      if (marca.hecho || pagina.letras < marca.hasta) continue;
+      marca.hecho = true;
+      marca.hacer();
     }
   };
 
   const pasar = (paso: number) => {
-    // Desde que el lector maneja el texto, la narración deja de moverlo.
-    manual = true;
+    // Mientras el lector maneja el texto, la narración no lo mueve; si deja de tocar, lo retoma.
+    ultimoToque = performance.now();
     mostrar(Math.min(paginas.length - 1, Math.max(0, actual + paso)));
   };
 
@@ -205,7 +229,7 @@ export function subtitulos({ titulo, texto, acciones, avisos = [], sonido, alTer
   let reloj = 0;
   const acompanar = () => {
     const avance = sonido.avanceNarracion;
-    if (avance === null || manual || !paginas.length) return;
+    if (avance === null || performance.now() - ultimoToque < RETOMAR_NARRACION || !paginas.length) return;
     const total = paginas[paginas.length - 1].hasta;
     const indice = paginas.findIndex((p) => p.hasta / total > avance);
     mostrar(indice === -1 ? paginas.length - 1 : indice);
@@ -213,7 +237,7 @@ export function subtitulos({ titulo, texto, acciones, avisos = [], sonido, alTer
   const dejarDeEscuchar = sonido.escuchar((narrando) => {
     window.clearInterval(reloj);
     if (!narrando) return;
-    manual = false;
+    ultimoToque = -Infinity;
     reloj = window.setInterval(acompanar, 250);
     acompanar();
   });

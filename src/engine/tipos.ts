@@ -137,6 +137,8 @@ export interface PantallaViaje extends PantallaBase {
 export interface PantallaCierre extends PantallaBase {
   tipo: 'cierre';
   escenario: Escenario;
+  /** Un elemento que se va en una nube de polvo cuando el lector llega a esa parte del texto. */
+  desaparece?: { elemento: string; alLeer: string };
   reiniciarEn: string;
 }
 

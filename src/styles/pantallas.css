@@ -75,9 +75,9 @@
   max-width: 26ch;
 }
 
-/* El atardecer tapa la escena un momento; no frena los toques. */
+/* El atardecer tapa la escena un momento: mientras dura, lo que está debajo no se puede tocar. */
 .escenario__transicion {
-  pointer-events: none;
+  z-index: 5;
 }
 
 /* Los dos personajes de una dupla, parados uno al lado del otro. */
@@ -231,9 +231,18 @@
   pointer-events: auto;
 }
 
+/* Primero lo que parece; después, más grande, lo que es. */
 .revelacion__titulo {
-  font-size: 1.25em;
-  margin-bottom: 0.3rem;
+  font-size: 1em;
+  font-weight: 400;
+  color: var(--tinta-suave);
+  margin-bottom: 0.15rem;
+}
+
+.revelacion__tarjeta > p:not(.revelacion__pendiente) {
+  font-size: 1.3em;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
 .revelacion__pendiente {
@@ -465,6 +474,28 @@
   scale: 0.94;
 }
 
+/* Mientras queda texto por leer, seguir leyendo es la acción que más se ve y la de la pantalla espera su turno. */
+.subtitulos--leyendo:not(.subtitulos--portada) .subtitulos__paso--siguiente {
+  background: var(--accion);
+  border-color: var(--accion);
+  color: var(--accion-tinta);
+}
+
+.subtitulos--leyendo:not(.subtitulos--portada) .subtitulos__paso--siguiente:hover {
+  background: var(--accion-hover);
+}
+
+.subtitulos--leyendo:not(.subtitulos--portada) .acciones .boton--principal {
+  background: transparent;
+  border-color: var(--tinta-suave);
+  color: var(--tinta);
+  box-shadow: none;
+}
+
+.subtitulos--leyendo:not(.subtitulos--portada) .acciones .boton--principal:hover {
+  background: var(--resaltado);
+}
+
 .subtitulos__paso[aria-disabled='true'] {
   opacity: 0.35;
   cursor: default;
@@ -586,9 +617,14 @@
     justify-content: center;
   }
 
+  /* Ancho y alto fijos: al cambiar la pista, ni el texto ni los botones se corren. */
   .acciones__pista {
     flex: none;
-    max-width: 17rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    width: 17rem;
+    min-height: 2.8em;
     text-wrap: balance;
   }
 }
@@ -831,8 +867,15 @@
   transition: translate 0.25s ease;
 }
 
-.tarjeta-dupla:hover .tarjeta-dupla__pareja {
-  translate: 0 -0.3rem;
+@media (hover: hover) {
+  .tarjeta-dupla:hover .tarjeta-dupla__pareja {
+    translate: 0 -0.3rem;
+  }
+
+  .tarjeta-dupla:hover .tarjeta-dupla__nombre {
+    background: var(--accion);
+    color: var(--accion-tinta);
+  }
 }
 
 .tarjeta-dupla__nombre {
@@ -849,11 +892,6 @@
   font-weight: 700;
   line-height: 1.15;
   transition: background-color 0.15s ease, color 0.15s ease;
-}
-
-.tarjeta-dupla:hover .tarjeta-dupla__nombre {
-  background: var(--accion);
-  color: var(--accion-tinta);
 }
 
 /* La consigna, abajo, con el mismo aspecto que los subtítulos. */
