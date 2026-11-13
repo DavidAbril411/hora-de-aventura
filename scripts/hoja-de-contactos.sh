@@ -15,6 +15,10 @@ fi
 origen="$1"
 destino="$2"
 por_hoja="${3:-6}"
+if ! [[ "$por_hoja" =~ ^[1-9][0-9]*$ ]]; then
+  echo "Las filas por hoja tienen que ser un entero mayor que cero (llegó: $por_hoja)" >&2
+  exit 2
+fi
 aqui="$(cd "$(dirname "$0")" && pwd)"
 lado=420
 

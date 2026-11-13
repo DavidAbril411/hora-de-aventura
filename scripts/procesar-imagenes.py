@@ -18,7 +18,7 @@ Lee el inventario (una fila por imagen) y, para cada una:
   Si la fila tiene `quitar_marco=si`, borra las líneas rectas largas del marco
   impreso de la ficha que cruzan la zona.
 Para personajes y objetos genera además dos recortes de fondo:
-  A. rembg (modelo birefnet-general con alpha matting).
+  A. rembg (modelo birefnet-general; la máscara tal cual, sin alpha matting).
   B. Papel a transparente: la opacidad sale de cuánto se aleja cada píxel del blanco.
 Después del recorte rellena el papel encerrado por el dibujo (para que una cara
 sin pintar no quede transparente) y saca los márgenes vacíos y los píxeles sueltos.
@@ -73,7 +73,8 @@ def extraer_original(ruta):
 
 def rotar(img, grados):
     giros = {0: None, 90: cv2.ROTATE_90_CLOCKWISE, 180: cv2.ROTATE_180, 270: cv2.ROTATE_90_COUNTERCLOCKWISE}
-    return img if not giros[grados] else cv2.rotate(img, giros[grados])
+    # ROTATE_90_CLOCKWISE vale 0: hay que comparar con None, no por verdad.
+    return img if giros[grados] is None else cv2.rotate(img, giros[grados])
 
 
 # ---------------------------------------------------------------- geometría
@@ -252,9 +253,14 @@ _sesion_rembg = None
 
 
 def recorte_rembg(img, lado_mascara=1100):
-    """Recorte A: rembg con birefnet-general y alpha matting. La máscara se calcula
-    sobre una copia de hasta 1100 px (el alpha matting a 2000 px pide más de 13 GB
-    de memoria) y después se escala al tamaño de la imagen."""
+    """Recorte A: la máscara de rembg con birefnet-general, sin alpha matting. Se
+    calcula sobre una copia de hasta 1100 px y después se escala al tamaño de la
+    imagen.
+
+    Con `only_mask=True` rembg devuelve la máscara tal cual y no aplica alpha
+    matting aunque se lo pidan. Así se hicieron los recortes A que están
+    publicados, por eso se deja igual: pasar a alpha matting cambiaría todos los
+    recortes y habría que volver a revisarlos."""
     global _sesion_rembg
     from rembg import new_session, remove
     if _sesion_rembg is None:
@@ -266,9 +272,7 @@ def recorte_rembg(img, lado_mascara=1100):
         opciones.enable_mem_pattern = False
         _sesion_rembg = new_session("birefnet-general", sess_opts=opciones)
     chica = limitar_tamano(img, lado_mascara)
-    mascara = remove(Image.fromarray(chica), session=_sesion_rembg, only_mask=True, alpha_matting=True,
-                     alpha_matting_foreground_threshold=240, alpha_matting_background_threshold=20,
-                     alpha_matting_erode_size=6)
+    mascara = remove(Image.fromarray(chica), session=_sesion_rembg, only_mask=True)
     alfa = np.array(mascara.convert("L")).astype(np.float32) / 255
     alfa = cv2.resize(alfa, (img.shape[1], img.shape[0]), interpolation=cv2.INTER_CUBIC).clip(0, 1)
     alfa = limpiar_alfa(alfa)
@@ -334,6 +338,8 @@ def exportar_webp(fila, destino, carpeta_webp):
         return None
     sufijo = "" if metodo == "fondo" else "-" + metodo
     master = os.path.join(destino, "masters", fila["id"] + sufijo + ".png")
+    if not os.path.exists(master):
+        raise FileNotFoundError(master)
     guardar_webp(np.array(Image.open(master)), os.path.join(carpeta_webp, nombre))
     return nombre
 
@@ -359,13 +365,22 @@ def main():
     if args.webp:
         os.makedirs(args.webp, exist_ok=True)
 
+    faltan = []
     for fila in filas:
         r = procesar(fila, args.origen, args.destino, not args.sin_recorte)
         print(f"{r['id']}: {r['tamano']}{' (perspectiva corregida)' if r['enderezada'] else ''}", file=sys.stderr)
         if args.webp:
-            nombre = exportar_webp(fila, args.destino, args.webp)
+            try:
+                nombre = exportar_webp(fila, args.destino, args.webp)
+            except FileNotFoundError as e:
+                # Pasa con --sin-recorte en una carpeta sin los recortes A y B.
+                faltan.append(str(e))
+                print(f"  falta el master {e}: no se exporta", file=sys.stderr)
+                continue
             if nombre:
                 print(f"  -> {nombre}", file=sys.stderr)
+    if faltan:
+        sys.exit(f"Faltan {len(faltan)} masters de recortes. Correr sin --sin-recorte para generarlos.")
 
 
 if __name__ == "__main__":

@@ -28,7 +28,10 @@ RNNOISE_URL="https://raw.githubusercontent.com/richardpl/arnndn-models/master/st
 if [[ "$tipo" == "narracion" && ! -s "$RNNOISE_MODEL" ]]; then
   mkdir -p "$(dirname "$RNNOISE_MODEL")"
   echo "Descargando modelo RNNoise: $RNNOISE_URL" >&2
-  curl -fsSL -o "$RNNOISE_MODEL" "$RNNOISE_URL"
+  # A un archivo aparte y recién después a su lugar: una descarga cortada no
+  # deja un modelo incompleto que la próxima corrida daría por bueno.
+  curl -fsSL -o "$RNNOISE_MODEL.descarga" "$RNNOISE_URL" || { rm -f "$RNNOISE_MODEL.descarga"; exit 1; }
+  mv "$RNNOISE_MODEL.descarga" "$RNNOISE_MODEL"
 fi
 
 tmp="$(mktemp -d)"

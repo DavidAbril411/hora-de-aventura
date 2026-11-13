@@ -43,14 +43,18 @@ def muestras(ruta):
 def medir(ruta):
     x = muestras(ruta)
     duracion = len(x) / SR
-    n = len(x) // VENTANA
-    rms = np.sqrt(np.mean(x[: n * VENTANA].reshape(n, VENTANA) ** 2, axis=1) + 1e-12)
+    if len(x) == 0:
+        raise SystemExit(f"{ruta}: no tiene audio")
+    # Un audio más corto que una ventana se mide entero, como una sola ventana.
+    ventana = min(VENTANA, len(x))
+    n = len(x) // ventana
+    rms = np.sqrt(np.mean(x[: n * ventana].reshape(n, ventana) ** 2, axis=1) + 1e-12)
     db = 20 * np.log10(rms)
     piso = float(np.percentile(db, 5))
     voz = float(np.percentile(db, 95))
     activas = np.nonzero(db > voz - 30)[0]
-    sil_ini = activas[0] * VENTANA / SR if len(activas) else duracion
-    sil_fin = duracion - (activas[-1] + 1) * VENTANA / SR if len(activas) else 0.0
+    sil_ini = activas[0] * ventana / SR if len(activas) else duracion
+    sil_fin = max(duracion - (activas[-1] + 1) * ventana / SR, 0.0) if len(activas) else 0.0
     lufs, pico = ebur128(ruta)
     return {
         "archivo": ruta,
