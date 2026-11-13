@@ -75,6 +75,37 @@
   max-width: 26ch;
 }
 
+/*
+ * Figura y fondo. El mural que cubre la pantalla se apaga (más transparente
+ * sobre una base oscura, y con menos color) y los dibujos que van encima
+ * ganan color y una sombra que los despega. Los originales no se tocan.
+ */
+.escenario--mural {
+  background: var(--escena-base);
+}
+
+.escenario--mural > .escenario__fondo:not(.escenario__transicion) {
+  opacity: var(--fondo-opacidad);
+  filter: saturate(var(--fondo-saturacion));
+}
+
+.elemento__imagen,
+.pareja__personaje {
+  filter: saturate(var(--dibujo-saturacion)) var(--sombra-dibujo);
+}
+
+/* Sobre el mural apagado, la invitación a tocar va en el color claro de la noche. */
+.escenario--mural .elemento__invitacion {
+  border-color: var(--invitacion-sobre-mural);
+}
+
+/* La portada no tiene personajes que despegar: la isla y su cielo se ven tal cual. */
+.pantalla--intro {
+  --escena-base: var(--papel-hondo);
+  --fondo-opacidad: 1;
+  --fondo-saturacion: 1;
+}
+
 /* El atardecer tapa la escena un momento: mientras dura, lo que está debajo no se puede tocar. */
 .escenario__transicion {
   z-index: 5;
@@ -861,6 +892,16 @@
   transition: scale 0.4s ease;
 }
 
+/* Igual que en las escenas: el mural apagado sobre una base oscura. */
+.tarjeta-dupla:has(> .tarjeta-dupla__fondo:not(.ilustracion--entera)) {
+  background: var(--escena-base);
+}
+
+.tarjeta-dupla__fondo:not(.ilustracion--entera) {
+  opacity: var(--fondo-opacidad);
+  filter: saturate(var(--fondo-saturacion));
+}
+
 .tarjeta-dupla__pareja {
   position: absolute;
   inset: 8% 6% calc(var(--toque) + 0.5rem);
@@ -1081,8 +1122,9 @@
 .creditos__lista {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 2rem;
-  max-width: 36rem;
+  width: min(100%, 58rem);
 }
 
 .creditos__seccion h2 {
@@ -1103,6 +1145,52 @@
   font-weight: 700;
 }
 
+.creditos__enlace {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--toque);
+  padding: 0 1rem;
+  color: var(--accion);
+  font-weight: 700;
+  text-underline-offset: 0.25em;
+}
+
+/* Los logos institucionales van con sus colores, sobre una placa clara. */
+.creditos__placa {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem 3rem;
+  padding: 1.5rem 2rem;
+  border-radius: var(--radio);
+  background: var(--placa-logos);
+  color: var(--placa-tinta);
+}
+
+.creditos__logo {
+  width: auto;
+  max-width: 100%;
+  height: clamp(3.6rem, 2.6rem + 3.2vw, 5rem);
+  object-fit: contain;
+}
+
+.ilustracion__versiones {
+  display: contents;
+}
+
+/* En el celular los logos van uno por renglón y tan grandes como entren. */
+@media (max-width: 30rem) {
+  .creditos__placa {
+    padding: 1.25rem 1rem;
+  }
+
+  .creditos__logo {
+    height: auto;
+    max-height: 9.5rem;
+  }
+}
+
 .creditos__seccion .aviso-pendiente {
   margin-top: 0.4rem;
 }
@@ -1111,6 +1199,11 @@
   justify-content: center;
   width: 100%;
   margin-top: 2.5rem;
+}
+
+/* En los créditos no hay flechas de lectura: el botón va centrado. */
+.creditos .acciones::before {
+  content: none;
 }
 
 /* ---------- Ajustes para celular ---------- */

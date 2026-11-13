@@ -49,8 +49,8 @@ No queda ninguna ilustración PENDIENTE.
 - Cada escena ocupa la pantalla entera. El fondo la cubre y los elementos se ubican en el área que queda arriba de los subtítulos. `x` e `y` son % de esa área; `ancho` está en una unidad que promedia su ancho y su alto, para que un personaje pese parecido en la tablet apaisada y en el celular vertical.
 - Los dibujos que tienen que verse enteros (la fiesta de p04, el mapa de p09, la ventana de p10) no se recortan: se muestran completos dentro de esa área.
 - El texto va abajo, como subtítulos, de a un tramo que entra en la franja (3 renglones en tablet, 4 en celular). El resto se lee con las flechas. El corte es automático, por oraciones, y no cambia ninguna palabra. El texto completo sigue disponible para lectores de pantalla.
-- Donde hay narración (la intro y la presentación de cada dupla), los subtítulos avanzan solos, repartidos según el largo del texto. Como no hay marcas de tiempo, el acompañamiento es aproximado; y las narraciones de las duplas son adaptaciones, así que la voz no dice palabra por palabra lo que muestra el subtítulo. Si el equipo quiere sincronía exacta hacen falta los tiempos de cada frase.
-- Las escenas de día y de noche no tienen narración: ahí el texto se pasa a mano.
+- Donde hay narración (la intro y la presentación de cada dupla), los subtítulos avanzan solos, con el tiempo de cada palabra (ver «Subtítulos sincronizados con la voz»). Las narraciones de las duplas son adaptaciones, así que la voz no dice palabra por palabra lo que muestra el subtítulo.
+- Las escenas de día y de noche, el colectivo, el viaje y el final todavía no tienen narración: ahí el texto se pasa a mano.
 - Mientras queda texto por leer, la flecha de seguir leyendo es el botón amarillo y la acción de la pantalla («Seguir») queda en contorno; al llegar al último tramo se invierte. Se puede avanzar igual en cualquier momento.
 - Si el lector toca una flecha mientras suena la narración, los subtítulos esperan 8 segundos y vuelven a seguir la voz.
 - En el final, el viejo desaparece cuando el lector llega a «el viejo ya no está» (`desaparece.alLeer` en `historia.json`).
@@ -63,9 +63,35 @@ Integrados también los tres sonidos libres (CC0) que buscó el thread de materi
 
 **La mezcla** (pedido de David, 11/11) está en `src/audio/sonido.ts`: la voz va siempre adelante. Mientras habla un narrador, el ambiente baja al 20 % y los efectos al 30 %. Los efectos de una pantalla suenan de a uno, en el orden de `efectos`, y se cortan al pasar de pantalla. Cuando hay varios ambientes juntos (la calle, los vecinos y la pelotita en p03), el primero es la base y los otros acompañan más bajo. Falta escucharlo en una tablet real: el navegador de prueba no reproduce los `.m4a`, así que los niveles se midieron, no se oyeron.
 
+### Narraciones que faltan grabar (David las genera con ElevenLabs, 13/11)
+
+Nueve pantallas no tienen narración: los tres días (p03, p04, p05), las tres noches (p06, p07, p08), el colectivo (p09), el viaje (p10) y el final (p11). No hay placeholder en pantalla: hasta que llegue el audio, el texto se pasa a mano.
+
+- Los guiones salen de `historia.json` con `python3 scripts/guiones-narracion.py <carpeta>`: un `.txt` por pantalla, con el texto tal cual. Los del 13/11 están en la Library, en `motor/guiones-narracion/`.
+- Cada audio se llama como su pantalla: `narracion-p03-dia-jp-roberto`, `narracion-p09-colectivo`, etc.
+- Cuando el audio tratado está en `public/audio/` con ese nombre, `scripts/sincronizar-narracion.py` lo da de alta en `historia.json` y calcula sus tiempos. No hace falta tocar nada más.
+- En las noches y en el final la voz va a decir «Clac, clac, clac…» y «Tic… tac…» y esas pantallas ya tienen esos sonidos como efecto al entrar. Cuando estén los audios hay que escuchar si conviene atar el efecto al momento en que la voz lo nombra, bajarlo o sacarlo.
+
+### Subtítulos sincronizados con la voz (pedido de David, 13/11)
+
+- `scripts/sincronizar-narracion.py` transcribe cada narración con Whisper (tiempo de cada palabra), la alinea con el texto de la pantalla y guarda en `historia.json` el campo `tiempos`: el segundo en que empieza cada palabra del texto. El subtítulo cambia 0,2 s antes de la primera palabra del tramo que sigue.
+- La introducción lee el texto tal cual (coincide el 97 %). Las tres duplas son adaptaciones en primera persona: coinciden el 82 % (Juan Pablo y Roberto), el 83 % (Camila y Alma) y el 75 % (Diana y Rogelio). Los tramos donde la voz dice otra cosa se reparten entre las palabras que sí coinciden, así que el cambio de subtítulo cae en la frase correcta aunque las palabras no sean las mismas.
+- Si se cambia el texto de una pantalla con narración hay que volver a correr el script. Si no, el motor avisa en la consola y vuelve a repartir los subtítulos según el largo del texto.
+
+### Créditos (indicación de Lucila, 13/11)
+
+- No van los nombres de los chicos ni los del equipo. Quedan «Escuela General San Martín», los logos y David Abril con su página.
+- Se mantuvo el encabezado «Escribieron, ilustraron y narraron» arriba de la escuela. Si no va, se borra `titulo` en esa sección de `creditos`.
+- Logos usados: el horizontal de PESIJuD (con CONICET, UNVM y CCONFINES) y el de la Municipalidad de Villa María, los dos en color sobre una placa clara, sin recolorear. Lucila mandó además el de la Secretaría de Educación (color, negro y blanco) y versiones de PESIJuD sobre fondo azul. El de la Secretaría en color quedó tratado en `material-tratado/logos/`: para cambiarlo alcanza con copiarlo a `public/img/` y cambiar el id en `creditos`. Los originales están en `IMAGENES/logos-2026-11-13/`.
+- En el celular el logo de PESIJuD usa la versión apilada (`srcAngosta` en `imagenes`), porque en la horizontal la letra chica no se lee.
+- La página de David es `abrilcodes.com`, tomada del dominio donde está publicado el cuento. A confirmar.
+
+### Figura y fondo (pedido de David, 13/11)
+
+Para que los personajes se distingan del mural, el fondo va más transparente sobre una base oscura y con menos color, y los dibujos de encima van más saturados y con sombra. Es todo presentación: los archivos no cambian. Se ajusta en `src/styles/tokens.css` con `--fondo-opacidad` (0,6 de día y 0,8 de noche), `--fondo-saturacion` (0,75) y `--dibujo-saturacion` (1,3). La portada y los dibujos que se muestran enteros (la fiesta, el mapa, la ventana) no se apagan.
+
 ### Contenido que tiene que indicar el equipo (no se inventa)
 
-- **Créditos:** los nombres de los chicos (autores, ilustradores y narradores) y del equipo UNVM, tal como los indiquen el equipo y Lucila.
 - **De qué color se pone Rogelio de noche.** Está resuelto con un filtro (`.cambia-de-noche` en `src/styles/pantallas.css`); falta saber el color.
 - **Variación por destino en el viaje (p10).** Por ahora solo cambia el cartel del colectivo, que muestra el nombre del destino elegido. No se agregó texto. A confirmar con el equipo.
 
@@ -76,15 +102,19 @@ Integrados también los tres sonidos libres (CC0) que buscó el thread de materi
 
 ### Para la sesión de `/design`
 
-Lo que dejó abierto la critique de Impeccable del 11/11 (22/32; el detalle está en `.impeccable/critique/`):
+Lo que dejaron abierto las critiques de Impeccable del 11/11 (22/32) y del 13/11 (23/32); el detalle está en `.impeccable/critique/`:
 
 - Los colores y la tipografía siguen siendo provisorios (`src/styles/tokens.css`). La franja de subtítulos usa la paleta de noche sobre cualquier imagen.
 - La invitación a tocar es un marco rectangular encima del dibujo; sobre los collages oscuros se ve poco. Conviene que la marca salga del propio dibujo.
 - La tarjeta del secreto aparece en la esquina opuesta a lo que se tocó. Queda mejor pegada al dibujo.
 - El contador de monedas usa una moneda genérica y las que vuelan son las de los chicos.
-- Los créditos son hoy una lista al final. Es el momento en que los autores se ven a sí mismos: vale la pena diseñarlo con los dibujos y los nombres reales. Las fichas que no entraron como secretos pueden ir ahí.
+- Los créditos son una lista corta con la placa de logos. Se pueden vestir con los dibujos de los chicos; las fichas que no entraron como secretos pueden ir ahí.
 - No hay forma de volver a la pantalla anterior ni de empezar de nuevo antes del final (para tablets compartidas), ni se ve por dónde va el lector en el cuento.
 - El texto de las noches es largo para leerlo por subtítulos (de 9 a 14 tramos). Sin narración, depende de una decisión del equipo.
+- Con el mural apagado, el día se parece más a un atardecer que a una mañana (critique del 13/11). Se dejó así porque David pidió el fondo más oscuro; si hace falta, `--fondo-opacidad` vuelve a subir.
+- El marco que invita a tocar es dorado sobre el mural apagado y azul sobre la fiesta de Camila y Alma, que va sobre blanco.
+- En cada pantalla hay dos formas de avanzar una al lado de la otra: la flecha de seguir leyendo y «Seguir». Un chico puede saltearse la narración sin querer. Cambiarlo toca la regla de que siempre se puede avanzar.
+- En la elección, la consigna queda debajo de las tres parejas, y al volver a elegir no se marca cuál ya se jugó.
 
 ### Técnico
 

@@ -17,13 +17,16 @@ export function ilustracion(id: string, clase = '', momento?: Momento): HTMLElem
   }
   const noche = momento === 'noche' && datos.cambiaDeColorDeNoche ? ' cambia-de-noche' : '';
   const entero = datos.entero ? ' ilustracion--entera' : '';
-  return h('img', {
+  const imagen = h('img', {
     class: `ilustracion ${clase}${noche}${entero}`,
     src: urlPublica(datos.src),
     alt: descripcion,
     decoding: 'async',
     draggable: 'false',
   });
+  if (!datos.srcAngosta) return imagen;
+  // En el celular se usa la versión angosta; el <picture> no ocupa lugar propio.
+  return h('picture', { class: 'ilustracion__versiones' }, h('source', { media: '(max-width: 30rem)', srcset: urlPublica(datos.srcAngosta) }), imagen);
 }
 
 /** Los dos personajes de una dupla, parados uno al lado del otro. */
@@ -90,7 +93,10 @@ export function escenario(
   if (datos.fondo) {
     const fondo = ilustracion(datos.fondo, 'escenario__fondo', momento);
     // Un dibujo que tiene que verse entero va en el área de juego, para que los subtítulos no lo tapen.
-    (historia.imagenes[datos.fondo]?.entero ? juego : raiz).append(fondo);
+    const entero = historia.imagenes[datos.fondo]?.entero;
+    (entero ? juego : raiz).append(fondo);
+    // El mural que cubre la pantalla queda atrás, apagado, para que se distingan los personajes.
+    if (!entero) raiz.classList.add('escenario--mural');
   }
   raiz.append(juego);
   const elementos = new Map<string, { contenedor: HTMLElement; figura: HTMLElement }>();

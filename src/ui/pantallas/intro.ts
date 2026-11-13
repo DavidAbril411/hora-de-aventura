@@ -17,6 +17,7 @@ export function intro(ctx: Contexto<PantallaIntro>): HTMLElement {
   const lectura = subtitulos({
     titulo: p.titulo,
     texto: p.texto,
+    tiempos: p.tiempos,
     acciones: accion,
     avisos: [avisoAudioPendiente(p.narracion, ...(p.ambiente ?? []))],
     sonido,

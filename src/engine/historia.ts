@@ -1,5 +1,5 @@
 import datos from '../data/historia.json';
-import type { Escenario, Historia, Pantalla, Siguiente } from './tipos';
+import type { BloqueTexto, Escenario, Historia, Pantalla, Siguiente } from './tipos';
 
 export const historia = datos as unknown as Historia;
 
@@ -23,6 +23,22 @@ export function urlPublica(src: string): string {
   return import.meta.env.BASE_URL + src;
 }
 
+/** Las palabras de un texto, como las cuentan los tiempos de la narración. */
+export function palabrasDe(texto: BloqueTexto[]): string[] {
+  return texto.flatMap((b) => (typeof b === 'string' ? b : b.texto).split(/\s+/).filter(Boolean));
+}
+
+/**
+ * Los tiempos de una narración, uno por palabra del texto. null si no hay o
+ * si no corresponden a este texto (cambió después de sincronizar).
+ */
+export function tiemposDe(tiempos: string | undefined, texto: BloqueTexto[]): number[] | null {
+  if (!tiempos) return null;
+  const valores = tiempos.split(' ').map(Number);
+  const validos = valores.every((v, i) => Number.isFinite(v) && (i === 0 || v >= valores[i - 1]));
+  return validos && valores.length === palabrasDe(texto).length ? valores : null;
+}
+
 /**
  * Revisa que historia.json sea coherente: que cada referencia apunte a algo
  * que existe. Devuelve la lista de problemas (vacía si está todo bien).
@@ -35,6 +51,11 @@ export function validarHistoria(h: Historia = historia): string[] {
   };
   const audio = (id: string | undefined, donde: string) => {
     if (id && !h.audios[id]) problemas.push(`${donde}: falta el audio "${id}"`);
+  };
+  const tiempos = (valor: string | undefined, texto: BloqueTexto[], narracion: string | undefined, donde: string) => {
+    if (valor === undefined) return;
+    if (!narracion) problemas.push(`${donde}: tiene "tiempos" pero no "narracion"`);
+    else if (!tiemposDe(valor, texto)) problemas.push(`${donde}: "tiempos" no corresponde al texto (correr scripts/sincronizar-narracion.py)`);
   };
   const destinoDe = (s: Siguiente | undefined, donde: string) => {
     if (!s) return;
@@ -56,10 +77,16 @@ export function validarHistoria(h: Historia = historia): string[] {
     d.personajes.forEach((p) => imagen(p, `dupla ${id}`));
     imagen(d.fondo, `dupla ${id}`);
     audio(d.narracion, `dupla ${id}`);
+    tiempos(d.tiempos, d.presentacion, d.narracion, `dupla ${id}`);
+  }
+  for (const s of h.creditos.secciones) {
+    s.logos?.forEach((l) => imagen(l, 'créditos'));
+    if (s.enlace && !/^https:\/\//.test(s.enlace.url)) problemas.push(`créditos: el enlace "${s.enlace.url}" tiene que empezar con https://`);
   }
   for (const p of h.pantallas) {
     if (p.dupla && !h.duplas[p.dupla]) problemas.push(`${p.id}: la dupla "${p.dupla}" no existe`);
     audio(p.narracion, p.id);
+    tiempos(p.tiempos, p.texto, p.narracion, p.id);
     p.ambiente?.forEach((a) => audio(a, p.id));
     p.efectos?.forEach((a) => audio(a, p.id));
     destinoDe(p.siguiente, p.id);

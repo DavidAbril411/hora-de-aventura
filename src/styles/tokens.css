@@ -25,6 +25,15 @@
   --destello: oklch(0.99 0.02 90);
   --polvo: oklch(0.85 0.03 80);
   --ventana-luz: oklch(0.32 0.05 265);
+  --placa-logos: oklch(0.985 0.003 250);
+  --placa-tinta: oklch(0.25 0.02 255);
+
+  /* Figura y fondo: el mural va apagado sobre una base oscura y los dibujos, más vivos. */
+  --escena-base: oklch(0.17 0.04 265);
+  --fondo-opacidad: 0.6;
+  --fondo-saturacion: 0.75;
+  --dibujo-saturacion: 1.3;
+  --invitacion-sobre-mural: oklch(0.85 0.13 85);
 
   --pendiente-a: oklch(0.9 0.09 85);
   --pendiente-b: oklch(0.86 0.1 80);
@@ -69,6 +78,8 @@
   --pendiente-tinta: oklch(0.92 0.06 85);
 
   --reloj-fondo: oklch(0.95 0.03 85);
+  /* Los fondos de noche ya vienen oscurecidos del tratamiento. */
+  --fondo-opacidad: 0.8;
   --reloj-borde: oklch(0.22 0.04 265);
   --reloj-aguja: oklch(0.22 0.04 265);
   --foco: oklch(0.85 0.13 85);

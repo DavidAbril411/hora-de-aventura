@@ -1,5 +1,5 @@
 import type { Sonido } from '../audio/sonido';
-import { t } from '../engine/historia';
+import { t, tiemposDe } from '../engine/historia';
 import type { BloqueTexto } from '../engine/tipos';
 import { cambiarSubtitulo } from './animaciones';
 import { h, svg } from './dom';
@@ -19,6 +19,8 @@ interface Pagina {
   hasta: number;
   /** Lo mismo, contando solo letras y signos: para ubicar un fragmento del texto. */
   letras: number;
+  /** Palabras del texto hasta el final de esta página, para seguir los tiempos de la narración. */
+  palabras: number;
 }
 
 export interface Subtitulos {
@@ -33,6 +35,8 @@ interface Opciones {
   acciones: HTMLElement;
   avisos?: (HTMLElement | null)[];
   sonido: Sonido;
+  /** Tiempos de la narración, palabra por palabra (`tiempos` en historia.json). */
+  tiempos?: string;
   /**
    * Avisos atados al texto: `hacer` se llama una vez, cuando el lector llega
    * al subtítulo que contiene `fragmento` (o al último, si no aparece).
@@ -40,8 +44,10 @@ interface Opciones {
   alLeer?: { fragmento?: string; hacer: () => void }[];
 }
 
-/** Segundos sin tocar las flechas después de los cuales el subtítulo vuelve a seguir la voz. */
+/** Milisegundos sin tocar las flechas después de los cuales el subtítulo vuelve a seguir la voz. */
 const RETOMAR_NARRACION = 8000;
+/** El subtítulo cambia un instante antes de que la voz diga su primera palabra. */
+const ADELANTO = 0.2;
 
 const sinEspacios = (texto: string) => texto.replace(/\s+/g, '');
 
@@ -53,7 +59,7 @@ const sinEspacios = (texto: string) => texto.replace(/\s+/g, '');
 function oraciones(bloque: BloqueTexto): Oracion[] {
   const texto = typeof bloque === 'string' ? bloque : bloque.texto;
   const destacado = typeof bloque !== 'string';
-  const palabras = texto.split(' ').filter(Boolean);
+  const palabras = texto.split(/\s+/).filter(Boolean);
   const salida: Oracion[] = [];
   let actual: string[] = [];
   palabras.forEach((palabra, i) => {
@@ -71,12 +77,14 @@ function oraciones(bloque: BloqueTexto): Oracion[] {
 /**
  * El texto de la pantalla como subtítulos sobre la imagen: se muestra de a
  * un tramo que entra en la franja, y el resto se lee con las flechas. Si
- * suena una narración, los subtítulos la acompañan solos; si el lector toca
- * una flecha, esperan unos segundos y la retoman. El texto completo queda
+ * suena una narración, los subtítulos la acompañan solos, palabra por
+ * palabra si la narración tiene tiempos; si el lector toca una flecha,
+ * esperan unos segundos y la retoman. El texto completo queda
  * disponible para lectores de pantalla.
  */
-export function subtitulos({ titulo, texto, acciones, avisos = [], sonido, alLeer = [] }: Opciones): Subtitulos {
+export function subtitulos({ titulo, texto, acciones, avisos = [], sonido, tiempos, alLeer = [] }: Opciones): Subtitulos {
   const todas = texto.flatMap(oraciones);
+  const tiempoDePalabra = tiemposDe(tiempos, texto);
   let paginas: Pagina[] = [];
   let actual = 0;
   let ultimoToque = -Infinity;
@@ -131,13 +139,15 @@ export function subtitulos({ titulo, texto, acciones, avisos = [], sonido, alLee
     const nuevas: Pagina[] = [];
     let largo = 0;
     let letras = 0;
+    let palabras = 0;
     let pagina = '';
     let destacada = false;
     const cerrar = () => {
       if (!pagina) return;
       largo += pagina.length;
       letras += sinEspacios(pagina).length;
-      nuevas.push({ texto: pagina, destacado: destacada, hasta: largo, letras });
+      palabras += pagina.split(/\s+/).filter(Boolean).length;
+      nuevas.push({ texto: pagina, destacado: destacada, hasta: largo, letras, palabras });
       pagina = '';
     };
     for (const oracion of todas) {
@@ -225,20 +235,28 @@ export function subtitulos({ titulo, texto, acciones, avisos = [], sonido, alLee
     mostrar(Math.min(paginas.length - 1, Math.max(0, actual + paso)));
   };
 
-  // Mientras suena la narración, el subtítulo sigue su avance (según el largo del texto).
+  // Mientras suena la narración, el subtítulo la sigue: con los tiempos de
+  // cada palabra si están, o repartido según el largo del texto si no.
   let reloj = 0;
   const acompanar = () => {
     const avance = sonido.avanceNarracion;
-    if (avance === null || performance.now() - ultimoToque < RETOMAR_NARRACION || !paginas.length) return;
-    const total = paginas[paginas.length - 1].hasta;
-    const indice = paginas.findIndex((p) => p.hasta / total > avance);
+    const segundos = sonido.tiempoNarracion;
+    if (avance === null || segundos === null || performance.now() - ultimoToque < RETOMAR_NARRACION || !paginas.length) return;
+    let indice: number;
+    if (tiempoDePalabra) {
+      // La página que sigue entra cuando la voz llega a su primera palabra.
+      indice = paginas.findIndex((p) => (tiempoDePalabra[p.palabras] ?? Infinity) > segundos + ADELANTO);
+    } else {
+      const total = paginas[paginas.length - 1].hasta;
+      indice = paginas.findIndex((p) => p.hasta / total > avance);
+    }
     mostrar(indice === -1 ? paginas.length - 1 : indice);
   };
   const dejarDeEscuchar = sonido.escuchar((narrando) => {
     window.clearInterval(reloj);
     if (!narrando) return;
     ultimoToque = -Infinity;
-    reloj = window.setInterval(acompanar, 250);
+    reloj = window.setInterval(acompanar, 100);
     acompanar();
   });
 
