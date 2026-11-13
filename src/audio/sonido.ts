@@ -93,6 +93,14 @@ export class Sonido {
     return Math.min(1, Math.max(0, (this.ctx.currentTime - inicio) / duracion));
   }
 
+  /** Segundos de narración que ya se escucharon. null si no hay narración. */
+  get tiempoNarracion(): number | null {
+    if (!this.narracion || !this.ctx) return null;
+    // Lo que el contexto ya mandó a sonar tarda un poco en salir por el parlante.
+    const demora = this.ctx.outputLatency || this.ctx.baseLatency || 0;
+    return Math.max(0, this.ctx.currentTime - this.narracion.inicio - demora);
+  }
+
   /** Reproduce una narración. Mientras dura, todo lo demás queda de fondo. */
   async narrar(id: string | undefined): Promise<FinNarracion> {
     this.saltear();

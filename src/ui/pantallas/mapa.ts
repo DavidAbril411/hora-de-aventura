@@ -75,7 +75,7 @@ export function mapa(ctx: Contexto<PantallaMapa>): HTMLElement {
   dibujo.juego.append(plano);
 
   const aviso = avisoAudioPendiente(p.narracion, ...(p.ambiente ?? []), ...(p.efectos ?? []));
-  const lectura = subtitulos({ titulo: p.titulo, texto: p.texto, acciones: acciones(pista, subir), avisos: [aviso], sonido: ctx.sonido });
+  const lectura = subtitulos({ titulo: p.titulo, texto: p.texto, acciones: acciones(pista, subir), avisos: [aviso], sonido: ctx.sonido, tiempos: p.tiempos });
   ctx.alSalir(lectura.destruir);
   return h('main', { class: 'disposicion' }, dibujo.raiz, lectura.raiz);
 }

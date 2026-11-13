@@ -74,6 +74,7 @@ export function eleccion(ctx: Contexto<PantallaEleccion>): HTMLElement {
     lectura = subtitulos({
       titulo: dupla.nombre,
       texto: dupla.presentacion,
+      tiempos: dupla.tiempos,
       acciones: acciones(volver, elegir),
       avisos: [avisoAudioPendiente(dupla.narracion)],
       sonido,

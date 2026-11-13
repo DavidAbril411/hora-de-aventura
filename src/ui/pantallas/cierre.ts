@@ -3,7 +3,7 @@ import { historia, t } from '../../engine/historia';
 import type { PantallaCierre } from '../../engine/tipos';
 import { aparecerEnCascada, nubeDePolvo } from '../animaciones';
 import { h } from '../dom';
-import { acciones, avisoAudioPendiente, boton, escenario } from '../componentes';
+import { acciones, avisoAudioPendiente, boton, escenario, ilustracion } from '../componentes';
 import { iconoSeguir, iconoVolver } from '../iconos';
 import { subtitulos } from '../subtitulos';
 
@@ -31,11 +31,13 @@ export function cierre(ctx: Contexto<PantallaCierre>): HTMLElement {
     const { creditos } = historia;
     const secciones = creditos.secciones.map((s) =>
       h(
-        'section',
+        s.titulo ? 'section' : 'div',
         { class: 'creditos__seccion' },
-        h('h2', {}, s.titulo),
+        s.titulo ? h('h2', {}, s.titulo) : null,
         s.detalle ? h('p', { class: 'creditos__detalle' }, s.detalle) : null,
-        s.nombres.length ? h('ul', {}, ...s.nombres.map((n) => h('li', {}, n))) : null,
+        s.nombres?.length ? h('ul', {}, ...s.nombres.map((n) => h('li', {}, n))) : null,
+        s.enlace ? h('a', { class: 'creditos__enlace', href: s.enlace.url, target: '_blank', rel: 'noopener' }, s.enlace.texto) : null,
+        s.logos?.length ? h('div', { class: 'creditos__placa' }, ...s.logos.map((id) => ilustracion(id, 'creditos__logo'))) : null,
         s.pendiente ? h('p', { class: 'aviso-pendiente' }, h('strong', {}, t('pendiente')), ` ${s.pendiente}`) : null,
       ),
     );
@@ -56,6 +58,7 @@ export function cierre(ctx: Contexto<PantallaCierre>): HTMLElement {
   const lectura = subtitulos({
     titulo: p.titulo,
     texto: p.texto,
+    tiempos: p.tiempos,
     acciones: acciones(boton(t('verCreditos'), mostrarCreditos, { icono: iconoSeguir })),
     avisos: [avisoAudioPendiente(p.narracion, ...(p.ambiente ?? []), ...(p.efectos ?? []))],
     sonido,

@@ -27,6 +27,8 @@ export interface Dupla {
   nombre: string;
   presentacion: string[];
   narracion: string;
+  /** Ver PantallaBase.tiempos. */
+  tiempos?: string;
   /** Los dos personajes, que se muestran uno al lado del otro. */
   personajes: string[];
   /** Fondo detrás de la pareja (el escenario de día de la dupla). */
@@ -97,6 +99,12 @@ interface PantallaBase {
   /** Si está, la pantalla solo existe para esa dupla. */
   dupla?: DuplaId;
   narracion?: string;
+  /**
+   * El segundo de la narración en que empieza cada palabra del texto, en
+   * orden y separados por espacios. Los escribe scripts/sincronizar-narracion.py;
+   * si el texto cambia hay que volver a correrlo.
+   */
+  tiempos?: string;
   ambiente?: string[];
   efectos?: string[];
   siguiente?: Siguiente;
@@ -151,9 +159,13 @@ export type Pantalla =
   | PantallaCierre;
 
 export interface SeccionCreditos {
-  titulo: string;
+  titulo?: string;
   detalle?: string;
-  nombres: string[];
+  nombres?: string[];
+  /** Un enlace debajo de los nombres (la página de quien desarrolló). */
+  enlace?: { texto: string; url: string };
+  /** Logos institucionales, en una placa clara: no se recolorean. */
+  logos?: string[];
   /** Qué falta, si los nombres todavía no llegaron. */
   pendiente?: string;
 }

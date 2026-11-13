@@ -29,6 +29,7 @@ export function viaje(ctx: Contexto<PantallaViaje>): HTMLElement {
   const lectura = subtitulos({
     titulo: p.titulo,
     texto: p.texto,
+    tiempos: p.tiempos,
     acciones: acciones(boton(t('seguir'), ctx.avanzar, { icono: iconoSeguir })),
     avisos: [avisoAudioPendiente(p.narracion, ...(p.ambiente ?? []), ...(p.efectos ?? []))],
     sonido: ctx.sonido,

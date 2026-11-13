@@ -90,7 +90,10 @@ export function escenario(
   if (datos.fondo) {
     const fondo = ilustracion(datos.fondo, 'escenario__fondo', momento);
     // Un dibujo que tiene que verse entero va en el área de juego, para que los subtítulos no lo tapen.
-    (historia.imagenes[datos.fondo]?.entero ? juego : raiz).append(fondo);
+    const entero = historia.imagenes[datos.fondo]?.entero;
+    (entero ? juego : raiz).append(fondo);
+    // El mural que cubre la pantalla queda atrás, apagado, para que se distingan los personajes.
+    if (!entero) raiz.classList.add('escenario--mural');
   }
   raiz.append(juego);
   const elementos = new Map<string, { contenedor: HTMLElement; figura: HTMLElement }>();

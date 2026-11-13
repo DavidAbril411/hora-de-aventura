@@ -23,6 +23,9 @@ scripts/
   procesar-audio.sh     # ffmpeg + RNNoise: limpieza, inteligibilidad, loudnorm, AAC
   procesar-imagenes.py  # ImageMagick + OpenCV + rembg: perspectiva, luz, color, recorte, WebP
   inventario.csv        # cada imagen: pantalla, tipo (fondo/recorte), método de recorte elegido
+  procesar-logos.py     # logos institucionales: sin fondo, recortados, WebP
+  guiones-narracion.py  # un .txt por pantalla sin narración, con el nombre que tiene que llevar el audio
+  sincronizar-narracion.py  # Whisper: da de alta narraciones nuevas y guarda el tiempo de cada palabra en historia.json
 PENDIENTES.md          # material que falta y placeholders en uso
 ```
 
