@@ -1175,6 +1175,22 @@
   object-fit: contain;
 }
 
+.ilustracion__versiones {
+  display: contents;
+}
+
+/* En el celular los logos van uno por renglón y tan grandes como entren. */
+@media (max-width: 30rem) {
+  .creditos__placa {
+    padding: 1.25rem 1rem;
+  }
+
+  .creditos__logo {
+    height: auto;
+    max-height: 9.5rem;
+  }
+}
+
 .creditos__seccion .aviso-pendiente {
   margin-top: 0.4rem;
 }
@@ -1183,6 +1199,11 @@
   justify-content: center;
   width: 100%;
   margin-top: 2.5rem;
+}
+
+/* En los créditos no hay flechas de lectura: el botón va centrado. */
+.creditos .acciones::before {
+  content: none;
 }
 
 /* ---------- Ajustes para celular ---------- */

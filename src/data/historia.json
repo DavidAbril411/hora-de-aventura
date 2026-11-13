@@ -278,7 +278,7 @@
             "id": "muffins",
             "nombre": "Muffins",
             "imagen": "ficha-muffins",
-            "x": 10,
+            "x": 13,
             "y": 76,
             "ancho": 11,
             "interaccion": {
@@ -306,7 +306,7 @@
             "id": "globo",
             "nombre": "Un globo",
             "imagen": "ficha-globo",
-            "x": 10,
+            "x": 13,
             "y": 30,
             "ancho": 7,
             "interaccion": {
@@ -989,6 +989,7 @@
     },
     "logo-pesijud": {
       "src": "img/logo-pesijud.webp",
+      "srcAngosta": "img/logo-pesijud-vertical.webp",
       "descripcion": "PESIJuD, Programa de Estudios Sociales en Infancias, Juventudes y Desigualdades. CONICET, Universidad Nacional Villa María, CCONFINES"
     },
     "logo-municipalidad-villa-maria": {

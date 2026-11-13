@@ -8,6 +8,8 @@ export type BloqueTexto = string | { texto: string; estilo: 'destacado' };
 
 export interface Imagen {
   src: string;
+  /** Otra versión para pantallas angostas (un logo apilado en vez del horizontal). */
+  srcAngosta?: string;
   descripcion: string;
   pendiente?: boolean;
   /** El dibujo entero tiene que verse, sin recortar (escenas con fondo transparente). */

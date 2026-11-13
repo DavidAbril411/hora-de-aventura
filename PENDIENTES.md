@@ -83,6 +83,7 @@ Nueve pantallas no tienen narración: los tres días (p03, p04, p05), las tres n
 - No van los nombres de los chicos ni los del equipo. Quedan «Escuela General San Martín», los logos y David Abril con su página.
 - Se mantuvo el encabezado «Escribieron, ilustraron y narraron» arriba de la escuela. Si no va, se borra `titulo` en esa sección de `creditos`.
 - Logos usados: el horizontal de PESIJuD (con CONICET, UNVM y CCONFINES) y el de la Municipalidad de Villa María, los dos en color sobre una placa clara, sin recolorear. Lucila mandó además el de la Secretaría de Educación (color, negro y blanco) y versiones de PESIJuD sobre fondo azul. El de la Secretaría en color quedó tratado en `material-tratado/logos/`: para cambiarlo alcanza con copiarlo a `public/img/` y cambiar el id en `creditos`. Los originales están en `IMAGENES/logos-2026-11-13/`.
+- En el celular el logo de PESIJuD usa la versión apilada (`srcAngosta` en `imagenes`), porque en la horizontal la letra chica no se lee.
 - La página de David es `abrilcodes.com`, tomada del dominio donde está publicado el cuento. A confirmar.
 
 ### Figura y fondo (pedido de David, 13/11)
@@ -101,7 +102,7 @@ Para que los personajes se distingan del mural, el fondo va más transparente so
 
 ### Para la sesión de `/design`
 
-Lo que dejó abierto la critique de Impeccable del 11/11 (22/32; el detalle está en `.impeccable/critique/`):
+Lo que dejaron abierto las critiques de Impeccable del 11/11 (22/32) y del 13/11 (23/32); el detalle está en `.impeccable/critique/`:
 
 - Los colores y la tipografía siguen siendo provisorios (`src/styles/tokens.css`). La franja de subtítulos usa la paleta de noche sobre cualquier imagen.
 - La invitación a tocar es un marco rectangular encima del dibujo; sobre los collages oscuros se ve poco. Conviene que la marca salga del propio dibujo.
@@ -110,6 +111,10 @@ Lo que dejó abierto la critique de Impeccable del 11/11 (22/32; el detalle est�
 - Los créditos son una lista corta con la placa de logos. Se pueden vestir con los dibujos de los chicos; las fichas que no entraron como secretos pueden ir ahí.
 - No hay forma de volver a la pantalla anterior ni de empezar de nuevo antes del final (para tablets compartidas), ni se ve por dónde va el lector en el cuento.
 - El texto de las noches es largo para leerlo por subtítulos (de 9 a 14 tramos). Sin narración, depende de una decisión del equipo.
+- Con el mural apagado, el día se parece más a un atardecer que a una mañana (critique del 13/11). Se dejó así porque David pidió el fondo más oscuro; si hace falta, `--fondo-opacidad` vuelve a subir.
+- El marco que invita a tocar es dorado sobre el mural apagado y azul sobre la fiesta de Camila y Alma, que va sobre blanco.
+- En cada pantalla hay dos formas de avanzar una al lado de la otra: la flecha de seguir leyendo y «Seguir». Un chico puede saltearse la narración sin querer. Cambiarlo toca la regla de que siempre se puede avanzar.
+- En la elección, la consigna queda debajo de las tres parejas, y al volver a elegir no se marca cuál ya se jugó.
 
 ### Técnico
 

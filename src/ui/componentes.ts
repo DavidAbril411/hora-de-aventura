@@ -17,13 +17,16 @@ export function ilustracion(id: string, clase = '', momento?: Momento): HTMLElem
   }
   const noche = momento === 'noche' && datos.cambiaDeColorDeNoche ? ' cambia-de-noche' : '';
   const entero = datos.entero ? ' ilustracion--entera' : '';
-  return h('img', {
+  const imagen = h('img', {
     class: `ilustracion ${clase}${noche}${entero}`,
     src: urlPublica(datos.src),
     alt: descripcion,
     decoding: 'async',
     draggable: 'false',
   });
+  if (!datos.srcAngosta) return imagen;
+  // En el celular se usa la versión angosta; el <picture> no ocupa lugar propio.
+  return h('picture', { class: 'ilustracion__versiones' }, h('source', { media: '(max-width: 30rem)', srcset: urlPublica(datos.srcAngosta) }), imagen);
 }
 
 /** Los dos personajes de una dupla, parados uno al lado del otro. */

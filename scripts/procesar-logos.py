@@ -7,10 +7,12 @@ tratamiento solo los deja livianos y sin fondo:
   - Si el original trae transparencia (PNG), se recorta al contenido.
   - Si viene con fondo claro (los JPEG que llegan por WhatsApp), el fondo
     pasa a transparente y se recorta al contenido.
-  - Se achica a 220 px de alto y se guarda en WebP sin pérdida.
+  - Se achica (220 px de alto, salvo que se pida otro) y se guarda en WebP sin pérdida.
 
 Uso:
-  python3 scripts/procesar-logos.py <original> <salida.webp>
+  python3 scripts/procesar-logos.py <original> <salida.webp> [alto en px]
+
+El alto por defecto es 220 px; un logo apilado, que se muestra más alto, pide más (440).
 
 Necesita Pillow y numpy.
 """
@@ -35,14 +37,15 @@ def sin_fondo_claro(imagen: Image.Image) -> Image.Image:
 
 
 def main() -> int:
-    if len(sys.argv) != 3:
+    if len(sys.argv) not in (3, 4):
         print(__doc__)
         return 2
+    alto = int(sys.argv[3]) if len(sys.argv) == 4 else ALTO
     original = Image.open(sys.argv[1])
     tiene_alfa = original.mode in ("RGBA", "LA") and original.getchannel("A").getextrema()[0] < 255
     logo = original.convert("RGBA") if tiene_alfa else sin_fondo_claro(original)
     logo = logo.crop(logo.getchannel("A").point(lambda v: 255 if v > 20 else 0).getbbox())
-    logo = logo.resize((round(logo.width * ALTO / logo.height), ALTO), Image.LANCZOS)
+    logo = logo.resize((round(logo.width * alto / logo.height), alto), Image.LANCZOS)
     logo.save(sys.argv[2], lossless=True, method=6)
     print(f"{sys.argv[2]}: {logo.width}x{logo.height}")
     return 0
