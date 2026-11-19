@@ -234,10 +234,12 @@ export function acercarse(el: HTMLElement, retraso: number, duracion: number): (
     return () => control.stop();
   }
   el.style.transformOrigin = '50% 100%';
-  animate(el, { opacity: 0, scale: 0.3 }, { duration: 0 });
+  // Desde lejos: más arriba (hacia el horizonte), chico y oscuro. Se queda un
+  // poco más oscuro que los chicos, para que siga dando miedo.
+  animate(el, { opacity: 0, scale: 0.3, y: -40 }, { duration: 0 });
   const pasos = Math.max(2, Math.round(duracion / 0.55));
   const controles = [
-    animate(el, { scale: [0.3, 1], opacity: [0, 1, 1], filter: ['brightness(0.45)', 'brightness(1)'] }, { duration: duracion, delay: retraso, ease: 'easeIn', times: [0, 0.25, 1] }),
+    animate(el, { scale: [0.3, 1], y: [-40, 0], opacity: [0, 1, 1], filter: ['brightness(0.4)', 'brightness(0.82)'] }, { duration: duracion, delay: retraso, ease: 'easeIn', times: [0, 0.25, 1] }),
     animate(el, { rotate: [-4, 4] }, { duration: duracion / pasos, delay: retraso, repeat: pasos - 1, repeatType: 'mirror', ease: 'easeInOut' }),
   ];
   let detenido = false;
@@ -246,7 +248,7 @@ export function acercarse(el: HTMLElement, retraso: number, duracion: number): (
     // El paso final: se adelanta, amenazante, justo cuando suena su risa.
     await animate(el, { rotate: 0 }, { duration: 0.2 });
     if (detenido) return;
-    controles.push(animate(el, { scale: [1, 1.14, 1.06] }, { duration: 0.7, delay: 0.25, ease: SALIDA }));
+    controles.push(animate(el, { scale: [1, 1.25, 1.12], y: [0, 10, 6] }, { duration: 0.7, delay: 0.25, ease: SALIDA }));
   });
   return () => {
     detenido = true;

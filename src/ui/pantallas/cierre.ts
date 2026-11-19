@@ -4,7 +4,7 @@ import type { PantallaCierre } from '../../engine/tipos';
 import { aparecerEnCascada, nubeDePolvo } from '../animaciones';
 import { h } from '../dom';
 import { acciones, avisoAudioPendiente, boton, escenario, ilustracion } from '../componentes';
-import { iconoSeguir, iconoVolver } from '../iconos';
+import { iconoOtraVez, iconoSeguir } from '../iconos';
 import { subtitulos } from '../subtitulos';
 
 /**
@@ -44,7 +44,7 @@ export function cierre(ctx: Contexto<PantallaCierre>): HTMLElement {
     const otraVez = boton(t('volverAJugar'), () => {
       estado.reiniciar();
       ctx.irA(p.reiniciarEn);
-    }, { iconoAntes: iconoVolver });
+    }, { iconoAntes: iconoOtraVez });
     const lista = h('div', { class: 'creditos__lista' }, ...secciones);
     ctx.alVolver(ctx.recargar);
     raiz.className = 'creditos';
