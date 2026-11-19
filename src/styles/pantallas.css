@@ -314,7 +314,8 @@
 /* Reloj decorativo de la noche. */
 .reloj {
   position: absolute;
-  top: max(4%, 0.75rem);
+  /* Debajo de "Volver", que está fijo arriba a la izquierda. */
+  top: calc(var(--toque) + 1.5rem);
   left: max(4%, 0.75rem);
   width: max(4.5rem, calc(12 * var(--u)));
   z-index: 2;
@@ -367,13 +368,21 @@
   z-index: 4;
 }
 
+.chispa--oro {
+  width: 1.4rem;
+  height: 1.4rem;
+  margin: -0.7rem 0 0 -0.7rem;
+  filter: drop-shadow(0 0 0.35rem var(--moneda));
+}
+
 .moneda-volando {
   position: fixed;
-  width: 2.25rem;
-  height: 2.25rem;
-  margin: -1.125rem 0 0 -1.125rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: -1.375rem 0 0 -1.375rem;
   pointer-events: none;
   z-index: 20;
+  filter: drop-shadow(0 0.2rem 0.5rem oklch(0.2 0.05 70 / 0.45));
 }
 
 /* ---------- Subtítulos ---------- */
@@ -799,6 +808,41 @@
 
 .monedas svg {
   width: 2rem;
+}
+
+.monedas {
+  position: relative;
+}
+
+/* El anillo que brilla cuando llega una moneda. */
+.monedas__brillo {
+  position: absolute;
+  inset: -0.2rem;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0.25rem var(--moneda), 0 0 1.4rem 0.3rem var(--moneda);
+  pointer-events: none;
+}
+
+.monedas__suma {
+  position: absolute;
+  top: 100%;
+  right: 0.6rem;
+  margin-top: 0.3rem;
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  background: var(--moneda);
+  color: var(--tinta-sobre-moneda, oklch(0.25 0.06 70));
+  font-size: 1.25rem;
+  pointer-events: none;
+}
+
+/* "Volver", arriba a la izquierda en todas las pantallas que tienen adónde. */
+.control--volver {
+  position: fixed;
+  top: max(0.75rem, env(safe-area-inset-top));
+  left: max(0.75rem, env(safe-area-inset-left));
+  z-index: 10;
+  padding: 0 1.1rem 0 0.8rem;
 }
 
 /* ---------- Pantalla 1: portada ---------- */

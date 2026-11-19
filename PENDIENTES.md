@@ -90,6 +90,21 @@ Nueve pantallas no tienen narración: los tres días (p03, p04, p05), las tres n
 
 Para que los personajes se distingan del mural, el fondo va más transparente sobre una base oscura y con menos color, y los dibujos de encima van más saturados y con sombra. Es todo presentación: los archivos no cambian. Se ajusta en `src/styles/tokens.css` con `--fondo-opacidad` (0,6 de día y 0,8 de noche), `--fondo-saturacion` (0,75) y `--dibujo-saturacion` (1,3). La portada y los dibujos que se muestran enteros (la fiesta, el mapa, la ventana) no se apagan.
 
+### Devoluciones del equipo de Lucila (13/11; David las pasó el 19/11)
+
+Hecho:
+
+- **Volver en todas las pantallas** (punto 6): arriba a la izquierda, menos en la portada. Lleva a la pantalla anterior por el camino que hizo el lector, también después de recargar. En la presentación de una dupla vuelve a la lista (ya no hay un segundo «Volver» abajo) y en los créditos vuelve al final del cuento. Lo descubierto, las monedas y el destino elegido se conservan; si vuelve a la elección y elige otra dupla, monedas, destino y secretos de la anterior arrancan de cero. El reloj de las noches bajó para no quedar debajo del botón.
+- **El viejo de la bolsa más amenazante** (punto 2): en las tres noches aparece chico y oscuro a lo lejos, crece con los pasos del clac clac (`llegada` en el elemento, de los 3,5 s a los 10 s) hasta un tamaño mayor que antes (`ancho` 20 en vez de 14) y, al llegar, se adelanta con una risa grave: `sfx-risa-viejo`, de BigSoundBank, CC0 (ver `scripts/fuentes-sonidos.md`). Con movimiento reducido solo aparece con un fundido.
+- **Monedas con más punch** (punto 7): chispas doradas al hacer el truco, las monedas saltan girando y vuelan al contador, que las cuenta una por una con un rebote, un brillo y el sonido de una moneda (`sfx-moneda`, CC0), y al final muestra «+3». Con movimiento reducido se cuentan igual, sin vuelo.
+
+Esperan al equipo (no se tocan hasta que llegue o se confirme):
+
+- **Textos más cortos** (punto 3): el equipo manda versiones corregidas. Las narraciones de ElevenLabs se hacen con ese texto final. Si cambia el texto que ya grabaron los chicos (intro y duplas), hay que decidir si se regraba o si el texto queda como lo leyeron, y volver a correr `scripts/sincronizar-narracion.py`.
+- **Dibujo nuevo del viejo de la bolsa** (punto 2): lo reenvían porque el actual no está tan definido. Entra por `scripts/procesar-imagenes.py` y reemplaza `img/pj-viejo.webp`.
+- **Objetos de los secretos** (punto 4): quieren dejar los más ambiguos y falta el de la economía. A confirmar cuáles de las doce fichas salen y cuáles de las nueve que no se usan entran.
+- **La «s» del título** (punto 5): a confirmar si es «Hora de aventuras». Cambia `titulo` y el título de la portada en `historia.json`.
+
 ### Contenido que tiene que indicar el equipo (no se inventa)
 
 - **De qué color se pone Rogelio de noche.** Está resuelto con un filtro (`.cambia-de-noche` en `src/styles/pantallas.css`); falta saber el color.

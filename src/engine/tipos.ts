@@ -59,6 +59,19 @@ export interface Interaccion {
   monedas?: number;
   /** Imagen que aparece después de la animación (el sobre, los dientes). */
   aparece?: string;
+  /** Sonido corto de cada moneda al llegar al contador. */
+  sonidoMoneda?: string;
+}
+
+/**
+ * Cómo entra un elemento a la escena. "acercarse": llega desde lejos,
+ * chico, y crece hasta su tamaño. Los segundos se cuentan desde que se
+ * entra a la pantalla, para que coincida con los efectos (los pasos, la risa).
+ */
+export interface Llegada {
+  animacion: 'acercarse';
+  retraso: number;
+  duracion: number;
 }
 
 export interface Elemento {
@@ -71,6 +84,7 @@ export interface Elemento {
   /** Ancho, en % del promedio entre el ancho y el alto del área de juego. */
   ancho: number;
   interaccion?: Interaccion;
+  llegada?: Llegada;
 }
 
 export interface Escenario {

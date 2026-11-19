@@ -17,6 +17,8 @@ const EFECTO_CON_VOZ = 0.3;
 const PESO_ACOMPANIA = 0.5;
 const RAMPA = 0.4; // segundos
 const PAUSA_ENTRE_EFECTOS = 400; // milisegundos
+// Los golpes (la moneda) son cortos: a −26 LUFS se pierden debajo del ambiente.
+const GOLPE = 1.6;
 
 export type FinNarracion = 'terminada' | 'salteada' | 'pendiente';
 type Oyente = (narrando: boolean) => void;
@@ -190,6 +192,18 @@ export class Sonido {
     actual.fuente.onended = null;
     this.apagar(actual, 0.3);
     this.mezclar();
+  }
+
+  /**
+   * Un sonido corto que acompaña un toque (cada moneda que llega). No corta
+   * los efectos de la pantalla ni espera turno: se suma encima.
+   */
+  golpe(id: string): void {
+    const datos = historia.audios[id];
+    if (!datos || datos.pendiente || !this.ctx) return;
+    void this.cargar(id, datos).then((buffer) => {
+      if (buffer && this.ctx) this.sonar(buffer, this.busEfectos, { volumen: GOLPE });
+    });
   }
 
   /** Precarga en segundo plano los audios de una pantalla. */

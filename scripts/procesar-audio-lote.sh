@@ -42,4 +42,6 @@ ambiente|ruidos/perros ladrando.ogg|sfx-perros.m4a
 ambiente|libres-cc0/bsb-0514.wav|sfx-clac-clac.m4a
 ambiente|libres-cc0/bsb-1567.wav|sfx-tic-tac.m4a
 ambiente|libres-cc0/colectivo-armado.wav|sfx-colectivo.m4a
+ambiente|libres-cc0/bsb-0490.wav|sfx-risa-viejo.m4a
+ambiente|libres-cc0/bsb-0340.wav|sfx-moneda.m4a
 LISTA

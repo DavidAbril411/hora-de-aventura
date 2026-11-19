@@ -1,6 +1,6 @@
 import { historia, t, urlPublica } from '../engine/historia';
 import type { Dupla, Elemento, Escenario, Momento } from '../engine/tipos';
-import { fundirTransicion } from './animaciones';
+import { acercarse, fundirTransicion } from './animaciones';
 import { h, svg } from './dom';
 
 /** Una ilustración, o un recuadro PENDIENTE si todavía no llegó tratada. */
@@ -75,6 +75,8 @@ export interface EscenarioDibujado {
   /** El área donde van los elementos: la escena sin la franja de subtítulos. */
   juego: HTMLElement;
   elementos: Map<string, { contenedor: HTMLElement; figura: HTMLElement }>;
+  /** Detiene las animaciones de llegada que sigan andando. */
+  detener: () => void;
 }
 
 /**
@@ -100,6 +102,7 @@ export function escenario(
   }
   raiz.append(juego);
   const elementos = new Map<string, { contenedor: HTMLElement; figura: HTMLElement }>();
+  const detenciones: (() => void)[] = [];
   for (const el of datos.elementos ?? []) {
     const figura = h('span', { class: 'elemento__figura' }, ilustracion(el.imagen, 'elemento__imagen', momento));
     let contenedor: HTMLElement;
@@ -118,6 +121,7 @@ export function escenario(
     ubicar(contenedor, el.x, el.y, el.ancho);
     juego.append(contenedor);
     elementos.set(el.id, { contenedor, figura });
+    if (el.llegada?.animacion === 'acercarse') detenciones.push(acercarse(figura, el.llegada.retraso, el.llegada.duracion));
   }
   // La transición tapa toda la escena, personajes incluidos, y se funde para
   // descubrirla. La primera imagen va arriba de todo: es la que se ve primero.
@@ -126,7 +130,7 @@ export function escenario(
     raiz.append(...[...transicion].reverse());
     fundirTransicion(transicion);
   }
-  return { raiz, juego, elementos };
+  return { raiz, juego, elementos, detener: () => detenciones.forEach((d) => d()) };
 }
 
 /** Ubica un elemento en el área de juego: centro en % y ancho en unidades de escena. */

@@ -76,8 +76,15 @@ export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
       aparecer(objeto);
     }
     if (i.monedas && primeraVez) {
+      // El total se guarda enseguida; el contador las va mostrando a medida que llegan.
+      const contador = ctx.contadorMonedas();
+      contador.retener();
       estado.sumarMonedas(i.monedas);
-      void volarMonedas(botonEl, ctx.contadorMonedas(), i.monedas);
+      const sonido = i.sonidoMoneda;
+      void volarMonedas(botonEl, contador.el, i.monedas, () => {
+        contador.llegaUna();
+        if (sonido) ctx.sonido.golpe(sonido);
+      }, dibujo.raiz).finally(contador.soltar);
     }
     if (i.tipo === 'secreto') mostrarSecreto(el);
 
@@ -110,6 +117,8 @@ export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
   };
 
   const dibujo = escenario(p.escenario, p.momento, (el, b, f) => void alTocar(el, b, f));
+  ctx.alSalir(dibujo.detener);
+  ctx.sonido.precargar(tocables.map((el) => el.interaccion?.sonidoMoneda));
   dibujo.juego.append(tarjeta);
   // Tocar cualquier otra parte del dibujo cierra el secreto.
   dibujo.raiz.addEventListener('click', (e) => {

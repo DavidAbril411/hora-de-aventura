@@ -479,7 +479,8 @@
               "tipo": "truco",
               "animacion": "miami",
               "monedas": 3,
-              "aparece": "objeto-monedas"
+              "aparece": "objeto-monedas",
+              "sonidoMoneda": "sfx-moneda"
             }
           },
           {
@@ -493,7 +494,8 @@
               "tipo": "truco",
               "animacion": "mortal",
               "monedas": 3,
-              "aparece": "objeto-monedas"
+              "aparece": "objeto-monedas",
+              "sonidoMoneda": "sfx-moneda"
             }
           },
           {
@@ -502,7 +504,12 @@
             "imagen": "personaje-viejo-de-la-bolsa",
             "x": 84,
             "y": 58,
-            "ancho": 14
+            "ancho": 20,
+            "llegada": {
+              "animacion": "acercarse",
+              "retraso": 3.5,
+              "duracion": 6.5
+            }
           }
         ]
       },
@@ -516,6 +523,7 @@
       ],
       "efectos": [
         "sfx-clac-clac",
+        "sfx-risa-viejo",
         "sfx-tic-tac"
       ],
       "requiereInteracciones": 1,
@@ -567,7 +575,8 @@
               "tipo": "truco",
               "animacion": "flash",
               "monedas": 1,
-              "aparece": "objeto-sobre-herencia"
+              "aparece": "objeto-sobre-herencia",
+              "sonidoMoneda": "sfx-moneda"
             }
           },
           {
@@ -576,7 +585,12 @@
             "imagen": "personaje-viejo-de-la-bolsa",
             "x": 84,
             "y": 58,
-            "ancho": 14
+            "ancho": 20,
+            "llegada": {
+              "animacion": "acercarse",
+              "retraso": 3.5,
+              "duracion": 6.5
+            }
           }
         ]
       },
@@ -590,6 +604,7 @@
       ],
       "efectos": [
         "sfx-clac-clac",
+        "sfx-risa-viejo",
         "sfx-tic-tac"
       ],
       "requiereInteracciones": 1,
@@ -641,7 +656,8 @@
               "tipo": "truco",
               "animacion": "destellos",
               "monedas": 1,
-              "aparece": "objeto-dientes"
+              "aparece": "objeto-dientes",
+              "sonidoMoneda": "sfx-moneda"
             }
           },
           {
@@ -650,7 +666,12 @@
             "imagen": "personaje-viejo-de-la-bolsa",
             "x": 84,
             "y": 58,
-            "ancho": 14
+            "ancho": 20,
+            "llegada": {
+              "animacion": "acercarse",
+              "retraso": 3.5,
+              "duracion": 6.5
+            }
           }
         ]
       },
@@ -664,6 +685,7 @@
       ],
       "efectos": [
         "sfx-clac-clac",
+        "sfx-risa-viejo",
         "sfx-tic-tac"
       ],
       "requiereInteracciones": 1,
@@ -1067,6 +1089,16 @@
       "src": "audio/sfx-tic-tac.m4a",
       "tipo": "efecto",
       "descripcion": "Tic tac del reloj (falta grabarlo)"
+    },
+    "sfx-risa-viejo": {
+      "src": "audio/sfx-risa-viejo.m4a",
+      "tipo": "efecto",
+      "descripcion": "Risa del viejo de la bolsa cuando llega (CC0)"
+    },
+    "sfx-moneda": {
+      "src": "audio/sfx-moneda.m4a",
+      "tipo": "efecto",
+      "descripcion": "Moneda que cae (CC0)"
     },
     "sfx-colectivo": {
       "src": "audio/sfx-colectivo.m4a",

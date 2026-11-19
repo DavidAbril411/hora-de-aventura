@@ -68,6 +68,8 @@ export function validarHistoria(h: Historia = historia): string[] {
     for (const el of e.elementos ?? []) {
       imagen(el.imagen, `${donde} › ${el.id}`);
       imagen(el.interaccion?.aparece, `${donde} › ${el.id}`);
+      audio(el.interaccion?.sonidoMoneda, `${donde} › ${el.id}`);
+      if (el.llegada && !(el.llegada.retraso >= 0 && el.llegada.duracion > 0)) problemas.push(`${donde} › ${el.id}: "llegada" necesita retraso ≥ 0 y duración > 0`);
     }
   };
 

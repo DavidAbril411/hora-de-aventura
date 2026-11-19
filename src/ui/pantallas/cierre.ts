@@ -46,6 +46,7 @@ export function cierre(ctx: Contexto<PantallaCierre>): HTMLElement {
       ctx.irA(p.reiniciarEn);
     }, { iconoAntes: iconoVolver });
     const lista = h('div', { class: 'creditos__lista' }, ...secciones);
+    ctx.alVolver(ctx.recargar);
     raiz.className = 'creditos';
     document.documentElement.dataset.creditos = '';
     ctx.alSalir(() => delete document.documentElement.dataset.creditos);
