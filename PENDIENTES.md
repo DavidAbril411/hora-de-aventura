@@ -49,10 +49,9 @@ No queda ninguna ilustración PENDIENTE.
 - Cada escena ocupa la pantalla entera. El fondo la cubre y los elementos se ubican en el área que queda arriba de los subtítulos. `x` e `y` son % de esa área; `ancho` está en una unidad que promedia su ancho y su alto, para que un personaje pese parecido en la tablet apaisada y en el celular vertical.
 - Los dibujos que tienen que verse enteros (la fiesta de p04, el mapa de p09, la ventana de p10) no se recortan: se muestran completos dentro de esa área.
 - El texto va abajo, como subtítulos, de a un tramo que entra en la franja (3 renglones en tablet, 4 en celular). El resto se lee con las flechas. El corte es automático, por oraciones, y no cambia ninguna palabra. El texto completo sigue disponible para lectores de pantalla.
-- Donde hay narración (la intro y la presentación de cada dupla), los subtítulos avanzan solos, con el tiempo de cada palabra (ver «Subtítulos sincronizados con la voz»). Las narraciones de las duplas son adaptaciones, así que la voz no dice palabra por palabra lo que muestra el subtítulo.
-- Las escenas de día y de noche, el colectivo, el viaje y el final todavía no tienen narración: ahí el texto se pasa a mano.
+- Donde hay narración (la intro, la presentación de cada dupla y, desde el 20/11, los días, las noches, el colectivo el viaje y el final), los subtítulos avanzan solos, con el tiempo de cada palabra (ver «Subtítulos sincronizados con la voz»). Las narraciones de las duplas son adaptaciones, así que la voz no dice palabra por palabra lo que muestra el subtítulo.
 - Mientras queda texto por leer, la flecha de seguir leyendo es el botón amarillo y la acción de la pantalla («Seguir») queda en contorno; al llegar al último tramo se invierte. Se puede avanzar igual en cualquier momento.
-- Si el lector toca una flecha mientras suena la narración, los subtítulos esperan 8 segundos y vuelven a seguir la voz.
+- Si el lector toca una flecha mientras suena la narración, la voz salta al comienzo de ese tramo (exacto donde hay tiempos por palabra; por el largo del texto en las presentaciones de las duplas).
 - En el final, el viejo desaparece cuando el lector llega a «el viejo ya no está» (`desaparece.alLeer` en `historia.json`).
 
 ### Audio
@@ -65,7 +64,7 @@ Integrados también los tres sonidos libres (CC0) que buscó el thread de materi
 
 ### Narraciones que faltan grabar (David las genera con ElevenLabs, 13/11)
 
-Nueve pantallas no tienen narración: los tres días (p03, p04, p05), las tres noches (p06, p07, p08), el colectivo (p09), el viaje (p10) y el final (p11). No hay placeholder en pantalla: hasta que llegue el audio, el texto se pasa a mano.
+El 20/11 llegaron de ElevenLabs las de los días (p03, p04, p05), las noches (p06, p07, p08), el colectivo (p09) y el viaje (p10): originales en la Library, `NARRACIONES/elevenlabs-2026-11-20/` (narrador-1 a 8, en ese orden), tratadas con `MEZCLA_RNN=0` (voz sintética, sin ruido que limpiar) y sincronizadas, con 99-100 % de coincidencia. El final (p11) llegó después, en un solo audio con una sola voz (`cierre/cierre-completo-…mp3`), y quedó sincronizado con 97 %. Si David lo rehace partido por personaje, se unen las partes en un solo `narracion-p11-cierre` y se vuelve a sincronizar. A escuchar: en las noches los efectos (clac clac, risa, tic tac) suenan a tiempo fijo debajo de la voz, que también los nombra.
 
 - Los guiones salen de `historia.json` con `python3 scripts/guiones-narracion.py <carpeta>`: un `.txt` por pantalla, con el texto tal cual. Los del 13/11 están en la Library, en `motor/guiones-narracion/`.
 - Cada audio se llama como su pantalla: `narracion-p03-dia-jp-roberto`, `narracion-p09-colectivo`, etc.

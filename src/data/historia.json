@@ -147,6 +147,8 @@
         },
         "Todavía falta mucho para que llegue la noche. Por ahora, el pueblo está despierto. Y parece estar esperando que alguien descubra qué esconde."
       ],
+      "narracion": "narracion-p03-dia-jp-roberto",
+      "tiempos": "0.00 0.28 0.62 1.20 2.22 2.44 2.74 3.40 3.50 3.78 4.18 5.36 5.58 5.94 6.58 6.82 7.12 7.92 8.12 8.44 8.80 9.12 9.44 9.76 10.22 10.86 11.14 11.80 12.00 12.16 12.78 13.02 13.24 13.50 13.90 14.20 14.46 14.74 15.32 15.72 15.96 16.22 17.34 17.56 17.80 17.92 18.36 18.72 19.08 19.62 19.94 20.64 20.84 21.06 22.00 22.22 22.64 22.98 23.42 23.64 24.18 24.34 24.76 24.94 25.12 25.96 26.22 26.78 27.04 27.40 27.74 28.58 28.82 29.36 29.64 30.10 30.40 30.70 30.98 31.26 32.12 32.40 32.92 33.22 33.52 33.76 34.22 34.82 35.12 35.78 36.24 36.92 36.98 37.10 38.06 38.46 38.70 39.08 39.50 39.72 39.92 40.40 40.86 41.14 42.28 42.46 42.68 42.88 43.22 43.90 44.30 44.62 45.10 45.30 45.70 45.90 46.70 47.10 47.42 47.80 48.04 48.24 48.42 48.62 49.26 49.54 49.90 50.24 50.52 50.78 51.40 51.94 52.22 52.54 53.02 53.40 53.76 54.46 54.84",
       "escenario": {
         "fondo": "p03-dia-jp-roberto-fondo",
         "elementos": [
@@ -268,6 +270,8 @@
         },
         "Todavía falta mucho para que llegue la noche. Por ahora, el pueblo está despierto. Y parece estar esperando que alguien descubra qué esconde."
       ],
+      "narracion": "narracion-p04-dia-camila-alma",
+      "tiempos": "0.00 0.28 0.58 1.14 2.20 2.44 2.74 3.34 3.46 3.68 4.10 5.30 5.50 5.82 6.46 6.72 7.00 7.78 7.96 8.34 8.64 8.90 9.26 9.56 10.00 10.66 10.98 11.62 11.80 12.00 12.58 12.84 13.02 13.30 13.66 13.96 14.22 14.54 15.12 15.56 15.76 16.02 17.16 17.38 17.62 17.76 18.50 18.62 18.90 19.50 19.86 20.54 20.78 21.00 22.00 22.22 22.58 22.92 23.32 23.56 24.16 24.34 24.78 24.98 25.16 25.92 26.16 26.66 26.92 27.32 27.66 28.48 28.72 29.12 29.38 29.84 30.16 30.46 30.72 31.00 31.90 32.18 32.70 32.98 33.24 33.50 33.94 34.48 34.82 35.44 35.92 36.58 36.66 36.78 37.78 38.00 38.20 38.58 38.98 39.18 39.40 39.84 40.28 40.52 41.68 41.92 42.12 42.38 42.72 42.92 43.16 43.40 44.16 44.42 44.66 45.46 46.10 46.38 46.82 47.04 48.28 48.70 49.02 49.40 49.66 49.84 50.04 50.24 50.94 51.24 51.58 51.98 52.32 52.60 53.68 53.94 54.16 54.50 54.92 55.30 55.66 56.30 56.62",
       "escenario": {
         "fondo": "p04-dia-camila-alma-fondo",
         "elementos": [
@@ -362,6 +366,8 @@
         },
         "Todavía falta mucho para que llegue la noche. Por ahora, el pueblo está despierto. Y parece estar esperando que alguien descubra qué esconde."
       ],
+      "narracion": "narracion-p05-dia-diana-rogelio",
+      "tiempos": "0.00 0.26 0.58 1.16 2.22 2.46 2.76 3.38 3.50 3.76 4.16 5.38 5.56 5.90 6.54 6.78 7.06 7.84 8.04 8.40 8.72 9.00 9.36 9.68 10.14 10.88 11.20 11.94 12.14 12.30 12.94 13.18 13.40 13.66 14.00 14.30 14.56 14.88 15.40 15.84 16.04 16.30 17.50 17.70 17.96 18.08 18.90 19.02 19.30 19.92 20.24 20.96 21.20 21.42 22.42 22.64 23.04 23.42 23.80 24.02 24.54 24.70 25.14 25.30 25.48 26.34 26.56 27.16 27.44 27.80 28.04 28.58 29.18 29.76 30.02 30.46 30.74 31.06 31.32 31.64 32.52 32.80 33.32 33.60 33.88 34.14 35.12 35.28 35.52 36.20 36.70 37.38 37.44 37.58 38.58 38.94 39.18 39.56 39.94 40.14 40.34 40.78 41.24 41.48 42.98 43.18 43.32 43.86 44.36 44.94 45.18 45.52 46.14 46.36 46.62 47.00 47.46 47.80 48.00 48.20 48.68 49.06 49.48 49.68 49.84 50.66 51.08 51.42 51.82 52.08 52.26 52.46 52.68 52.94 53.56 53.98 54.38 54.66 54.90 55.60 56.18 56.46 56.76 57.28 57.76 58.10 58.78 59.14",
       "escenario": {
         "fondo": "p05-dia-diana-rogelio-fondo",
         "elementos": [
@@ -466,6 +472,8 @@
         },
         "El reloj comienza a avanzar. Tic… tac… tic… tac… La noche se acerca."
       ],
+      "narracion": "narracion-p06-noche-jp-roberto",
+      "tiempos": "0.00 0.36 0.76 0.86 1.14 1.36 2.10 2.22 2.50 2.74 3.08 4.04 4.36 5.62 6.16 6.54 6.86 7.04 7.30 8.44 9.26 10.18 11.36 11.48 11.66 11.90 12.06 12.22 13.26 13.58 13.86 14.72 15.04 15.30 15.72 16.02 16.46 17.54 17.92 18.24 18.58 18.80 19.04 19.20 19.44 19.74 20.18 20.70 21.06 21.44 21.68 22.14 22.48 22.76 23.94 24.18 24.42 24.70 25.64 25.86 26.06 26.30 26.56 26.98 27.36 28.10 28.34 28.50 28.70 28.98 29.16 29.94 30.16 30.40 30.74 30.98 31.24 31.94 32.14 32.50 33.00 33.20 34.30 34.50 34.66 35.12 35.38 36.20 36.72 36.96 37.88 38.12 38.40 39.32 39.52 39.78 40.36 40.70 41.18 41.70 41.94 42.18 42.40 42.78 44.02 44.20 44.54 44.80 45.02 45.82 46.02 46.36 46.64 46.98 48.12 48.30 48.48 48.68 49.08 49.46 49.78 50.16 50.46 50.80 51.06 51.52 51.94 52.16 52.52 52.78 52.92 53.44 54.18 54.68 55.08 55.18 56.18 56.90 57.58 58.84 59.56 60.04 60.32 60.64",
       "escenario": {
         "fondo": "p06-noche-jp-roberto-fondo",
         "transicion": [
@@ -519,8 +527,8 @@
           {
             "id": "escondite-1",
             "nombre": "Algo brilla",
-            "x": 36,
-            "y": 10,
+            "x": 40,
+            "y": 30,
             "ancho": 5,
             "interaccion": {
               "tipo": "escondite",
@@ -631,6 +639,8 @@
         },
         "El reloj comienza a avanzar. Tic… tac… tic… tac… La noche se acerca."
       ],
+      "narracion": "narracion-p07-noche-camila-alma",
+      "tiempos": "0.00 0.36 0.78 0.90 1.22 1.40 2.14 2.24 2.52 2.76 3.10 3.98 4.28 5.54 6.46 6.60 6.88 7.06 7.30 8.54 9.36 10.22 11.28 11.40 11.60 11.84 12.00 12.18 13.20 13.54 13.82 14.62 14.92 15.20 15.58 15.94 16.38 17.46 17.88 18.14 18.44 18.66 18.90 19.04 19.30 19.58 20.02 20.54 20.92 21.20 21.42 21.94 22.28 22.54 23.62 23.86 24.10 24.38 25.34 25.58 25.82 26.06 26.32 26.72 27.10 27.78 28.06 28.26 28.66 28.74 28.92 29.72 29.94 30.16 30.52 30.74 31.00 31.64 31.86 32.22 32.70 32.92 33.90 34.06 34.26 34.68 34.92 35.76 36.32 36.58 37.44 37.68 37.96 39.00 39.18 39.48 40.08 40.32 40.88 41.46 41.72 41.94 42.20 42.54 43.56 43.72 44.08 44.36 44.58 45.50 45.70 46.04 46.36 46.64 47.84 48.06 48.24 48.48 48.84 49.10 49.40 49.68 49.90 50.08 50.28 50.44 51.34 51.56 51.86 52.12 52.34 53.12 53.50 54.00 55.06 55.30 55.78 56.02 56.30 56.82 57.76 57.96 58.16 58.38 58.60 58.96 60.10 60.28 60.64 60.90 61.26 61.74 62.20 62.56 62.98 63.32 64.30 64.56 65.08 65.52 65.66 66.86 67.58 68.54 69.38 70.30 70.48 70.86 71.22",
       "escenario": {
         "fondo": "p07-noche-camila-alma-fondo",
         "transicion": [
@@ -677,8 +687,8 @@
           {
             "id": "escondite-1",
             "nombre": "Algo brilla",
-            "x": 38,
-            "y": 10,
+            "x": 40,
+            "y": 26,
             "ancho": 5,
             "interaccion": {
               "tipo": "escondite",
@@ -802,6 +812,8 @@
         },
         "El reloj comienza a avanzar. Tic… tac… tic… tac… La noche se acerca."
       ],
+      "narracion": "narracion-p08-noche-diana-rogelio",
+      "tiempos": "0.00 0.38 0.76 0.86 1.16 1.36 2.08 2.20 2.48 2.74 3.06 4.02 4.38 5.60 6.18 6.64 6.96 7.14 7.40 8.54 9.34 10.20 11.26 11.40 11.60 11.82 11.98 12.16 13.14 13.52 13.80 14.66 14.98 15.24 15.64 16.06 16.52 17.66 18.02 18.38 18.72 18.94 19.18 19.30 19.56 19.86 20.34 20.86 21.24 21.66 21.88 22.36 22.74 23.02 24.18 24.40 24.64 24.90 25.82 26.06 26.28 26.50 26.76 27.18 27.58 28.28 28.52 28.68 28.90 29.14 29.32 30.10 30.32 30.56 30.92 31.14 31.38 32.10 32.26 32.62 33.12 33.30 34.30 34.54 34.74 35.16 35.40 36.22 36.78 37.02 37.92 38.18 38.44 39.38 39.60 39.86 40.44 40.76 41.32 41.88 42.12 42.36 42.58 42.96 43.96 44.18 44.54 44.80 45.00 45.80 46.04 46.38 46.70 47.02 48.22 48.36 48.50 49.02 49.42 49.82 50.70 50.90 51.26 51.44 51.76 52.60 53.76 54.02 54.82 55.02 55.62 56.14 56.14 56.66 57.74 57.98 58.54 58.96 59.02 60.30 60.72 61.92 62.46 63.62 63.80 64.04 64.32",
       "escenario": {
         "fondo": "p08-noche-diana-rogelio-fondo",
         "transicion": [
@@ -849,7 +861,7 @@
             "id": "escondite-1",
             "nombre": "Algo brilla",
             "x": 40,
-            "y": 12,
+            "y": 28,
             "ancho": 5,
             "interaccion": {
               "tipo": "escondite",
@@ -963,6 +975,8 @@
       "texto": [
         "Las monedas ya están en sus manos. Ahora sí, ya pueden volver a casa. A lo lejos aparece el colectivo. Sus luces atraviesan la oscuridad y se detiene suavemente frente a ellos. Es momento de elegir a dónde queremos ir. Puede ser volver a la Escuela San Martín, puede ser volver a casa, o podemos ir a explorar otros pueblos lejanos. El mapa que nos ofrece el chofer, nos permite elegir qué recorrido tomar. ¿A dónde te gustaría ir? Tocá en el mapa el camino elegido."
       ],
+      "narracion": "narracion-p09-colectivo",
+      "tiempos": "0.00 0.30 0.92 1.22 1.42 1.58 1.76 2.46 2.88 3.46 3.80 4.12 4.48 4.66 5.50 5.62 5.80 6.14 6.50 6.76 7.72 7.92 8.42 8.98 9.14 9.72 9.98 10.22 10.64 11.50 11.78 12.06 12.86 13.02 13.44 13.68 14.22 14.46 14.68 15.08 15.82 16.10 16.32 16.62 16.76 16.92 17.10 17.40 18.40 18.56 18.82 19.08 19.30 19.58 20.06 20.44 20.66 20.92 21.40 21.72 22.14 23.14 23.34 23.54 23.72 24.00 24.20 24.40 24.82 25.10 25.48 26.10 26.36 26.88 27.26 27.88 28.02 28.24 28.62 29.46 29.70 29.84 30.00 30.20 30.40 30.70",
       "escenario": {
         "fondo": "p09-colectivo-fondo"
       },
@@ -1004,6 +1018,8 @@
       "texto": [
         "Luego de elegir, suben y se acomodan en sus asientos, mientras el colectivo comienza a recorrer la isla, miran por la ventana. Las casas quedan atrás. El bosque se pierde entre las nubes. La laguna brilla por última vez bajo la luz de la luna. El viaje parece durar apenas unos minutos. O quizás mucho más. Hasta que, finalmente, el colectivo se detiene."
       ],
+      "narracion": "narracion-p10-viaje",
+      "tiempos": "0.00 0.42 0.66 1.68 1.92 2.06 2.26 2.72 2.86 3.04 3.84 4.16 4.42 4.86 5.36 5.58 5.96 6.10 6.88 7.06 7.26 7.40 8.46 8.68 9.10 9.52 10.46 10.56 10.96 11.28 11.70 11.92 12.18 13.12 13.26 13.68 14.16 14.44 14.82 15.12 15.42 15.62 15.72 15.94 16.08 16.86 17.02 17.30 17.66 18.12 18.50 18.76 19.86 19.98 20.62 20.92 21.98 22.10 22.92 23.70 23.86 24.30 24.56",
       "ventana": "p10-ventana",
       "ambiente": [
         "amb-viento"
@@ -1030,6 +1046,8 @@
         "¿El viejo estuvo allí de verdad? ¿O fue una ilusión?",
         "Una cosa es segura: ¡ya quieren volver a visitar el pueblo sobre la isla!"
       ],
+      "narracion": "narracion-p11-cierre",
+      "tiempos": "0.00 1.48 1.62 2.02 2.48 2.68 3.72 3.98 4.38 4.64 5.70 6.02 6.78 7.68 7.96 8.34 8.76 9.20 9.84 10.04 10.38 10.62 11.38 11.82 12.14 12.60 12.90 13.16 13.90 14.16 14.76 14.98 15.80 16.12 16.58 17.14 17.44 17.66 17.92 18.08 18.28 19.08 20.12 20.32 20.56 20.88 21.90 22.28 22.50 23.02 23.52 23.74 23.96 24.30 24.80 25.58 25.92 26.12 26.44 26.70 27.48 28.02 28.20 28.60 29.68 29.96 30.30 30.54 30.92 31.08 31.22 32.06 32.28 32.64 33.28 33.58 34.44 34.72 34.88 35.00 35.24 36.24 36.38 36.66 37.84 38.16 38.36 38.66 39.22 39.56 39.84 40.66 40.88 41.14 41.36 41.60 42.84 43.06 43.34 43.76 43.98 44.22 45.12 45.38 45.60 45.86 46.88 47.20 47.46 47.76 48.46 48.78 49.18 49.60 49.82 50.12 50.30 50.58 50.90 51.14",
       "escenario": {
         "fondo": "p11-cierre-fondo",
         "elementos": [
@@ -1376,6 +1394,51 @@
       "src": "audio/sfx-colectivo.m4a",
       "tipo": "efecto",
       "descripcion": "El colectivo que llega y frena (falta grabarlo)"
+    },
+    "narracion-p03-dia-jp-roberto": {
+      "src": "audio/narracion-p03-dia-jp-roberto.m4a",
+      "tipo": "narracion",
+      "descripcion": "Narración de la pantalla 3 (p03-dia-jp-roberto)"
+    },
+    "narracion-p04-dia-camila-alma": {
+      "src": "audio/narracion-p04-dia-camila-alma.m4a",
+      "tipo": "narracion",
+      "descripcion": "Narración de la pantalla 4 (p04-dia-camila-alma)"
+    },
+    "narracion-p05-dia-diana-rogelio": {
+      "src": "audio/narracion-p05-dia-diana-rogelio.m4a",
+      "tipo": "narracion",
+      "descripcion": "Narración de la pantalla 5 (p05-dia-diana-rogelio)"
+    },
+    "narracion-p06-noche-jp-roberto": {
+      "src": "audio/narracion-p06-noche-jp-roberto.m4a",
+      "tipo": "narracion",
+      "descripcion": "Narración de la pantalla 6 (p06-noche-jp-roberto)"
+    },
+    "narracion-p07-noche-camila-alma": {
+      "src": "audio/narracion-p07-noche-camila-alma.m4a",
+      "tipo": "narracion",
+      "descripcion": "Narración de la pantalla 7 (p07-noche-camila-alma)"
+    },
+    "narracion-p08-noche-diana-rogelio": {
+      "src": "audio/narracion-p08-noche-diana-rogelio.m4a",
+      "tipo": "narracion",
+      "descripcion": "Narración de la pantalla 8 (p08-noche-diana-rogelio)"
+    },
+    "narracion-p09-colectivo": {
+      "src": "audio/narracion-p09-colectivo.m4a",
+      "tipo": "narracion",
+      "descripcion": "Narración de la pantalla 9 (p09-colectivo)"
+    },
+    "narracion-p10-viaje": {
+      "src": "audio/narracion-p10-viaje.m4a",
+      "tipo": "narracion",
+      "descripcion": "Narración de la pantalla 10 (p10-viaje)"
+    },
+    "narracion-p11-cierre": {
+      "src": "audio/narracion-p11-cierre.m4a",
+      "tipo": "narracion",
+      "descripcion": "Narración de la pantalla 11 (p11-cierre)"
     }
   }
 }
