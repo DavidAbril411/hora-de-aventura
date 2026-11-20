@@ -49,10 +49,9 @@ No queda ninguna ilustración PENDIENTE.
 - Cada escena ocupa la pantalla entera. El fondo la cubre y los elementos se ubican en el área que queda arriba de los subtítulos. `x` e `y` son % de esa área; `ancho` está en una unidad que promedia su ancho y su alto, para que un personaje pese parecido en la tablet apaisada y en el celular vertical.
 - Los dibujos que tienen que verse enteros (la fiesta de p04, el mapa de p09, la ventana de p10) no se recortan: se muestran completos dentro de esa área.
 - El texto va abajo, como subtítulos, de a un tramo que entra en la franja (3 renglones en tablet, 4 en celular). El resto se lee con las flechas. El corte es automático, por oraciones, y no cambia ninguna palabra. El texto completo sigue disponible para lectores de pantalla.
-- Donde hay narración (la intro y la presentación de cada dupla), los subtítulos avanzan solos, con el tiempo de cada palabra (ver «Subtítulos sincronizados con la voz»). Las narraciones de las duplas son adaptaciones, así que la voz no dice palabra por palabra lo que muestra el subtítulo.
-- Las escenas de día y de noche, el colectivo, el viaje y el final todavía no tienen narración: ahí el texto se pasa a mano.
+- Donde hay narración (la intro, la presentación de cada dupla y, desde el 20/11, los días, las noches, el colectivo el viaje y el final), los subtítulos avanzan solos, con el tiempo de cada palabra (ver «Subtítulos sincronizados con la voz»). Las narraciones de las duplas son adaptaciones, así que la voz no dice palabra por palabra lo que muestra el subtítulo.
 - Mientras queda texto por leer, la flecha de seguir leyendo es el botón amarillo y la acción de la pantalla («Seguir») queda en contorno; al llegar al último tramo se invierte. Se puede avanzar igual en cualquier momento.
-- Si el lector toca una flecha mientras suena la narración, los subtítulos esperan 8 segundos y vuelven a seguir la voz.
+- Si el lector toca una flecha mientras suena la narración, la voz salta al comienzo de ese tramo (exacto donde hay tiempos por palabra; por el largo del texto en las presentaciones de las duplas).
 - En el final, el viejo desaparece cuando el lector llega a «el viejo ya no está» (`desaparece.alLeer` en `historia.json`).
 
 ### Audio
@@ -65,7 +64,7 @@ Integrados también los tres sonidos libres (CC0) que buscó el thread de materi
 
 ### Narraciones que faltan grabar (David las genera con ElevenLabs, 13/11)
 
-Nueve pantallas no tienen narración: los tres días (p03, p04, p05), las tres noches (p06, p07, p08), el colectivo (p09), el viaje (p10) y el final (p11). No hay placeholder en pantalla: hasta que llegue el audio, el texto se pasa a mano.
+El 20/11 llegaron de ElevenLabs las de los días (p03, p04, p05), las noches (p06, p07, p08), el colectivo (p09) y el viaje (p10): originales en la Library, `NARRACIONES/elevenlabs-2026-11-20/` (narrador-1 a 8, en ese orden), tratadas con `MEZCLA_RNN=0` (voz sintética, sin ruido que limpiar) y sincronizadas, con 99-100 % de coincidencia. El final (p11) llegó después, en un solo audio con una sola voz (`cierre/cierre-completo-…mp3`), y quedó sincronizado con 97 %. Si David lo rehace partido por personaje, se unen las partes en un solo `narracion-p11-cierre` y se vuelve a sincronizar. A escuchar: en las noches los efectos (clac clac, risa, tic tac) suenan a tiempo fijo debajo de la voz, que también los nombra.
 
 - Los guiones salen de `historia.json` con `python3 scripts/guiones-narracion.py <carpeta>`: un `.txt` por pantalla, con el texto tal cual. Los del 13/11 están en la Library, en `motor/guiones-narracion/`.
 - Cada audio se llama como su pantalla: `narracion-p03-dia-jp-roberto`, `narracion-p09-colectivo`, etc.
@@ -103,7 +102,7 @@ Esperan al equipo (no se tocan hasta que llegue o se confirme):
 
 - **Textos más cortos** (punto 3): llegó el 19/11 la «reescritura del guion, versión intermedia» (original en la Library, `textos/reescritura-guion-version-intermedia-2026-11-19.txt`) y se cargó el 20/11 tal cual: las presentaciones de las duplas en primera persona, el comienzo del día, el comienzo de la noche y el final. Lo que el documento marca «OK» (intro, partes de cada dupla, colectivo y viaje) quedó igual. En la noche quedan, después del texto nuevo, la frase de cada dupla y «El reloj comienza a avanzar…» (se leyó como parte de «el resto»).
   - Dos posibles erratas que se dejaron como vinieron, a confirmar: «se volar» (¿«sé volar»?, presentación de Diana) y «se puede observar como el bosque» (¿«cómo»?, el día).
-  - **Las presentaciones de las duplas no coinciden con su audio**: siguen sonando las voces de los chicos, que leyeron el texto anterior en tercera persona. Se sacaron sus `tiempos` (los subtítulos pasan por proporción). Hay que decidir si se regraban; los guiones nuevos están en la Library, `motor/guiones-narracion-2026-11-20/`, junto con los de las nueve pantallas sin voz.
+  - **Las presentaciones de las duplas no coinciden con su audio**: siguen sonando las voces de los chicos, que leyeron el texto anterior en tercera persona. Se sacaron sus `tiempos` (los subtítulos pasan por proporción). David decidió el 20/11 dejar el audio viejo: suena la versión en tercera persona y el subtítulo nuevo avanza por proporción; los guiones nuevos están en la Library, `motor/guiones-narracion-2026-11-20/`. Los textos del narrador para ElevenLabs están en el doc «Textos del narrador para ElevenLabs» (https://claude.ai/artifact/GXBdwbcwi941GDwmBCy4f6).
 - **Dibujo nuevo del viejo de la bolsa** (punto 2): llegó el 19/11 y ya reemplaza a `img/pj-viejo.webp` (recorte A; el anterior quedó en `material-tratado/descartados/viejo-2026-10-26/`).
 - **Objetos de los secretos** (punto 4): quieren dejar los más ambiguos y falta el de la economía. A confirmar cuáles de las doce fichas salen y cuáles de las nueve que no se usan entran.
 - **La «s» del título** (punto 5): a confirmar si es «Hora de aventuras». Cambia `titulo` y el título de la portada en `historia.json`.
