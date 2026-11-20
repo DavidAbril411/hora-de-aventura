@@ -104,13 +104,19 @@ export function escenario(
   const elementos = new Map<string, { contenedor: HTMLElement; figura: HTMLElement }>();
   const detenciones: (() => void)[] = [];
   for (const el of datos.elementos ?? []) {
-    const figura = h('span', { class: 'elemento__figura' }, ilustracion(el.imagen, 'elemento__imagen', momento));
+    // Un escondite no tiene dibujo: es un brillo sobre el mural.
+    const escondite = el.interaccion?.tipo === 'escondite';
+    const figura = h(
+      'span',
+      { class: 'elemento__figura' },
+      el.imagen ? ilustracion(el.imagen, 'elemento__imagen', momento) : h('span', { class: 'escondite__brillo', 'aria-hidden': 'true' }),
+    );
     let contenedor: HTMLElement;
     if (el.interaccion && alTocar) {
       const b = h(
         'button',
-        { type: 'button', class: 'elemento elemento--tocable', 'aria-label': el.nombre, 'data-elemento': el.id },
-        h('span', { class: 'elemento__invitacion', 'aria-hidden': 'true' }),
+        { type: 'button', class: `elemento elemento--tocable${escondite ? ' elemento--escondite' : ''}`, 'aria-label': el.nombre, 'data-elemento': el.id },
+        escondite ? null : h('span', { class: 'elemento__invitacion', 'aria-hidden': 'true' }),
         figura,
       );
       b.addEventListener('click', () => alTocar(el, b, figura));

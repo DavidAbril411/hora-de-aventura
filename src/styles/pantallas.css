@@ -188,6 +188,29 @@
   touch-action: manipulation;
 }
 
+/* Escondite: un brillo dorado sobre el mural que esconde monedas. El área
+   para tocar es la de cualquier elemento (60 px); el brillo es más chico. */
+.elemento--escondite {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+}
+
+.elemento--escondite .elemento__figura {
+  width: 70%;
+  transform-origin: 50% 50%;
+  /* El resplandor va en el padre: el recorte de la estrella también recortaría su sombra. */
+  filter: drop-shadow(0 0 0.45rem var(--moneda));
+}
+
+.escondite__brillo {
+  display: block;
+  aspect-ratio: 1;
+  background: var(--moneda);
+  clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+  opacity: 0.8;
+}
+
 .elemento--tocable .ilustracion.pendiente {
   border-style: solid;
 }

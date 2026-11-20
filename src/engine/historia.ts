@@ -66,7 +66,9 @@ export function validarHistoria(h: Historia = historia): string[] {
     imagen(e.fondo, donde);
     e.transicion?.forEach((id) => imagen(id, `${donde} › transición`));
     for (const el of e.elementos ?? []) {
-      imagen(el.imagen, `${donde} › ${el.id}`);
+      if (el.imagen) imagen(el.imagen, `${donde} › ${el.id}`);
+      else if (el.interaccion?.tipo !== 'escondite') problemas.push(`${donde} › ${el.id}: falta "imagen" (solo los escondites no tienen)`);
+      if (el.interaccion?.tipo === 'escondite' && !el.interaccion.monedas) problemas.push(`${donde} › ${el.id}: un escondite tiene que dar monedas`);
       imagen(el.interaccion?.aparece, `${donde} › ${el.id}`);
       audio(el.interaccion?.sonidoMoneda, `${donde} › ${el.id}`);
       if (el.llegada && !(el.llegada.retraso >= 0 && el.llegada.duracion > 0)) problemas.push(`${donde} › ${el.id}: "llegada" necesita retraso ≥ 0 y duración > 0`);

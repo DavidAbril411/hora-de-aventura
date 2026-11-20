@@ -26,7 +26,9 @@
     "elegirDestino": "Tocá un lugar del mapa",
     "inicio": "Inicio",
     "leerAnterior": "Leer lo anterior",
-    "leerSiguiente": "Seguir leyendo"
+    "leerSiguiente": "Seguir leyendo",
+    "monedasConsigna": "Juntá al menos {objetivo} monedas. Tenés {tenes}.",
+    "monedasLogradas": "¡Ya tenés {tenes} monedas! Podés seguir o buscar más."
   },
   "duplas": {
     "jp-roberto": {
@@ -512,6 +514,84 @@
               "retraso": 3.5,
               "duracion": 6.5
             }
+          },
+          {
+            "id": "escondite-1",
+            "nombre": "Algo brilla",
+            "x": 12,
+            "y": 46,
+            "ancho": 5,
+            "interaccion": {
+              "tipo": "escondite",
+              "animacion": "brillar",
+              "monedas": 1,
+              "sonidoMoneda": "sfx-moneda"
+            }
+          },
+          {
+            "id": "escondite-2",
+            "nombre": "Algo brilla",
+            "x": 44,
+            "y": 26,
+            "ancho": 5,
+            "interaccion": {
+              "tipo": "escondite",
+              "animacion": "brillar",
+              "monedas": 2,
+              "sonidoMoneda": "sfx-moneda"
+            }
+          },
+          {
+            "id": "escondite-3",
+            "nombre": "Algo brilla",
+            "x": 70,
+            "y": 24,
+            "ancho": 5,
+            "interaccion": {
+              "tipo": "escondite",
+              "animacion": "brillar",
+              "monedas": 1,
+              "sonidoMoneda": "sfx-moneda"
+            }
+          },
+          {
+            "id": "escondite-4",
+            "nombre": "Algo brilla",
+            "x": 88,
+            "y": 86,
+            "ancho": 5,
+            "interaccion": {
+              "tipo": "escondite",
+              "animacion": "brillar",
+              "monedas": 2,
+              "sonidoMoneda": "sfx-moneda"
+            }
+          },
+          {
+            "id": "escondite-5",
+            "nombre": "Algo brilla",
+            "x": 54,
+            "y": 88,
+            "ancho": 5,
+            "interaccion": {
+              "tipo": "escondite",
+              "animacion": "brillar",
+              "monedas": 1,
+              "sonidoMoneda": "sfx-moneda"
+            }
+          },
+          {
+            "id": "escondite-6",
+            "nombre": "Algo brilla",
+            "x": 20,
+            "y": 88,
+            "ancho": 5,
+            "interaccion": {
+              "tipo": "escondite",
+              "animacion": "brillar",
+              "monedas": 1,
+              "sonidoMoneda": "sfx-moneda"
+            }
           }
         ]
       },
@@ -520,6 +600,7 @@
         "hasta": "23:58",
         "imagen": "objeto-reloj"
       },
+      "monedasParaSeguir": 10,
       "ambiente": [
         "amb-viento"
       ],
@@ -528,7 +609,6 @@
         "sfx-risa-viejo",
         "sfx-tic-tac"
       ],
-      "requiereInteracciones": 1,
       "siguiente": "p09-colectivo"
     },
     {
@@ -592,6 +672,97 @@
               "retraso": 3.5,
               "duracion": 6.5
             }
+          },
+          {
+            "id": "escondite-1",
+            "nombre": "Algo brilla",
+            "x": 10,
+            "y": 40,
+            "ancho": 5,
+            "interaccion": {
+              "tipo": "escondite",
+              "animacion": "brillar",
+              "monedas": 2,
+              "sonidoMoneda": "sfx-moneda"
+            }
+          },
+          {
+            "id": "escondite-2",
+            "nombre": "Algo brilla",
+            "x": 36,
+            "y": 28,
+            "ancho": 5,
+            "interaccion": {
+              "tipo": "escondite",
+              "animacion": "brillar",
+              "monedas": 1,
+              "sonidoMoneda": "sfx-moneda"
+            }
+          },
+          {
+            "id": "escondite-3",
+            "nombre": "Algo brilla",
+            "x": 64,
+            "y": 26,
+            "ancho": 5,
+            "interaccion": {
+              "tipo": "escondite",
+              "animacion": "brillar",
+              "monedas": 2,
+              "sonidoMoneda": "sfx-moneda"
+            }
+          },
+          {
+            "id": "escondite-4",
+            "nombre": "Algo brilla",
+            "x": 88,
+            "y": 84,
+            "ancho": 5,
+            "interaccion": {
+              "tipo": "escondite",
+              "animacion": "brillar",
+              "monedas": 3,
+              "sonidoMoneda": "sfx-moneda"
+            }
+          },
+          {
+            "id": "escondite-5",
+            "nombre": "Algo brilla",
+            "x": 60,
+            "y": 88,
+            "ancho": 5,
+            "interaccion": {
+              "tipo": "escondite",
+              "animacion": "brillar",
+              "monedas": 1,
+              "sonidoMoneda": "sfx-moneda"
+            }
+          },
+          {
+            "id": "escondite-6",
+            "nombre": "Algo brilla",
+            "x": 34,
+            "y": 86,
+            "ancho": 5,
+            "interaccion": {
+              "tipo": "escondite",
+              "animacion": "brillar",
+              "monedas": 2,
+              "sonidoMoneda": "sfx-moneda"
+            }
+          },
+          {
+            "id": "escondite-7",
+            "nombre": "Algo brilla",
+            "x": 76,
+            "y": 90,
+            "ancho": 5,
+            "interaccion": {
+              "tipo": "escondite",
+              "animacion": "brillar",
+              "monedas": 1,
+              "sonidoMoneda": "sfx-moneda"
+            }
           }
         ]
       },
@@ -600,6 +771,7 @@
         "hasta": "23:58",
         "imagen": "objeto-reloj"
       },
+      "monedasParaSeguir": 10,
       "ambiente": [
         "amb-viento"
       ],
@@ -608,7 +780,6 @@
         "sfx-risa-viejo",
         "sfx-tic-tac"
       ],
-      "requiereInteracciones": 1,
       "siguiente": "p09-colectivo"
     },
     {
@@ -672,6 +843,97 @@
               "retraso": 3.5,
               "duracion": 6.5
             }
+          },
+          {
+            "id": "escondite-1",
+            "nombre": "Algo brilla",
+            "x": 10,
+            "y": 44,
+            "ancho": 5,
+            "interaccion": {
+              "tipo": "escondite",
+              "animacion": "brillar",
+              "monedas": 2,
+              "sonidoMoneda": "sfx-moneda"
+            }
+          },
+          {
+            "id": "escondite-2",
+            "nombre": "Algo brilla",
+            "x": 34,
+            "y": 30,
+            "ancho": 5,
+            "interaccion": {
+              "tipo": "escondite",
+              "animacion": "brillar",
+              "monedas": 1,
+              "sonidoMoneda": "sfx-moneda"
+            }
+          },
+          {
+            "id": "escondite-3",
+            "nombre": "Algo brilla",
+            "x": 62,
+            "y": 24,
+            "ancho": 5,
+            "interaccion": {
+              "tipo": "escondite",
+              "animacion": "brillar",
+              "monedas": 2,
+              "sonidoMoneda": "sfx-moneda"
+            }
+          },
+          {
+            "id": "escondite-4",
+            "nombre": "Algo brilla",
+            "x": 88,
+            "y": 84,
+            "ancho": 5,
+            "interaccion": {
+              "tipo": "escondite",
+              "animacion": "brillar",
+              "monedas": 3,
+              "sonidoMoneda": "sfx-moneda"
+            }
+          },
+          {
+            "id": "escondite-5",
+            "nombre": "Algo brilla",
+            "x": 64,
+            "y": 86,
+            "ancho": 5,
+            "interaccion": {
+              "tipo": "escondite",
+              "animacion": "brillar",
+              "monedas": 1,
+              "sonidoMoneda": "sfx-moneda"
+            }
+          },
+          {
+            "id": "escondite-6",
+            "nombre": "Algo brilla",
+            "x": 36,
+            "y": 86,
+            "ancho": 5,
+            "interaccion": {
+              "tipo": "escondite",
+              "animacion": "brillar",
+              "monedas": 2,
+              "sonidoMoneda": "sfx-moneda"
+            }
+          },
+          {
+            "id": "escondite-7",
+            "nombre": "Algo brilla",
+            "x": 78,
+            "y": 92,
+            "ancho": 5,
+            "interaccion": {
+              "tipo": "escondite",
+              "animacion": "brillar",
+              "monedas": 1,
+              "sonidoMoneda": "sfx-moneda"
+            }
           }
         ]
       },
@@ -680,6 +942,7 @@
         "hasta": "23:58",
         "imagen": "objeto-reloj"
       },
+      "monedasParaSeguir": 10,
       "ambiente": [
         "amb-viento"
       ],
@@ -688,7 +951,6 @@
         "sfx-risa-viejo",
         "sfx-tic-tac"
       ],
-      "requiereInteracciones": 1,
       "siguiente": "p09-colectivo"
     },
     {

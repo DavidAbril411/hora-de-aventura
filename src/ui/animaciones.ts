@@ -65,6 +65,28 @@ export function invitarATocar(el: Element): () => void {
   return () => control.stop();
 }
 
+/**
+ * El brillo de un escondite: titila de a ratos, cada uno a su ritmo, para
+ * que la escena invite a buscar sin marcar un camino. Con movimiento
+ * reducido queda quieto (se ve igual).
+ */
+export function titilar(el: Element): () => void {
+  if (movimientoReducido()) return () => {};
+  const control = animate(el, { scale: [0.7, 1.15, 0.7], opacity: [0.45, 1, 0.45], rotate: [0, 45, 90] }, {
+    duration: 1.6 + Math.random() * 1.2,
+    delay: Math.random() * 1.5,
+    repeat: Infinity,
+    repeatDelay: 0.6 + Math.random() * 1.6,
+    ease: 'easeInOut',
+  });
+  return () => control.stop();
+}
+
+/** El escondite ya dio sus monedas: el brillo se apaga. */
+export async function apagarBrillo(el: Element): Promise<void> {
+  await animate(el, { opacity: 0, scale: movimientoReducido() ? 1 : 0.3 }, { duration: 0.4 });
+}
+
 /** Un llamado de atención breve: "acá es donde hay que tocar". */
 export function llamarAtencion(els: Element[]): void {
   if (!els.length) return;

@@ -1,7 +1,7 @@
 import type { Contexto } from '../../engine/motor';
 import { t } from '../../engine/historia';
 import type { Elemento, PantallaExploracion } from '../../engine/tipos';
-import { animarElemento, aparecer, balancearReloj, invitarATocar, llamarAtencion, moverReloj, volarMonedas } from '../animaciones';
+import { animarElemento, apagarBrillo, aparecer, balancearReloj, invitarATocar, llamarAtencion, moverReloj, titilar, volarMonedas } from '../animaciones';
 import { h, svg } from '../dom';
 import { acciones, avisoAudioPendiente, boton, escenario, ilustracion, ubicar } from '../componentes';
 import { iconoCerrar, iconoDescubierto, iconoReloj, iconoSeguir } from '../iconos';
@@ -15,6 +15,7 @@ import { subtitulos } from '../subtitulos';
 export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
   const { pantalla: p, estado } = ctx;
   const requeridas = p.requiereInteracciones ?? 0;
+  const objetivo = p.monedasParaSeguir;
   const tocables = (p.escenario.elementos ?? []).filter((el) => el.interaccion);
   const secretos = tocables.filter((el) => el.interaccion!.tipo === 'secreto');
   const tocados = new Set<string>(estado.get().tocados[p.id] ?? []);
@@ -22,8 +23,9 @@ export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
   const detenerInvitaciones = new Map<string, () => void>();
 
   const pista = h('p', { class: 'acciones__pista', id: `pista-${p.id}` });
+  const alcanza = () => (objetivo ? estado.get().monedas >= objetivo : tocados.size >= requeridas);
   const seguir = boton(t('seguir'), () => {
-    if (tocados.size >= requeridas) {
+    if (alcanza()) {
       ctx.avanzar();
       return;
     }
@@ -38,17 +40,21 @@ export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
   }, { icono: iconoSeguir });
 
   const actualizar = () => {
-    const listo = tocados.size >= requeridas;
+    const listo = alcanza();
     seguir.setAttribute('aria-disabled', String(!listo));
     if (listo) seguir.removeAttribute('aria-describedby');
     else seguir.setAttribute('aria-describedby', pista.id);
     const descubiertos = secretos.filter((el) => tocados.has(el.id)).length;
-    if (!listo) pista.textContent = t('seguirBloqueado');
+    if (objetivo) {
+      const plantilla = listo ? t('monedasLogradas') : t('monedasConsigna');
+      pista.textContent = plantilla.replace('{objetivo}', String(objetivo)).replace('{tenes}', String(estado.get().monedas));
+    } else if (!listo) pista.textContent = t('seguirBloqueado');
     else if (secretos.length) pista.textContent = `${t('descubiertos')}: ${descubiertos} ${t('de')} ${secretos.length}`;
     else pista.textContent = '';
-    pista.classList.toggle('acciones__pista--elegido', listo && secretos.length > 0);
+    pista.classList.toggle('acciones__pista--elegido', listo && (secretos.length > 0 || !!objetivo));
   };
   actualizar();
+  if (objetivo) ctx.alSalir(estado.escuchar(() => actualizar()));
 
   const tarjeta = h('div', { class: 'revelacion', 'aria-live': 'polite' });
   const cerrarTarjeta = () => tarjeta.replaceChildren();
@@ -88,8 +94,16 @@ export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
     }
     if (i.tipo === 'secreto') mostrarSecreto(el);
 
-    if (primeraVez) marcarDescubierto(el, botonEl);
+    if (primeraVez && i.tipo === 'escondite') void vaciar(el, botonEl, figura);
+    else if (primeraVez) marcarDescubierto(el, botonEl);
     ocupados.delete(el.id);
+  };
+
+  // Un escondite que ya dio sus monedas se apaga y deja de ser tocable.
+  const vaciar = async (el: Elemento, botonEl: HTMLElement, figura: HTMLElement) => {
+    await apagarBrillo(figura);
+    botonEl.hidden = true;
+    botonEl.setAttribute('aria-label', `${el.nombre} (${t('descubierto')})`);
   };
 
   const marcarDescubierto = (el: Elemento, botonEl: HTMLElement) => {
@@ -131,11 +145,14 @@ export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
     if (!contenedor) continue;
     // Al retomar después de recargar, lo ya descubierto queda descubierto.
     if (tocados.has(el.id)) {
-      marcarDescubierto(el, contenedor);
+      if (el.interaccion?.tipo === 'escondite') contenedor.hidden = true;
+      else marcarDescubierto(el, contenedor);
       continue;
     }
     const anillo = contenedor.querySelector('.elemento__invitacion');
+    const brillo = contenedor.querySelector('.escondite__brillo');
     if (anillo) detenerInvitaciones.set(el.id, invitarATocar(anillo));
+    else if (brillo) detenerInvitaciones.set(el.id, titilar(brillo));
   }
   ctx.alSalir(() => detenerInvitaciones.forEach((detener) => detener()));
 
