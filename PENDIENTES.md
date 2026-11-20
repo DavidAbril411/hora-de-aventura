@@ -100,8 +100,10 @@ Hecho:
 
 Esperan al equipo (no se tocan hasta que llegue o se confirme):
 
-- **Textos más cortos** (punto 3): el equipo manda versiones corregidas. Las narraciones de ElevenLabs se hacen con ese texto final. Si cambia el texto que ya grabaron los chicos (intro y duplas), hay que decidir si se regraba o si el texto queda como lo leyeron, y volver a correr `scripts/sincronizar-narracion.py`.
-- **Dibujo nuevo del viejo de la bolsa** (punto 2): lo reenvían porque el actual no está tan definido. Entra por `scripts/procesar-imagenes.py` y reemplaza `img/pj-viejo.webp`.
+- **Textos más cortos** (punto 3): llegó el 19/11 la «reescritura del guion, versión intermedia» (original en la Library, `textos/reescritura-guion-version-intermedia-2026-11-19.txt`) y se cargó el 20/11 tal cual: las presentaciones de las duplas en primera persona, el comienzo del día, el comienzo de la noche y el final. Lo que el documento marca «OK» (intro, partes de cada dupla, colectivo y viaje) quedó igual. En la noche quedan, después del texto nuevo, la frase de cada dupla y «El reloj comienza a avanzar…» (se leyó como parte de «el resto»).
+  - Dos posibles erratas que se dejaron como vinieron, a confirmar: «se volar» (¿«sé volar»?, presentación de Diana) y «se puede observar como el bosque» (¿«cómo»?, el día).
+  - **Las presentaciones de las duplas no coinciden con su audio**: siguen sonando las voces de los chicos, que leyeron el texto anterior en tercera persona. Se sacaron sus `tiempos` (los subtítulos pasan por proporción). Hay que decidir si se regraban; los guiones nuevos están en la Library, `motor/guiones-narracion-2026-11-20/`, junto con los de las nueve pantallas sin voz.
+- **Dibujo nuevo del viejo de la bolsa** (punto 2): llegó el 19/11 y ya reemplaza a `img/pj-viejo.webp` (recorte A; el anterior quedó en `material-tratado/descartados/viejo-2026-10-26/`).
 - **Objetos de los secretos** (punto 4): quieren dejar los más ambiguos y falta el de la economía. A confirmar cuáles de las doce fichas salen y cuáles de las nueve que no se usan entran.
 - **La «s» del título** (punto 5): a confirmar si es «Hora de aventuras». Cambia `titulo` y el título de la portada en `historia.json`.
 

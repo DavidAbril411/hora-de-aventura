@@ -32,10 +32,10 @@
     "jp-roberto": {
       "nombre": "Juan Pablo y Roberto",
       "presentacion": [
-        "Juan Pablo y Roberto, dos amigos que se llevan muy bien y buscan conseguir dinero. Juan Pablo tiene 17 años y anda en bicicleta, sabe hacer trucos como el Miami. Le teme a que le pidan plata y desea conseguir dinero para pagar sus deudas. Le gusta estar en el bosque, donde vive con un lobo, que es su mascota. Roberto tiene 16 años y sabe hacer mortales hacia adelante y hacia atrás. Le teme a que lo echen de su casa y desea conseguir dinero para comprarse una propia. También le gusta andar mucho por el bosque, donde tiene un amigo llamado Tulio."
+        "Somos Juan Pablo y Roberto, dos amigos que se llevan muy bien y buscan conseguir dinero.",
+        "Yo soy Juan Pablo, tengo 17 años y me gusta andar en bicicleta y hacer trucos como el Miami. Me da miedo que me pidan plata y quisiera conseguir dinero para pagar mis deudas. También me gusta estar en el bosque, donde vivo con un lobo, que es mi mascota. Me acompaña Roberto, que tiene 16 años y sabe hacer mortales hacia adelante y hacia atrás. Le da miedo que lo echen de su casa y desea conseguir dinero para comprarse una propia. También le gusta andar mucho por el bosque, donde tiene un amigo llamado Tulio."
       ],
       "narracion": "narracion-jp-roberto",
-      "tiempos": "1.40 1.68 2.06 2.32 2.88 3.06 3.30 3.46 3.58 3.82 4.22 4.64 5.04 5.30 5.68 6.62 6.92 7.52 7.66 8.06 8.44 8.60 9.04 9.18 10.02 10.32 10.56 10.92 11.14 11.30 11.78 11.86 11.96 12.12 12.24 12.62 12.84 13.24 13.52 13.80 14.10 14.42 14.64 14.90 15.14 16.10 16.64 16.80 16.96 17.12 17.24 17.48 17.70 17.90 18.08 18.28 18.74 19.10 19.22 19.40 21.34 22.04 22.14 22.54 22.80 22.94 23.10 23.38 23.78 24.02 24.38 24.58 24.78 25.04 25.58 25.64 25.74 25.90 26.02 26.16 26.36 26.48 26.80 27.08 28.80 28.80 29.30 29.62 30.10 30.24 31.08 31.38 31.58 31.72 31.94 32.18 32.36 32.50 32.76 32.98 33.14 33.28 33.48 33.82",
       "personajes": [
         "personaje-juan-pablo",
         "personaje-roberto"
@@ -45,10 +45,10 @@
     "camila-alma": {
       "nombre": "Camila y Alma",
       "presentacion": [
-        "Camila y Alma, son amigas. Camila tiene 22 años y sabe hacer cosas con la tecnología, como producir y editar videos. Le cuesta andar en bicicleta. Desea conseguir un buen trabajo y tener un perro pitbull. Alma tiene 21 años y desea ser fisicoculturista. Habla inglés y siempre lleva su celular consigo."
+        "Somos las amigas Camila y Alma.",
+        "Yo soy Camila, tengo 22 años y sé hacer diferentes cosas con la tecnología, como producir y editar videos. Me cuesta andar en bicicleta. Quisiera conseguir un buen trabajo y tener un perro pitbull. Mi amiga Alma tiene 21 años y le gustaría ser fisicoculturista. Sabe hablar muy bien inglés y siempre lleva su celular con ella."
       ],
       "narracion": "narracion-camila-alma",
-      "tiempos": "1.76 2.12 2.28 2.98 3.04 3.18 3.78 3.98 4.38 4.82 4.98 5.18 5.94 6.34 6.58 6.76 7.90 8.06 8.68 8.94 9.18 10.32 10.50 10.72 10.90 11.06 12.14 12.46 12.84 13.02 13.12 13.58 13.86 14.12 14.38 14.68 16.22 16.76 17.02 17.44 17.72 17.90 18.34 19.00 20.80 21.86 22.24 22.60 22.90 23.16 23.30 23.64",
       "personajes": [
         "personaje-camila",
         "personaje-alma"
@@ -59,10 +59,10 @@
     "diana-rogelio": {
       "nombre": "Diana y Rogelio",
       "presentacion": [
-        "Diana y Rogelio, un hada muñeca y un gato negro que cambia de color. Diana tiene 12 años y sabe volar. Le cuesta guardar secretos y desea conseguir dientes. No le gusta comer comida saludable. Rogelio, generalmente es negro, pero cambia de color según sea de día o de noche. Solo puede comunicarse con Diana."
+        "Nosotros somos Diana y Rogelio, un hada muñeca y un gato negro que cambia de color.",
+        "Yo soy Diana, tengo 12 años y se volar. A veces me cuesta guardar secretos y deseo conseguir muchos dientes. La comida saludable no me gusta. Rogelio es un gato, generalmente negro, pero cambia de color según sea de día o de noche. Solo puede comunicarse conmigo, y nos gusta charlar juntos."
       ],
       "narracion": "narracion-diana-rogelio",
-      "tiempos": "1.72 2.10 2.44 3.52 3.66 3.88 4.44 4.62 4.78 5.02 5.30 5.62 5.88 6.16 7.40 8.08 8.30 8.72 9.14 9.34 9.52 10.54 11.24 11.60 12.28 12.92 13.18 13.60 14.46 15.86 16.67 17.48 17.80 18.00 18.22 18.58 20.02 21.02 21.02 21.36 21.84 22.18 22.42 22.66 23.00 23.26 23.48 23.68 23.94 24.12 24.82 25.08 25.42 26.20 26.93",
       "personajes": [
         "personaje-diana",
         "personaje-rogelio"
@@ -135,8 +135,9 @@
       "dupla": "jp-roberto",
       "titulo": "El día",
       "texto": [
-        "El día recién comienza en el pueblo. Desde lo alto, el pueblo parece tranquilo: las casas descansan entre las nubes, los caminos se esconden entre los árboles y, más allá de las últimas casas, el bosque se extiende hasta una pequeña laguna de aguas brillantes.",
-        "Pero en este lugar las cosas nunca son exactamente lo que parecen. Una flor puede crecer hasta alcanzar el tamaño de una casa. Una piedra puede esconder un secreto. Un árbol puede guardar una historia entre sus ramas. Y algunos objetos, cuando alguien se acerca, parecen despertar de un largo sueño. Cada rincón tiene algo para contar y cada personaje sabe descubrirlo a su manera. Tocá para saber cuáles son los secretos mágicos que esconden.",
+        "El día recién comienza. Desde lo alto, el pueblo parece tranquilo: las casas descansan entre las nubes, los caminos se esconden entre los árboles y, más allá se puede observar como el bosque se extiende hasta una pequeña laguna de aguas brillantes.",
+        "Pero en este lugar las cosas nunca son exactamente lo que parecen. Una flor puede crecer hasta alcanzar el tamaño de una casa. Una piedra puede esconder un secreto. Un árbol puede guardar una historia entre sus ramas.",
+        "Cada rincón tiene algo para contar y cada personaje sabe descubrirlo a su manera. Tocá para saber cuáles son los secretos mágicos que esconden.",
         {
           "texto": "Juan Pablo y Roberto conocen cada calle y cada rincón del pueblo.",
           "estilo": "destacado"
@@ -255,8 +256,9 @@
       "dupla": "camila-alma",
       "titulo": "El día",
       "texto": [
-        "El día recién comienza en el pueblo. Desde lo alto, el pueblo parece tranquilo: las casas descansan entre las nubes, los caminos se esconden entre los árboles y, más allá de las últimas casas, el bosque se extiende hasta una pequeña laguna de aguas brillantes.",
-        "Pero en este lugar las cosas nunca son exactamente lo que parecen. Una flor puede crecer hasta alcanzar el tamaño de una casa. Una piedra puede esconder un secreto. Un árbol puede guardar una historia entre sus ramas. Y algunos objetos, cuando alguien se acerca, parecen despertar de un largo sueño. Cada rincón tiene algo para contar y cada personaje sabe descubrirlo a su manera. Tocá para saber cuáles son los secretos mágicos que esconden.",
+        "El día recién comienza. Desde lo alto, el pueblo parece tranquilo: las casas descansan entre las nubes, los caminos se esconden entre los árboles y, más allá se puede observar como el bosque se extiende hasta una pequeña laguna de aguas brillantes.",
+        "Pero en este lugar las cosas nunca son exactamente lo que parecen. Una flor puede crecer hasta alcanzar el tamaño de una casa. Una piedra puede esconder un secreto. Un árbol puede guardar una historia entre sus ramas.",
+        "Cada rincón tiene algo para contar y cada personaje sabe descubrirlo a su manera. Tocá para saber cuáles son los secretos mágicos que esconden.",
         {
           "texto": "Camila y Alma saben que donde hay fiesta, música y celebración siempre puede aparecer algo inesperado.",
           "estilo": "destacado"
@@ -348,8 +350,9 @@
       "dupla": "diana-rogelio",
       "titulo": "El día",
       "texto": [
-        "El día recién comienza en el pueblo. Desde lo alto, el pueblo parece tranquilo: las casas descansan entre las nubes, los caminos se esconden entre los árboles y, más allá de las últimas casas, el bosque se extiende hasta una pequeña laguna de aguas brillantes.",
-        "Pero en este lugar las cosas nunca son exactamente lo que parecen. Una flor puede crecer hasta alcanzar el tamaño de una casa. Una piedra puede esconder un secreto. Un árbol puede guardar una historia entre sus ramas. Y algunos objetos, cuando alguien se acerca, parecen despertar de un largo sueño. Cada rincón tiene algo para contar y cada personaje sabe descubrirlo a su manera. Tocá para saber cuáles son los secretos mágicos que esconden.",
+        "El día recién comienza. Desde lo alto, el pueblo parece tranquilo: las casas descansan entre las nubes, los caminos se esconden entre los árboles y, más allá se puede observar como el bosque se extiende hasta una pequeña laguna de aguas brillantes.",
+        "Pero en este lugar las cosas nunca son exactamente lo que parecen. Una flor puede crecer hasta alcanzar el tamaño de una casa. Una piedra puede esconder un secreto. Un árbol puede guardar una historia entre sus ramas.",
+        "Cada rincón tiene algo para contar y cada personaje sabe descubrirlo a su manera. Tocá para saber cuáles son los secretos mágicos que esconden.",
         {
           "texto": "Diana y Rogelio prefieren internarse entre los árboles, donde la laguna guarda algunos de los secretos más antiguos de la isla.",
           "estilo": "destacado"
@@ -449,12 +452,11 @@
       "dupla": "jp-roberto",
       "titulo": "La noche",
       "texto": [
-        "Sin embargo, cuando cae la noche, el sol comienza a esconderse detrás de las nubes. Primero, casi no se nota. La luz se vuelve más dorada, las sombras se alargan y el cielo empieza a cambiar de color. Poco a poco, las casas del pueblo encienden sus luces y el bosque se vuelve más oscuro. Entonces se escucha un ruido lejano. Clac, clac, clac… Es el viejo de la bolsa.",
-        "Nadie sabe exactamente de dónde viene ni cuándo aparece. Algunos dicen que camina por la isla desde hace tantos años que ya conoce todos sus caminos. Otros aseguran que solo sale cuando el último rayo de sol está por desaparecer. El viejo se detiene, mira hacia el cielo y dice:",
-        "—Ya es hora de volver a casa.",
-        "Después mira su enorme bolsa y sonríe:",
-        "—Cuando el reloj marque las doce, la isla cerrará sus caminos. Y quien todavía esté afuera… perderá una moneda. Pero tengan cuidado: en esta isla, una moneda nunca vale lo mismo para todos.",
-        "El viejo sigue su camino. El cielo está cada vez más oscuro. Hay poco tiempo para regresar. Pero cada uno tendrá que encontrar su propia manera de conseguir lo que necesita antes de la medianoche:",
+        "Cuando empieza a caer la noche, el bosque se vuelve lentamente más oscuro. Entonces se escucha un ruido lejano. Clac, clac, clac… Es el viejo de la bolsa.",
+        "Nadie sabe exactamente de dónde viene ni cuándo aparece. Algunos dicen que camina por la isla desde hace tantos años que ya conoce todos sus caminos. El viejo se detiene, mira hacia el cielo y dice:",
+        "—Ya es hora de volver a casa. Cuando el reloj marque las doce, la isla cerrará sus caminos.",
+        "Y quien todavía esté afuera… perderá una moneda. Pero tengan cuidado: en esta isla, una moneda nunca vale lo mismo para todos.",
+        "El viejo sigue su camino. Hay poco tiempo para regresar.",
         {
           "texto": "Juan Pablo y Roberto saben que todavía pueden ganar unas monedas haciendo el Miami y la mortal.",
           "estilo": "destacado"
@@ -537,12 +539,11 @@
       "dupla": "camila-alma",
       "titulo": "La noche",
       "texto": [
-        "Sin embargo, cuando cae la noche, el sol comienza a esconderse detrás de las nubes. Primero, casi no se nota. La luz se vuelve más dorada, las sombras se alargan y el cielo empieza a cambiar de color. Poco a poco, las casas del pueblo encienden sus luces y el bosque se vuelve más oscuro. Entonces se escucha un ruido lejano. Clac, clac, clac… Es el viejo de la bolsa.",
-        "Nadie sabe exactamente de dónde viene ni cuándo aparece. Algunos dicen que camina por la isla desde hace tantos años que ya conoce todos sus caminos. Otros aseguran que solo sale cuando el último rayo de sol está por desaparecer. El viejo se detiene, mira hacia el cielo y dice:",
-        "—Ya es hora de volver a casa.",
-        "Después mira su enorme bolsa y sonríe:",
-        "—Cuando el reloj marque las doce, la isla cerrará sus caminos. Y quien todavía esté afuera… perderá una moneda. Pero tengan cuidado: en esta isla, una moneda nunca vale lo mismo para todos.",
-        "El viejo sigue su camino. El cielo está cada vez más oscuro. Hay poco tiempo para regresar. Pero cada uno tendrá que encontrar su propia manera de conseguir lo que necesita antes de la medianoche:",
+        "Cuando empieza a caer la noche, el bosque se vuelve lentamente más oscuro. Entonces se escucha un ruido lejano. Clac, clac, clac… Es el viejo de la bolsa.",
+        "Nadie sabe exactamente de dónde viene ni cuándo aparece. Algunos dicen que camina por la isla desde hace tantos años que ya conoce todos sus caminos. El viejo se detiene, mira hacia el cielo y dice:",
+        "—Ya es hora de volver a casa. Cuando el reloj marque las doce, la isla cerrará sus caminos.",
+        "Y quien todavía esté afuera… perderá una moneda. Pero tengan cuidado: en esta isla, una moneda nunca vale lo mismo para todos.",
+        "El viejo sigue su camino. Hay poco tiempo para regresar.",
         {
           "texto": "Camila y Alma tienen una cámara de fotos que les puede ayudar, el flash de cada fotografía permite iluminar objetos. Tal vez, si siguen buscando, encuentren el sobre de una antigua herencia… aunque parece que alguien decidió llenarlo de pequeños perros pitbull.",
           "estilo": "destacado"
@@ -618,12 +619,11 @@
       "dupla": "diana-rogelio",
       "titulo": "La noche",
       "texto": [
-        "Sin embargo, cuando cae la noche, el sol comienza a esconderse detrás de las nubes. Primero, casi no se nota. La luz se vuelve más dorada, las sombras se alargan y el cielo empieza a cambiar de color. Poco a poco, las casas del pueblo encienden sus luces y el bosque se vuelve más oscuro. Entonces se escucha un ruido lejano. Clac, clac, clac… Es el viejo de la bolsa.",
-        "Nadie sabe exactamente de dónde viene ni cuándo aparece. Algunos dicen que camina por la isla desde hace tantos años que ya conoce todos sus caminos. Otros aseguran que solo sale cuando el último rayo de sol está por desaparecer. El viejo se detiene, mira hacia el cielo y dice:",
-        "—Ya es hora de volver a casa.",
-        "Después mira su enorme bolsa y sonríe:",
-        "—Cuando el reloj marque las doce, la isla cerrará sus caminos. Y quien todavía esté afuera… perderá una moneda. Pero tengan cuidado: en esta isla, una moneda nunca vale lo mismo para todos.",
-        "El viejo sigue su camino. El cielo está cada vez más oscuro. Hay poco tiempo para regresar. Pero cada uno tendrá que encontrar su propia manera de conseguir lo que necesita antes de la medianoche:",
+        "Cuando empieza a caer la noche, el bosque se vuelve lentamente más oscuro. Entonces se escucha un ruido lejano. Clac, clac, clac… Es el viejo de la bolsa.",
+        "Nadie sabe exactamente de dónde viene ni cuándo aparece. Algunos dicen que camina por la isla desde hace tantos años que ya conoce todos sus caminos. El viejo se detiene, mira hacia el cielo y dice:",
+        "—Ya es hora de volver a casa. Cuando el reloj marque las doce, la isla cerrará sus caminos.",
+        "Y quien todavía esté afuera… perderá una moneda. Pero tengan cuidado: en esta isla, una moneda nunca vale lo mismo para todos.",
+        "El viejo sigue su camino. Hay poco tiempo para regresar.",
         {
           "texto": "Diana y Rogelio tienen otro problema. Para volver a casa necesitan dientes. Por suerte, Diana todavía conserva su varita mágica.",
           "estilo": "destacado"
@@ -754,9 +754,18 @@
       "momento": "noche",
       "titulo": "El final",
       "texto": [
-        "—¡Llegamos! Los chicos bajan y se despiden. Todo parece haber terminado. Hasta que alguien se da cuenta de que hay un ruido.",
+        "—¡Llegamos! Los chicos bajan del colectivo. Todo parece haber terminado. Hasta que…",
         "—¡Guau!",
-        "Un perrito pitbull se baja corriendo del colectivo, moviendo la cola. Nadie vio en qué momento se subió. Antes de que puedan agarrarlo, se escucha nuevamente: Clac, clac, clac… El viejo de la bolsa aparece al otro lado de la calle. —Ah… con que acá estabas. Se agacha, abre su enorme bolsa y el perrito entra de un salto. Los chicos le preguntan si el perrito se puede quedar con ellos. Pero el viejo les responde que deben volver a la isla. —¡Pueden venir de nuevo cuando quieran! Les alcanza a decir. Cuando los chicos quieren responder, el viejo ya no está. Solo queda una pequeña nube de polvo que se eleva lentamente en el aire… y desaparece. Los chicos se miran. Quizás el viejo nunca estuvo allí. Quizás sí. Mientras tanto, esperan ansiosos volver a visitar el pueblo sobre la isla."
+        "Un perrito pitbull aparece corriendo y moviendo la cola. ¡Nadie sabe cómo llegó hasta allí!",
+        "De pronto, se escucha: Clac, clac, clac… ¡Es el viejo de la bolsa!",
+        "—Ah… ¡Con que acá estabas!",
+        "Abre su enorme bolsa y el perrito salta adentro.",
+        "—¿Se puede quedar con nosotros? —preguntan los chicos.",
+        "—No, ahora tenemos que volver a la isla. ¡Pero pueden visitarnos cuando quieran!",
+        "Antes de que puedan responder, el viejo desaparece. Solo queda una pequeña nube de polvo.",
+        "Los chicos se miran sorprendidos.",
+        "¿El viejo estuvo allí de verdad? ¿O fue una ilusión?",
+        "Una cosa es segura: ¡ya quieren volver a visitar el pueblo sobre la isla!"
       ],
       "escenario": {
         "fondo": "p11-cierre-fondo",
@@ -789,7 +798,7 @@
       },
       "desaparece": {
         "elemento": "viejo",
-        "alLeer": "el viejo ya no está"
+        "alLeer": "el viejo desaparece"
       },
       "efectos": [
         "sfx-perros",
