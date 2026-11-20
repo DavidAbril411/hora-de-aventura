@@ -90,6 +90,24 @@ Nueve pantallas no tienen narración: los tres días (p03, p04, p05), las tres n
 
 Para que los personajes se distingan del mural, el fondo va más transparente sobre una base oscura y con menos color, y los dibujos de encima van más saturados y con sombra. Es todo presentación: los archivos no cambian. Se ajusta en `src/styles/tokens.css` con `--fondo-opacidad` (0,6 de día y 0,8 de noche), `--fondo-saturacion` (0,75) y `--dibujo-saturacion` (1,3). La portada y los dibujos que se muestran enteros (la fiesta, el mapa, la ventana) no se apagan.
 
+### Devoluciones del equipo de Lucila (13/11; David las pasó el 19/11)
+
+Hecho:
+
+- **Volver en todas las pantallas** (punto 6): arriba a la izquierda, menos en la portada. Lleva a la pantalla anterior por el camino que hizo el lector, también después de recargar. En la presentación de una dupla vuelve a la lista (ya no hay un segundo «Volver» abajo) y en los créditos vuelve al final del cuento. Lo descubierto, las monedas y el destino elegido se conservan; si vuelve a la elección y elige otra dupla, monedas, destino y secretos de la anterior arrancan de cero. El reloj de las noches bajó para no quedar debajo del botón.
+- **El viejo de la bolsa más amenazante** (punto 2): en las tres noches aparece chico y oscuro a lo lejos, crece con los pasos del clac clac (`llegada` en el elemento, de los 3,5 s a los 10 s) hasta un tamaño mayor que antes (`ancho` 20 en vez de 14) y, al llegar, se adelanta con una risa grave: `sfx-risa-viejo`, de BigSoundBank, CC0 (ver `scripts/fuentes-sonidos.md`). Con movimiento reducido solo aparece con un fundido.
+- **Monedas con más punch** (punto 7): chispas doradas al hacer el truco, las monedas saltan girando y vuelan al contador, que las cuenta una por una con un rebote, un brillo y el sonido de una moneda (`sfx-moneda`, CC0), y al final muestra «+3». Con movimiento reducido se cuentan igual, sin vuelo.
+- **Al menos 10 monedas en cada noche** (sugerencia del 19/11): la consigna dice «Tocá lo que brilla y juntá al menos 10 monedas» y «Seguir» se habilita recién con 10; después invita a buscar más y, si ya no queda nada, avisa que se encontraron todas. Además del truco de cada dupla hay seis o siete lugares que brillan repartidos por la escena (`escondite` en `historia.json`), con 1 a 4 monedas cada uno y en lugares distintos en cada noche: en total hay 18 o 19 por noche, así que 10 es más o menos la mitad. Brillan con un destello corto cada tanto, no todo el tiempo. Los lugares los eligió Claude y no están atados a cosas del mural, porque el mural se recorta distinto en cada pantalla; si el equipo quiere objetos concretos (una piedra, una lata), alcanza con dibujarlos y pasarles `imagen` en los datos.
+
+Esperan al equipo (no se tocan hasta que llegue o se confirme):
+
+- **Textos más cortos** (punto 3): llegó el 19/11 la «reescritura del guion, versión intermedia» (original en la Library, `textos/reescritura-guion-version-intermedia-2026-11-19.txt`) y se cargó el 20/11 tal cual: las presentaciones de las duplas en primera persona, el comienzo del día, el comienzo de la noche y el final. Lo que el documento marca «OK» (intro, partes de cada dupla, colectivo y viaje) quedó igual. En la noche quedan, después del texto nuevo, la frase de cada dupla y «El reloj comienza a avanzar…» (se leyó como parte de «el resto»).
+  - Dos posibles erratas que se dejaron como vinieron, a confirmar: «se volar» (¿«sé volar»?, presentación de Diana) y «se puede observar como el bosque» (¿«cómo»?, el día).
+  - **Las presentaciones de las duplas no coinciden con su audio**: siguen sonando las voces de los chicos, que leyeron el texto anterior en tercera persona. Se sacaron sus `tiempos` (los subtítulos pasan por proporción). Hay que decidir si se regraban; los guiones nuevos están en la Library, `motor/guiones-narracion-2026-11-20/`, junto con los de las nueve pantallas sin voz.
+- **Dibujo nuevo del viejo de la bolsa** (punto 2): llegó el 19/11 y ya reemplaza a `img/pj-viejo.webp` (recorte A; el anterior quedó en `material-tratado/descartados/viejo-2026-10-26/`).
+- **Objetos de los secretos** (punto 4): quieren dejar los más ambiguos y falta el de la economía. A confirmar cuáles de las doce fichas salen y cuáles de las nueve que no se usan entran.
+- **La «s» del título** (punto 5): a confirmar si es «Hora de aventuras». Cambia `titulo` y el título de la portada en `historia.json`.
+
 ### Contenido que tiene que indicar el equipo (no se inventa)
 
 - **De qué color se pone Rogelio de noche.** Está resuelto con un filtro (`.cambia-de-noche` en `src/styles/pantallas.css`); falta saber el color.
@@ -120,3 +138,112 @@ Lo que dejaron abierto las critiques de Impeccable del 11/11 (22/32) y del 13/11
 
 - **PWA y service worker:** fuera de este PR (prioridad 4 del plan).
 - **Verificación de audio con Playwright:** el Chromium del contenedor no decodifica AAC (`.m4a` en AAC da `EncodingError`), porque no trae códecs propietarios. Safari y Chrome de tablets y celulares sí lo decodifican. El recorrido con Playwright comprueba que cada `.m4a` real responde 200 y, para que suene, le sirve al navegador una copia en Opus del mismo audio. La reproducción de los `.m4a` hay que probarla en un dispositivo.
+
+## Tratamiento del material
+
+Registro del thread de material, tal como quedó el 11/11 en el PR #2 (cerrado sin mergear por conflictos; sus scripts entraron después junto con este archivo). Lo que acá figura como «espera aprobación» o «a definir» sobre los dibujos del 3/11, la narración regrabada, los secretos de día y los créditos ya se resolvió: el estado actual está arriba, en «Motor y pantallas».
+
+Material que falta, dudas para el equipo y placeholders en uso. Cada placeholder en
+la app se marca visiblemente con la palabra `PENDIENTE` y se anota acá.
+
+Fuente: inventario de la Library del 23/10/2026 (`scripts/inventario.csv`) contra
+`especificacion.md` y `Hora_de_aventura.pdf`, actualizado con la revisión de Lucila
+del 26/10/2026 y el material que llegó el 3/11/2026 (el último).
+
+### Llegó el 3/11
+
+Los siete dibujos que faltaban y el Tulio nuevo, en la Library en
+`IMAGENES/nuevos-2026-11-03/`. Ya tratados (`material-tratado/webp/`), esperan aprobación:
+
+| Dibujo | Archivo | Pantalla |
+|---|---|---|
+| La fiesta de Camila y Alma | `esc-fiesta-camila-alma.webp` | 4 |
+| El colectivo con el mapa del chofer | `esc-colectivo-mapa.webp` | 9 (el mapa no marca los tres destinos: los toques los ubica el motor) |
+| La vista por la ventana | `esc-ventana.webp` | 10 |
+| Los chicos bajando del colectivo | `esc-chicos-bajando.webp` | 11 |
+| El sobre de la herencia | `obj-sobre-herencia.webp` | 7 |
+| Las monedas | `obj-monedas.webp` | 6 · 7 · 8 |
+| El reloj | `obj-reloj.webp` | 6 · 7 · 8 |
+| Tulio (dibujo nuevo) | `pj-tulio.webp` | 3 (reemplaza al de lápiz claro) |
+
+### Narración nueva (llegó el 3/11, se sumó el 11/11)
+
+La regrabación de Juan Pablo y Roberto (`SONIDOS/nuevos-2026-11-03/`), tratada como
+`narracion-jp-roberto.m4a`. Reemplaza a la primera versión (guardada en
+`material-tratado/descartados/audio/`) e incluye lo que faltaba de Roberto. Sigue en primera
+persona, no es el texto exacto del PDF. Espera aprobación.
+
+### No va a llegar
+
+David avisó el 11/11 que ya es todo el material.
+
+| Qué | Pantalla | Cómo queda |
+|---|---|---|
+| Los secretos de las escenas de día | 3 · 4 · 5 | Sin contenido propio. No se inventa: hay que decidir con el equipo qué hacer con esas pantallas |
+| Regrabación de Camila y Alma y de Diana y Rogelio | 3 · 4 · 5 | Quedan las narraciones actuales, que no leen el texto exacto del PDF |
+| Lista de dibujos dados vuelta | — | Quedan como están (se giraron los cuatro que se veían mal) |
+
+### Fondos de cada pantalla
+
+Armados con partes del mural colectivo (`scripts/armar-fondos.py`), según la tabla de la
+revisión. Están en la Library, en `material-tratado/pantallas/`.
+
+| Pantalla | Fondo | Estado |
+|---|---|---|
+| 1 · Intro | Cielo sin la pared gris (`p01-intro-fondo`, con transparencia) + isla como capa (`p01-intro-isla`) | Listo para revisar |
+| 3 · Día jp-roberto | Bosque con casas | Listo para revisar |
+| 4 · Día camila-alma | — | **A definir**: ya llegó la fiesta (`esc-fiesta-camila-alma`); falta elegir qué parte del mural va detrás |
+| 5 · Día diana-rogelio | Selva | Listo para revisar |
+| Paso al atardecer | Atardecer 1 y 2 | Listo para revisar |
+| 6 · Noche jp-roberto | Bosque con casas, oscurecido en azul | Listo para revisar |
+| 7 · Noche camila-alma | Espacio, oscurecido en azul | Propuesta (celulares y cámara, como ellas). Se revisa cuando se defina su día |
+| 8 · Noche diana-rogelio | Selva, oscurecida en azul | Listo para revisar |
+| 9 · Colectivo | — | El dibujo `esc-colectivo-mapa` puede ir solo o sobre un fondo del mural, a definir |
+| 10 · Viaje | Capas de noche: casas, bosque con casas, laguna (mar) y cielo | Listo para revisar. Llegó la vista por la ventana (`esc-ventana`): se puede usar el marco con las capas pasando detrás |
+| 11 · Cierre | — | El dibujo `esc-chicos-bajando` puede ir solo o sobre un fondo del mural, a definir |
+
+### Contenido que falta (no se inventa)
+
+- **Pantallas 3 a 5:** qué revela cada secreto. No va a llegar (ver «No va a llegar»).
+  - La ficha del pulpo tiene pistas escritas a mano («curiosidad: tiene un hermano», «no le gusta que le toquen los tentáculos»): pueden ser el contenido de su secreto.
+  - Si alguno de los dibujos de Pou era un secreto, hay que reemplazarlo.
+- **Pantalla 10:** si el viaje cambia según el destino (el PDF no lo diferencia).
+- **Créditos:** los nombres de los chicos tal como los indique el equipo (autores, ilustradores y narradores: Lucas, Jere, Juli y Ana Paula narran; en los dibujos aparecen firmas como Lorenzo, Jonatan, Eva, Franco, Lucas y Yazmín).
+
+### Sonidos
+
+Resueltos con sonidos libres (decisión del 26/10): `sfx-clac-clac`, `sfx-tic-tac` y
+`sfx-colectivo`, de BigSoundBank, licencia CC0. Fuente de cada uno en
+`scripts/fuentes-sonidos.md`. Falta que el equipo los escuche y los apruebe.
+
+### Esperan aprobación
+
+- **«Economía»:** dos retoques para elegir (`scripts/retocar-trazo.py`): solo el trazo
+  repasado, o el trazo repasado con un color pálido parejo adentro. Si no convence
+  ninguno, queda como está.
+
+### Dudas para el equipo
+
+- **«Cambiar» sin comentario:** los 59 elementos volvieron marcados «cambiar» casi sin
+  comentarios; parece un malentendido con el botón de la página. Se trabaja como si
+  estuvieran aprobados hasta que Lucila lo confirme.
+- **Nombre de la obra:** «Hora de aventura» es el título en Latinoamérica de *Adventure
+  Time*. Preguntar dónde se va a publicar; si es abierto, sugerir sumarle algo al nombre.
+- **Chica endemoniada:** las puntas de los cuernos quedan apenas cortadas (tocaban el título
+  impreso de la ficha). Si molesta, pedir una foto nueva.
+
+### Decidido en la revisión del 26/10
+
+- Criterio de recorte: solo el dibujo, sin textos impresos ni notas.
+- Juan Pablo y Roberto quedan como están; el gato «sin nombre aún» es Rogelio.
+- `rogelio 2` y `extra` (imágenes prediseñadas) no se usan.
+- Pou (`pou-empresario`, `pou-oruga`) sale del material.
+- La chica endemoniada va, nombrada solo como «chica endemoniada».
+- El celular es de Alma: `obj-celular-de-alma`.
+- Las tres erratas del PDF se corrigen (las aplica el motor):
+  «donde que les puede ayudar» → «que les puede ayudar»; «Toca en el mapa» → «Tocá en
+  el mapa»; «Tic… tac…La noche» → «Tic… tac… La noche».
+
+### Placeholders en uso
+
+Ninguno desde el material. Los que use el motor se anotan en su PR.

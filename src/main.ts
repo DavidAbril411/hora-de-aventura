@@ -27,7 +27,7 @@ const sonido = new Sonido();
 const controles = barra(estado, sonido);
 const escena = document.createElement('div');
 escena.className = 'escena';
-app.append(controles.raiz, escena);
+app.append(controles.volver, controles.raiz, escena);
 
 const motor = new Motor(
   escena,
@@ -36,6 +36,10 @@ const motor = new Motor(
   { intro, 'eleccion-dupla': eleccion, exploracion, mapa, viaje, cierre },
   () => controles.contador,
 );
+controles.volver.addEventListener('click', () => motor.volver());
+motor.escuchar((puede) => {
+  controles.volver.hidden = !puede;
+});
 motor.iniciar(estado.pantallaGuardada);
 
 // El navegador habilita el audio con el primer toque. En la intro eso lo hace

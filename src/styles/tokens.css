@@ -41,6 +41,7 @@
 
   --moneda: oklch(0.84 0.15 85);
   --moneda-borde: oklch(0.55 0.12 70);
+  --tinta-sobre-moneda: oklch(0.25 0.06 70);
   --reloj-fondo: var(--papel);
   --reloj-borde: var(--tinta);
   --reloj-aguja: var(--tinta);

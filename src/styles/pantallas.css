@@ -188,6 +188,29 @@
   touch-action: manipulation;
 }
 
+/* Escondite: un brillo dorado sobre el mural que esconde monedas. El área
+   para tocar es la de cualquier elemento (60 px); el brillo es más chico. */
+.elemento--escondite {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+}
+
+.elemento--escondite .elemento__figura {
+  width: 70%;
+  transform-origin: 50% 50%;
+  /* El resplandor va en el padre: el recorte de la estrella también recortaría su sombra. */
+  filter: drop-shadow(0 0 0.45rem var(--moneda));
+}
+
+.escondite__brillo {
+  display: block;
+  aspect-ratio: 1;
+  background: var(--moneda);
+  clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+  opacity: 0.7;
+}
+
 .elemento--tocable .ilustracion.pendiente {
   border-style: solid;
 }
@@ -314,7 +337,8 @@
 /* Reloj decorativo de la noche. */
 .reloj {
   position: absolute;
-  top: max(4%, 0.75rem);
+  /* Debajo de "Volver", que está fijo arriba a la izquierda. */
+  top: calc(var(--toque) + 1.5rem);
   left: max(4%, 0.75rem);
   width: max(4.5rem, calc(12 * var(--u)));
   z-index: 2;
@@ -367,13 +391,21 @@
   z-index: 4;
 }
 
+.chispa--oro {
+  width: 1.4rem;
+  height: 1.4rem;
+  margin: -0.7rem 0 0 -0.7rem;
+  filter: drop-shadow(0 0 0.35rem var(--moneda));
+}
+
 .moneda-volando {
   position: fixed;
-  width: 2.25rem;
-  height: 2.25rem;
-  margin: -1.125rem 0 0 -1.125rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: -1.375rem 0 0 -1.375rem;
   pointer-events: none;
   z-index: 20;
+  filter: drop-shadow(0 0.2rem 0.5rem oklch(0.2 0.05 70 / 0.45));
 }
 
 /* ---------- Subtítulos ---------- */
@@ -774,8 +806,10 @@
   padding: 0;
 }
 
-.control:hover {
-  background: var(--resaltado);
+@media (hover: hover) {
+  .control:hover {
+    background: var(--resaltado);
+  }
 }
 
 .control--sonido[aria-pressed='true'] {
@@ -799,6 +833,57 @@
 
 .monedas svg {
   width: 2rem;
+}
+
+.monedas {
+  position: relative;
+}
+
+/* El anillo que brilla cuando llega una moneda. */
+.monedas__brillo {
+  position: absolute;
+  inset: -0.2rem;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0.2rem var(--moneda), 0 0 0.6rem 0.1rem var(--moneda);
+  pointer-events: none;
+}
+
+.monedas__suma {
+  position: absolute;
+  top: 100%;
+  right: 0.6rem;
+  margin-top: 0.3rem;
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  background: var(--moneda);
+  color: var(--tinta-sobre-moneda);
+  font-size: 1.25rem;
+  pointer-events: none;
+}
+
+/* "Volver", arriba a la izquierda en todas las pantallas que tienen adónde. */
+.control--volver {
+  position: fixed;
+  top: max(0.75rem, env(safe-area-inset-top));
+  left: max(0.75rem, env(safe-area-inset-left));
+  z-index: 10;
+  padding: 0 1.1rem 0 0.8rem;
+}
+
+/* En el celular, "Saltear narración" y las monedas no entran al lado de la palabra: queda la flecha. */
+@media (max-width: 30rem) {
+  .control--volver {
+    padding: 0;
+  }
+
+  .control--volver span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 }
 
 /* ---------- Pantalla 1: portada ---------- */

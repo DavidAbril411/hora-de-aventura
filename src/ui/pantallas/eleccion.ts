@@ -4,7 +4,7 @@ import type { Dupla, PantallaEleccion } from '../../engine/tipos';
 import { aparecerEnCascada } from '../animaciones';
 import { h } from '../dom';
 import { acciones, avisoAudioPendiente, boton, escenario, ilustracion, pareja } from '../componentes';
-import { iconoSeguir, iconoVolver } from '../iconos';
+import { iconoSeguir } from '../iconos';
 import { subtitulos, type Subtitulos } from '../subtitulos';
 
 /** El escenario de día de la dupla, si ya llegó: sirve de fondo donde se la presenta. */
@@ -14,8 +14,8 @@ function fondoDe(dupla: Dupla): string | undefined {
 
 /**
  * Pantalla 2. Tres duplas; tocar una la abre con su presentación y su
- * narración. "Recorrer con ellos" define la dupla. Se puede volver y
- * escuchar otra antes de elegir.
+ * narración. "Recorrer con ellos" define la dupla. Con "Volver" (arriba)
+ * se vuelve a la lista para escuchar otra antes de elegir.
  */
 export function eleccion(ctx: Contexto<PantallaEleccion>): HTMLElement {
   const { pantalla: p, sonido, estado } = ctx;
@@ -30,6 +30,7 @@ export function eleccion(ctx: Contexto<PantallaEleccion>): HTMLElement {
   const mostrarLista = (enfocar?: string) => {
     sonido.saltear();
     cerrarLectura();
+    ctx.alVolver(null);
     const lista = h(
       'ul',
       { class: 'eleccion__lista' },
@@ -64,10 +65,10 @@ export function eleccion(ctx: Contexto<PantallaEleccion>): HTMLElement {
   const mostrarDupla = (id: string) => {
     const dupla = historia.duplas[id];
     const elegir = boton(dupla.botonElegir ?? t('recorrerConEllos'), () => {
-      estado.set({ dupla: id });
+      estado.elegirDupla(id);
       ctx.avanzar();
     }, { icono: iconoSeguir });
-    const volver = boton(t('volver'), () => mostrarLista(id), { variante: 'secundario', iconoAntes: iconoVolver });
+    ctx.alVolver(() => mostrarLista(id));
     const dibujo = escenario({ fondo: fondoDe(dupla) }, p.momento);
     dibujo.juego.append(pareja(dupla, 'escenario__pareja'));
     cerrarLectura();
@@ -75,7 +76,7 @@ export function eleccion(ctx: Contexto<PantallaEleccion>): HTMLElement {
       titulo: dupla.nombre,
       texto: dupla.presentacion,
       tiempos: dupla.tiempos,
-      acciones: acciones(volver, elegir),
+      acciones: acciones(elegir),
       avisos: [avisoAudioPendiente(dupla.narracion)],
       sonido,
     });

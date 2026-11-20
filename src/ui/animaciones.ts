@@ -65,6 +65,30 @@ export function invitarATocar(el: Element): () => void {
   return () => control.stop();
 }
 
+/**
+ * El brillo de un escondite: titila de a ratos, cada uno a su ritmo, para
+ * que la escena invite a buscar sin marcar un camino. Con movimiento
+ * reducido solo cambia la opacidad.
+ */
+export function titilar(el: Element): () => void {
+  // Un destello corto cada tanto, no un parpadeo continuo: entre todos los brillos
+  // de la escena hay uno o dos encendidos a la vez, y el dibujo de los chicos manda.
+  const reducido = movimientoReducido();
+  const control = animate(el, reducido ? { opacity: [0.7, 1, 0.7] } : { scale: [0.75, 1.2, 0.75], opacity: [0.7, 1, 0.7], rotate: [0, 45, 90] }, {
+    duration: 0.7,
+    delay: 0.5 + Math.random() * 5,
+    repeat: Infinity,
+    repeatDelay: 3 + Math.random() * 5,
+    ease: 'easeInOut',
+  });
+  return () => control.stop();
+}
+
+/** El escondite ya dio sus monedas: el brillo se apaga. */
+export async function apagarBrillo(el: Element): Promise<void> {
+  await animate(el, { opacity: 0, scale: movimientoReducido() ? 1 : 0.3 }, { duration: 0.4 });
+}
+
 /** Un llamado de atención breve: "acá es donde hay que tocar". */
 export function llamarAtencion(els: Element[]): void {
   if (!els.length) return;
@@ -118,23 +142,27 @@ async function destello(escenario: HTMLElement, intensidad: number): Promise<voi
   capa.remove();
 }
 
-async function chispas(el: HTMLElement, escenario: HTMLElement): Promise<void> {
+async function chispas(
+  el: HTMLElement,
+  escenario: HTMLElement,
+  { cantidad = 10, distancia = 90, clase = 'chispa' } = {},
+): Promise<void> {
   const caja = el.getBoundingClientRect();
   const base = escenario.getBoundingClientRect();
   const cx = caja.left + caja.width / 2 - base.left;
   const cy = caja.top + caja.height / 2 - base.top;
-  const piezas = Array.from({ length: 10 }, (_, i) => {
-    const p = h('span', { class: 'chispa', 'aria-hidden': 'true' });
+  const piezas = Array.from({ length: cantidad }, (_, i) => {
+    const p = h('span', { class: clase, 'aria-hidden': 'true' });
     p.style.left = `${cx}px`;
     p.style.top = `${cy}px`;
     escenario.append(p);
-    return { p, angulo: (i / 10) * Math.PI * 2 };
+    return { p, angulo: (i / cantidad) * Math.PI * 2 };
   });
   await Promise.all(
     piezas.map(({ p, angulo }, i) =>
       animate(
         p,
-        { x: [0, Math.cos(angulo) * 90], y: [0, Math.sin(angulo) * 90], scale: [0.2, 1.2, 0], opacity: [1, 1, 0] },
+        { x: [0, Math.cos(angulo) * distancia], y: [0, Math.sin(angulo) * distancia], scale: [0.2, 1.2, 0], opacity: [1, 1, 0] },
         { duration: 0.9, delay: i * 0.03, ease: SALIDA },
       ),
     ),
@@ -142,17 +170,32 @@ async function chispas(el: HTMLElement, escenario: HTMLElement): Promise<void> {
   piezas.forEach(({ p }) => p.remove());
 }
 
-/** Monedas que saltan del elemento y vuelan hasta el contador. */
-export async function volarMonedas(desde: HTMLElement, hasta: HTMLElement, cantidad: number): Promise<void> {
+/**
+ * Las monedas de un truco: estallan en chispas doradas, saltan girando del
+ * elemento y vuelan hasta el contador. Cada una que llega llama a alLlegar
+ * (que la cuenta y suena). Al final, un "+N" sube desde el contador.
+ */
+export async function volarMonedas(
+  desde: HTMLElement,
+  hasta: HTMLElement,
+  cantidad: number,
+  alLlegar: () => void,
+  escenario: HTMLElement,
+): Promise<void> {
   if (movimientoReducido()) {
-    await animate(hasta, { opacity: [0.4, 1] }, { duration: 0.4 });
+    for (let i = 0; i < cantidad; i++) {
+      alLlegar();
+      await new Promise((listo) => window.setTimeout(listo, 160));
+    }
+    mostrarSuma(hasta, cantidad);
     return;
   }
+  void chispas(desde, escenario, { cantidad: 14, distancia: 120, clase: 'chispa chispa--oro' });
   const origen = desde.getBoundingClientRect();
   const destino = hasta.getBoundingClientRect();
   const x0 = origen.left + origen.width / 2;
-  const y0 = origen.top + origen.height * 0.3;
-  const dx = destino.left + destino.width / 2 - x0;
+  const y0 = origen.top + origen.height * 0.35;
+  const dx = destino.left + destino.width * 0.25 - x0;
   const dy = destino.top + destino.height / 2 - y0;
   const monedas = Array.from({ length: cantidad }, () => {
     const m = h('span', { class: 'moneda-volando', 'aria-hidden': 'true' }, svg(iconoMoneda));
@@ -162,16 +205,79 @@ export async function volarMonedas(desde: HTMLElement, hasta: HTMLElement, canti
     return m;
   });
   await Promise.all(
-    monedas.map((m, i) =>
-      animate(
+    monedas.map(async (m, i) => {
+      const abanico = (i - (cantidad - 1) / 2) * 46;
+      // Primero el salto: suben girando como una moneda tirada al aire.
+      await animate(
         m,
-        { x: [0, (i - (cantidad - 1) / 2) * 34, dx], y: [0, -80, dy], scale: [0.4, 1.2, 0.7], opacity: [0, 1, 1] },
-        { duration: 1.1, delay: i * 0.12, times: [0, 0.35, 1], ease: ['easeOut', 'easeIn'] },
-      ),
-    ),
+        { x: [0, abanico], y: [0, -110 - (i % 2) * 24], scale: [0.3, 1.35], opacity: [0, 1], rotateY: [0, 540] },
+        { duration: 0.55, delay: i * 0.13, ease: SALIDA },
+      );
+      // Después el vuelo: se achican y se aceleran hacia el contador.
+      await animate(
+        m,
+        { x: [abanico, dx], y: [-110 - (i % 2) * 24, dy], scale: [1.35, 0.75], rotateY: [540, 900] },
+        { duration: 0.55, ease: [0.55, 0, 0.9, 0.4] },
+      );
+      m.remove();
+      alLlegar();
+    }),
   );
-  monedas.forEach((m) => m.remove());
-  await animate(hasta, { scale: [1, 1.18, 1] }, { duration: 0.35 });
+  mostrarSuma(hasta, cantidad);
+}
+
+/** El contador recibe una moneda: rebota y brilla. */
+export function contarMoneda(contador: HTMLElement): void {
+  if (movimientoReducido()) {
+    animate(contador, { filter: ['brightness(1.5)', 'brightness(1)'] }, { duration: 0.35 });
+    return;
+  }
+  animate(contador, { scale: [1.32, 1] }, { type: 'spring', bounce: 0.55, duration: 0.5 });
+  const brillo = h('span', { class: 'monedas__brillo', 'aria-hidden': 'true' });
+  contador.append(brillo);
+  void animate(brillo, { opacity: [0.9, 0], scale: [0.6, 1.6] }, { duration: 0.5, ease: SALIDA }).then(() => brillo.remove());
+}
+
+/** "+3" que sale del contador y se desvanece. */
+function mostrarSuma(contador: HTMLElement, cantidad: number): void {
+  const suma = h('span', { class: 'monedas__suma', 'aria-hidden': 'true' }, `+${cantidad}`);
+  contador.append(suma);
+  const movimiento = movimientoReducido() ? { opacity: [0, 1, 1, 0] } : { opacity: [0, 1, 1, 0], y: [6, -18, -28, -40], scale: [0.6, 1.15, 1, 1] };
+  void animate(suma, movimiento, { duration: 1.3, times: [0, 0.2, 0.7, 1], ease: 'easeOut' }).then(() => suma.remove());
+}
+
+/**
+ * Alguien que se acerca desde lejos (el viejo de la bolsa): arranca chico y
+ * apagado, crece paso a paso balanceándose y, al llegar, se adelanta de golpe.
+ * Con movimiento reducido solo aparece con un fundido.
+ */
+export function acercarse(el: HTMLElement, retraso: number, duracion: number): () => void {
+  if (movimientoReducido()) {
+    el.style.opacity = '0';
+    const control = animate(el, { opacity: [0, 1] }, { duration: 1, delay: retraso });
+    return () => control.stop();
+  }
+  el.style.transformOrigin = '50% 100%';
+  // Desde lejos: más arriba (hacia el horizonte), chico y oscuro. Se queda un
+  // poco más oscuro que los chicos, para que siga dando miedo.
+  animate(el, { opacity: 0, scale: 0.3, y: -40 }, { duration: 0 });
+  const pasos = Math.max(2, Math.round(duracion / 0.55));
+  const controles = [
+    animate(el, { scale: [0.3, 1], y: [-40, 0], opacity: [0, 1, 1], filter: ['brightness(0.4)', 'brightness(0.82)'] }, { duration: duracion, delay: retraso, ease: 'easeIn', times: [0, 0.25, 1] }),
+    animate(el, { rotate: [-4, 4] }, { duration: duracion / pasos, delay: retraso, repeat: pasos - 1, repeatType: 'mirror', ease: 'easeInOut' }),
+  ];
+  let detenido = false;
+  void controles[0].then(async () => {
+    if (detenido) return;
+    // El paso final: se adelanta, amenazante, justo cuando suena su risa.
+    await animate(el, { rotate: 0 }, { duration: 0.2 });
+    if (detenido) return;
+    controles.push(animate(el, { scale: [1, 1.25, 1.12], y: [0, 10, 6] }, { duration: 0.7, delay: 0.25, ease: SALIDA }));
+  });
+  return () => {
+    detenido = true;
+    controles.forEach((c) => c.stop());
+  };
 }
 
 /** Agujas del reloj decorativo: van de una hora a otra y se quedan ahí. */

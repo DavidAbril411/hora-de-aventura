@@ -1,7 +1,7 @@
 import type { Contexto } from '../../engine/motor';
 import { t } from '../../engine/historia';
 import type { Elemento, PantallaExploracion } from '../../engine/tipos';
-import { animarElemento, aparecer, balancearReloj, invitarATocar, llamarAtencion, moverReloj, volarMonedas } from '../animaciones';
+import { animarElemento, apagarBrillo, aparecer, balancearReloj, invitarATocar, llamarAtencion, moverReloj, titilar, volarMonedas } from '../animaciones';
 import { h, svg } from '../dom';
 import { acciones, avisoAudioPendiente, boton, escenario, ilustracion, ubicar } from '../componentes';
 import { iconoCerrar, iconoDescubierto, iconoReloj, iconoSeguir } from '../iconos';
@@ -15,6 +15,7 @@ import { subtitulos } from '../subtitulos';
 export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
   const { pantalla: p, estado } = ctx;
   const requeridas = p.requiereInteracciones ?? 0;
+  const objetivo = p.monedasParaSeguir;
   const tocables = (p.escenario.elementos ?? []).filter((el) => el.interaccion);
   const secretos = tocables.filter((el) => el.interaccion!.tipo === 'secreto');
   const tocados = new Set<string>(estado.get().tocados[p.id] ?? []);
@@ -22,8 +23,14 @@ export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
   const detenerInvitaciones = new Map<string, () => void>();
 
   const pista = h('p', { class: 'acciones__pista', id: `pista-${p.id}` });
+  // Monedas que ya se sumaron al estado pero todavía están volando al contador:
+  // la consigna y «Seguir» cuentan lo que el lector ve llegar.
+  let enVuelo = 0;
+  const monedasVistas = () => estado.get().monedas - enVuelo;
+  const alcanza = () => (objetivo ? monedasVistas() >= objetivo : tocados.size >= requeridas);
+  const quedanMonedas = () => tocables.some((el) => el.interaccion?.monedas && !tocados.has(el.id));
   const seguir = boton(t('seguir'), () => {
-    if (tocados.size >= requeridas) {
+    if (alcanza()) {
       ctx.avanzar();
       return;
     }
@@ -38,17 +45,21 @@ export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
   }, { icono: iconoSeguir });
 
   const actualizar = () => {
-    const listo = tocados.size >= requeridas;
+    const listo = alcanza();
     seguir.setAttribute('aria-disabled', String(!listo));
     if (listo) seguir.removeAttribute('aria-describedby');
     else seguir.setAttribute('aria-describedby', pista.id);
     const descubiertos = secretos.filter((el) => tocados.has(el.id)).length;
-    if (!listo) pista.textContent = t('seguirBloqueado');
+    if (objetivo) {
+      const plantilla = !listo ? t('monedasConsigna') : quedanMonedas() ? t('monedasLogradas') : t('monedasTodas');
+      pista.textContent = plantilla.replace('{objetivo}', String(objetivo)).replace('{tenes}', String(monedasVistas()));
+    } else if (!listo) pista.textContent = t('seguirBloqueado');
     else if (secretos.length) pista.textContent = `${t('descubiertos')}: ${descubiertos} ${t('de')} ${secretos.length}`;
     else pista.textContent = '';
-    pista.classList.toggle('acciones__pista--elegido', listo && secretos.length > 0);
+    pista.classList.toggle('acciones__pista--elegido', listo && (secretos.length > 0 || !!objetivo));
   };
   actualizar();
+  if (objetivo) ctx.alSalir(estado.escuchar(() => actualizar()));
 
   const tarjeta = h('div', { class: 'revelacion', 'aria-live': 'polite' });
   const cerrarTarjeta = () => tarjeta.replaceChildren();
@@ -76,13 +87,37 @@ export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
       aparecer(objeto);
     }
     if (i.monedas && primeraVez) {
+      // El total se guarda enseguida; el contador las va mostrando a medida que llegan.
+      const contador = ctx.contadorMonedas();
+      contador.retener();
+      let faltan = i.monedas;
+      enVuelo += faltan;
       estado.sumarMonedas(i.monedas);
-      void volarMonedas(botonEl, ctx.contadorMonedas(), i.monedas);
+      const sonido = i.sonidoMoneda;
+      void volarMonedas(botonEl, contador.el, i.monedas, () => {
+        contador.llegaUna();
+        if (faltan > 0) { faltan--; enVuelo--; }
+        actualizar();
+        if (sonido) ctx.sonido.golpe(sonido);
+      }, dibujo.raiz).finally(() => {
+        enVuelo -= faltan;
+        faltan = 0;
+        contador.soltar();
+        actualizar();
+      });
     }
     if (i.tipo === 'secreto') mostrarSecreto(el);
 
-    if (primeraVez) marcarDescubierto(el, botonEl);
+    if (primeraVez && i.tipo === 'escondite') void vaciar(el, botonEl, figura);
+    else if (primeraVez) marcarDescubierto(el, botonEl);
     ocupados.delete(el.id);
+  };
+
+  // Un escondite que ya dio sus monedas se apaga y deja de ser tocable.
+  const vaciar = async (el: Elemento, botonEl: HTMLElement, figura: HTMLElement) => {
+    await apagarBrillo(figura);
+    botonEl.hidden = true;
+    botonEl.setAttribute('aria-label', `${el.nombre} (${t('descubierto')})`);
   };
 
   const marcarDescubierto = (el: Elemento, botonEl: HTMLElement) => {
@@ -110,6 +145,8 @@ export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
   };
 
   const dibujo = escenario(p.escenario, p.momento, (el, b, f) => void alTocar(el, b, f));
+  ctx.alSalir(dibujo.detener);
+  ctx.sonido.precargar(tocables.map((el) => el.interaccion?.sonidoMoneda));
   dibujo.juego.append(tarjeta);
   // Tocar cualquier otra parte del dibujo cierra el secreto.
   dibujo.raiz.addEventListener('click', (e) => {
@@ -122,11 +159,14 @@ export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
     if (!contenedor) continue;
     // Al retomar después de recargar, lo ya descubierto queda descubierto.
     if (tocados.has(el.id)) {
-      marcarDescubierto(el, contenedor);
+      if (el.interaccion?.tipo === 'escondite') contenedor.hidden = true;
+      else marcarDescubierto(el, contenedor);
       continue;
     }
     const anillo = contenedor.querySelector('.elemento__invitacion');
+    const brillo = contenedor.querySelector('.escondite__brillo');
     if (anillo) detenerInvitaciones.set(el.id, invitarATocar(anillo));
+    else if (brillo) detenerInvitaciones.set(el.id, titilar(brillo));
   }
   ctx.alSalir(() => detenerInvitaciones.forEach((detener) => detener()));
 

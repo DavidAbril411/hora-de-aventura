@@ -50,7 +50,11 @@ export type Animacion =
   | 'destellos';
 
 export interface Interaccion {
-  tipo: 'secreto' | 'truco';
+  /**
+   * secreto: muestra una ficha. truco: la dupla hace algo y gana monedas.
+   * escondite: un brillo en la escena que esconde monedas; no tiene dibujo.
+   */
+  tipo: 'secreto' | 'truco' | 'escondite';
   animacion: Animacion;
   /** Título de la tarjeta del secreto, si no es el nombre del elemento. */
   titulo?: string;
@@ -59,18 +63,33 @@ export interface Interaccion {
   monedas?: number;
   /** Imagen que aparece después de la animación (el sobre, los dientes). */
   aparece?: string;
+  /** Sonido corto de cada moneda al llegar al contador. */
+  sonidoMoneda?: string;
+}
+
+/**
+ * Cómo entra un elemento a la escena. "acercarse": llega desde lejos,
+ * chico, y crece hasta su tamaño. Los segundos se cuentan desde que se
+ * entra a la pantalla, para que coincida con los efectos (los pasos, la risa).
+ */
+export interface Llegada {
+  animacion: 'acercarse';
+  retraso: number;
+  duracion: number;
 }
 
 export interface Elemento {
   id: string;
   nombre: string;
-  imagen: string;
+  /** El dibujo. Los escondites no tienen: se ven como un brillo. */
+  imagen?: string;
   /** Centro del elemento, en % del área de juego (la escena sin la franja de subtítulos). */
   x: number;
   y: number;
   /** Ancho, en % del promedio entre el ancho y el alto del área de juego. */
   ancho: number;
   interaccion?: Interaccion;
+  llegada?: Llegada;
 }
 
 export interface Escenario {
@@ -127,6 +146,11 @@ export interface PantallaExploracion extends PantallaBase {
   escenario: Escenario;
   /** Cuántos elementos hay que tocar antes de habilitar "Seguir". */
   requiereInteracciones?: number;
+  /**
+   * Cuántas monedas hay que juntar para habilitar "Seguir" (en vez de
+   * requiereInteracciones). Es un mínimo: se puede seguir buscando más.
+   */
+  monedasParaSeguir?: number;
   /** Reloj decorativo (no mide tiempo real): el dibujo de los chicos, o uno con agujas que avanzan. */
   reloj?: { desde: string; hasta: string; imagen?: string };
 }
