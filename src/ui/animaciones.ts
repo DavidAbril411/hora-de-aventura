@@ -68,15 +68,17 @@ export function invitarATocar(el: Element): () => void {
 /**
  * El brillo de un escondite: titila de a ratos, cada uno a su ritmo, para
  * que la escena invite a buscar sin marcar un camino. Con movimiento
- * reducido queda quieto (se ve igual).
+ * reducido solo cambia la opacidad.
  */
 export function titilar(el: Element): () => void {
-  if (movimientoReducido()) return () => {};
-  const control = animate(el, { scale: [0.7, 1.15, 0.7], opacity: [0.45, 1, 0.45], rotate: [0, 45, 90] }, {
-    duration: 1.6 + Math.random() * 1.2,
-    delay: Math.random() * 1.5,
+  // Un destello corto cada tanto, no un parpadeo continuo: entre todos los brillos
+  // de la escena hay uno o dos encendidos a la vez, y el dibujo de los chicos manda.
+  const reducido = movimientoReducido();
+  const control = animate(el, reducido ? { opacity: [0.7, 1, 0.7] } : { scale: [0.75, 1.2, 0.75], opacity: [0.7, 1, 0.7], rotate: [0, 45, 90] }, {
+    duration: 0.7,
+    delay: 0.5 + Math.random() * 5,
     repeat: Infinity,
-    repeatDelay: 0.6 + Math.random() * 1.6,
+    repeatDelay: 3 + Math.random() * 5,
     ease: 'easeInOut',
   });
   return () => control.stop();

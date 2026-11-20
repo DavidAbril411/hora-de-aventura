@@ -23,7 +23,12 @@ export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
   const detenerInvitaciones = new Map<string, () => void>();
 
   const pista = h('p', { class: 'acciones__pista', id: `pista-${p.id}` });
-  const alcanza = () => (objetivo ? estado.get().monedas >= objetivo : tocados.size >= requeridas);
+  // Monedas que ya se sumaron al estado pero todavía están volando al contador:
+  // la consigna y «Seguir» cuentan lo que el lector ve llegar.
+  let enVuelo = 0;
+  const monedasVistas = () => estado.get().monedas - enVuelo;
+  const alcanza = () => (objetivo ? monedasVistas() >= objetivo : tocados.size >= requeridas);
+  const quedanMonedas = () => tocables.some((el) => el.interaccion?.monedas && !tocados.has(el.id));
   const seguir = boton(t('seguir'), () => {
     if (alcanza()) {
       ctx.avanzar();
@@ -46,8 +51,8 @@ export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
     else seguir.setAttribute('aria-describedby', pista.id);
     const descubiertos = secretos.filter((el) => tocados.has(el.id)).length;
     if (objetivo) {
-      const plantilla = listo ? t('monedasLogradas') : t('monedasConsigna');
-      pista.textContent = plantilla.replace('{objetivo}', String(objetivo)).replace('{tenes}', String(estado.get().monedas));
+      const plantilla = !listo ? t('monedasConsigna') : quedanMonedas() ? t('monedasLogradas') : t('monedasTodas');
+      pista.textContent = plantilla.replace('{objetivo}', String(objetivo)).replace('{tenes}', String(monedasVistas()));
     } else if (!listo) pista.textContent = t('seguirBloqueado');
     else if (secretos.length) pista.textContent = `${t('descubiertos')}: ${descubiertos} ${t('de')} ${secretos.length}`;
     else pista.textContent = '';
@@ -85,12 +90,21 @@ export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
       // El total se guarda enseguida; el contador las va mostrando a medida que llegan.
       const contador = ctx.contadorMonedas();
       contador.retener();
+      let faltan = i.monedas;
+      enVuelo += faltan;
       estado.sumarMonedas(i.monedas);
       const sonido = i.sonidoMoneda;
       void volarMonedas(botonEl, contador.el, i.monedas, () => {
         contador.llegaUna();
+        if (faltan > 0) { faltan--; enVuelo--; }
+        actualizar();
         if (sonido) ctx.sonido.golpe(sonido);
-      }, dibujo.raiz).finally(contador.soltar);
+      }, dibujo.raiz).finally(() => {
+        enVuelo -= faltan;
+        faltan = 0;
+        contador.soltar();
+        actualizar();
+      });
     }
     if (i.tipo === 'secreto') mostrarSecreto(el);
 
