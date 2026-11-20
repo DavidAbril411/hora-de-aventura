@@ -79,7 +79,7 @@ function oraciones(bloque: BloqueTexto): Oracion[] {
  * un tramo que entra en la franja, y el resto se lee con las flechas. Si
  * suena una narración, los subtítulos la acompañan solos, palabra por
  * palabra si la narración tiene tiempos; si el lector toca una flecha,
- * esperan unos segundos y la retoman. El texto completo queda
+ * la voz salta al comienzo de ese tramo y sigue desde ahí. El texto completo queda
  * disponible para lectores de pantalla.
  */
 export function subtitulos({ titulo, texto, acciones, avisos = [], sonido, tiempos, alLeer = [] }: Opciones): Subtitulos {
@@ -229,15 +229,33 @@ export function subtitulos({ titulo, texto, acciones, avisos = [], sonido, tiemp
     }
   };
 
+  /** El segundo de la narración en que empieza una página: con los tiempos si están, o por el largo del texto. */
+  const inicioDePagina = (indice: number): number | null => {
+    if (indice <= 0) return 0;
+    if (tiempoDePalabra) return tiempoDePalabra[paginas[indice - 1].palabras] ?? null;
+    const duracion = sonido.duracionNarracion;
+    const total = paginas[paginas.length - 1].hasta;
+    return duracion === null || !total ? null : (paginas[indice - 1].hasta / total) * duracion + 0.05;
+  };
+
   const pasar = (paso: number) => {
-    // Mientras el lector maneja el texto, la narración no lo mueve; si deja de tocar, lo retoma.
+    const destino = Math.min(paginas.length - 1, Math.max(0, actual + paso));
+    mostrar(destino);
+    // Si suena la narración, la voz salta al comienzo de esta página y el subtítulo la sigue desde ahí.
+    const inicio = sonido.narrando ? inicioDePagina(destino) : null;
+    if (inicio !== null && sonido.irANarracion(inicio)) {
+      ultimoToque = -Infinity;
+      salto = performance.now();
+      return;
+    }
+    // Si no se puede llevar la voz, la narración no mueve el texto mientras el lector lo maneja.
     ultimoToque = performance.now();
-    mostrar(Math.min(paginas.length - 1, Math.max(0, actual + paso)));
   };
 
   // Mientras suena la narración, el subtítulo la sigue: con los tiempos de
   // cada palabra si están, o repartido según el largo del texto si no.
   let reloj = 0;
+  let salto = -Infinity;
   const acompanar = () => {
     const avance = sonido.avanceNarracion;
     const segundos = sonido.tiempoNarracion;
@@ -250,7 +268,10 @@ export function subtitulos({ titulo, texto, acciones, avisos = [], sonido, tiemp
       const total = paginas[paginas.length - 1].hasta;
       indice = paginas.findIndex((p) => p.hasta / total > avance);
     }
-    mostrar(indice === -1 ? paginas.length - 1 : indice);
+    indice = indice === -1 ? paginas.length - 1 : indice;
+    // Justo después de un salto, la voz arranca en el borde de la página: no se vuelve a la anterior.
+    if (indice < actual && performance.now() - salto < 1500) return;
+    mostrar(indice);
   };
   const dejarDeEscuchar = sonido.escuchar((narrando) => {
     window.clearInterval(reloj);

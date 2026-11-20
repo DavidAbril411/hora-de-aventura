@@ -119,8 +119,9 @@ export class Sonido {
       const fin = (f: FinNarracion) => {
         if (resuelta) return;
         resuelta = true;
-        sonando.fuente.onended = null;
-        if (this.narracion?.fuente === sonando.fuente) {
+        // Después de un salto (irANarracion) suena otra fuente con el mismo fin.
+        if (this.narracion?.fin === fin) {
+          this.narracion.fuente.onended = null;
           this.narracion = null;
           this.mezclar();
           this.avisar();
@@ -132,6 +133,28 @@ export class Sonido {
       this.mezclar();
       this.avisar();
     });
+  }
+
+  /** Duración de la narración que suena, en segundos. null si no hay narración. */
+  get duracionNarracion(): number | null {
+    return this.narracion?.duracion ?? null;
+  }
+
+  /**
+   * Lleva la narración que suena a otro momento: cuando el lector pasa de
+   * subtítulo a mano, la voz va con él. false si no hay narración sonando.
+   */
+  irANarracion(segundos: number): boolean {
+    const actual = this.narracion;
+    const buffer = actual?.fuente.buffer;
+    if (!actual || !buffer || !this.ctx) return false;
+    const desde = Math.min(Math.max(0, segundos), Math.max(0, buffer.duration - 0.05));
+    actual.fuente.onended = null;
+    this.apagar(actual, 0.06);
+    const nueva = this.sonar(buffer, this.busVoz, { desde });
+    nueva.fuente.onended = () => actual.fin('terminada');
+    this.narracion = { ...nueva, inicio: this.ctx.currentTime - desde, duracion: actual.duracion, fin: actual.fin };
+    return true;
   }
 
   saltear(): void {
@@ -258,14 +281,14 @@ export class Sonido {
     return nodo;
   }
 
-  private sonar(buffer: AudioBuffer, destino: GainNode, { loop = false, volumen = 1 } = {}): Sonando {
+  private sonar(buffer: AudioBuffer, destino: GainNode, { loop = false, volumen = 1, desde = 0 } = {}): Sonando {
     const fuente = this.ctx!.createBufferSource();
     fuente.buffer = buffer;
     fuente.loop = loop;
     const ganancia = this.ctx!.createGain();
     ganancia.gain.value = volumen;
     fuente.connect(ganancia).connect(destino);
-    fuente.start();
+    fuente.start(0, desde);
     return { fuente, ganancia };
   }
 
