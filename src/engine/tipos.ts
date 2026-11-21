@@ -111,6 +111,54 @@ export interface Destino {
 
 export type Siguiente = string | { segun: 'dupla' | 'destino'; casos: Record<string, string> };
 
+/** Lo que pasa en la escena cuando la narración dice algo. */
+export type AccionMomento =
+  /** Llega desde lejos, creciendo (el viejo de la bolsa). Está oculto hasta entonces. */
+  | 'acercarse'
+  /** Entra corriendo desde el costado. Está oculto hasta entonces. */
+  | 'entrar'
+  /** Aparece con un fundido (el colectivo a lo lejos, el mapa). Está oculto hasta entonces. */
+  | 'aparecer'
+  /** Levanta la cabeza un momento. */
+  | 'mirarArriba'
+  /** Se inclina un momento hacia un costado (el viejo abre la bolsa). */
+  | 'inclinarse'
+  /** Se va caminando hacia el costado y desaparece. */
+  | 'irse'
+  /** Salta hasta otro elemento (`hacia`) y se mete adentro. */
+  | 'saltarA'
+  /** Se esfuma en una nube de polvo. */
+  | 'desaparecer'
+  /** Empieza a invitar a que lo toquen. */
+  | 'invitar'
+  /** Un llamado de atención breve. */
+  | 'senalar'
+  /** Empieza a balancearse (el reloj) o a mecerse (la ventana del colectivo). */
+  | 'balancear'
+  /** Un fogonazo de luz sobre la escena (el flash de la cámara). */
+  | 'destello'
+  /** Deja de moverse (la ventana del colectivo). */
+  | 'detener';
+
+export interface MomentoNarrado {
+  /** Fragmento del texto, tal cual. Pasa cuando la voz lo dice; sin voz, cuando el subtítulo llega ahí. */
+  alDecir: string;
+  /** Fragmento hasta el que dura la acción: termina cuando la voz llega ahí. */
+  hasta?: string;
+  /** Efecto de sonido que suena en ese momento. */
+  efecto?: string;
+  /** Qué se mueve: un elemento de la escena, o "fondo", "reloj", "ventana", "mapa" o "destinos". */
+  elemento?: string;
+  accion?: AccionMomento;
+  /** Para saltarA: el elemento adonde va. */
+  hacia?: string;
+  /**
+   * Para saltarA: el punto de `hacia` donde cae, en % de su dibujo (x, y).
+   * Sin esto, un poco abajo del centro. La bolsa del viejo está abajo a la derecha.
+   */
+  punto?: [number, number];
+}
+
 interface PantallaBase {
   id: string;
   numero: number;
@@ -127,7 +175,10 @@ interface PantallaBase {
    */
   tiempos?: string;
   ambiente?: string[];
+  /** Efectos que suenan uno detrás de otro al entrar a la pantalla. */
   efectos?: string[];
+  /** Lo que pasa en la escena atado a lo que dice la narración. */
+  momentos?: MomentoNarrado[];
   siguiente?: Siguiente;
 }
 
@@ -171,8 +222,6 @@ export interface PantallaViaje extends PantallaBase {
 export interface PantallaCierre extends PantallaBase {
   tipo: 'cierre';
   escenario: Escenario;
-  /** Un elemento que se va en una nube de polvo cuando el lector llega a esa parte del texto. */
-  desaparece?: { elemento: string; alLeer: string };
   reiniciarEn: string;
 }
 

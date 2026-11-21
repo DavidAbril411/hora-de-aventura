@@ -1,10 +1,11 @@
 import type { Contexto } from '../../engine/motor';
 import { historia, t } from '../../engine/historia';
 import type { PantallaCierre } from '../../engine/tipos';
-import { aparecerEnCascada, nubeDePolvo } from '../animaciones';
+import { aparecerEnCascada } from '../animaciones';
 import { h } from '../dom';
 import { acciones, avisoAudioPendiente, boton, escenario, ilustracion } from '../componentes';
 import { iconoOtraVez, iconoSeguir } from '../iconos';
+import { buscarEnEscenario, momentosNarrados } from '../momentos';
 import { subtitulos } from '../subtitulos';
 
 /**
@@ -16,18 +17,17 @@ export function cierre(ctx: Contexto<PantallaCierre>): HTMLElement {
   const raiz = h('main', { class: 'disposicion' });
   const dibujo = escenario(p.escenario, p.momento);
 
-  // El viejo desaparece cuando el texto lo cuenta, no antes.
-  const seVa = p.desaparece ? dibujo.elementos.get(p.desaparece.elemento)?.contenedor : undefined;
-  let espera = 0;
-  const desaparecer = () => {
-    if (seVa) espera = window.setTimeout(() => void nubeDePolvo(seVa, dibujo.raiz), 900);
-  };
-  ctx.alSalir(() => window.clearTimeout(espera));
+  // El perrito llega, salta a la bolsa y el viejo se esfuma cuando la narración lo cuenta.
+  const alDecir = momentosNarrados(p.momentos, {
+    sonido,
+    escenario: dibujo.raiz,
+    buscar: buscarEnEscenario(dibujo),
+    alSalir: ctx.alSalir,
+  });
 
   const mostrarCreditos = () => {
     sonido.saltear();
     lectura.destruir();
-    window.clearTimeout(espera);
     const { creditos } = historia;
     const secciones = creditos.secciones.map((s) =>
       h(
@@ -63,7 +63,7 @@ export function cierre(ctx: Contexto<PantallaCierre>): HTMLElement {
     acciones: acciones(boton(t('verCreditos'), mostrarCreditos, { icono: iconoSeguir })),
     avisos: [avisoAudioPendiente(p.narracion, ...(p.ambiente ?? []), ...(p.efectos ?? []))],
     sonido,
-    alLeer: [{ fragmento: p.desaparece?.alLeer, hacer: desaparecer }],
+    alDecir,
   });
   ctx.alSalir(lectura.destruir);
   raiz.append(dibujo.raiz, lectura.raiz);

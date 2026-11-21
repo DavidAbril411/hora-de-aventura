@@ -135,7 +135,8 @@ export async function animarElemento(el: HTMLElement, tipo: Animacion, escenario
   }
 }
 
-async function destello(escenario: HTMLElement, intensidad: number): Promise<void> {
+/** Un fogonazo blanco sobre la escena (el flash de la cámara). Es solo opacidad. */
+export async function destello(escenario: HTMLElement, intensidad: number): Promise<void> {
   const capa = h('div', { class: 'flash', 'aria-hidden': 'true' });
   escenario.append(capa);
   await animate(capa, { opacity: [0, intensidad, 0] }, { duration: 0.7, times: [0, 0.1, 1] });
@@ -355,3 +356,115 @@ export async function nubeDePolvo(sobre: HTMLElement, escenario: HTMLElement): P
   );
   bolitas.forEach((b) => b.remove());
 }
+
+/** Entra corriendo desde el costado más cercano, a los saltitos. Con movimiento reducido, un fundido. */
+export async function entrarCorriendo(el: HTMLElement, escenario: HTMLElement): Promise<void> {
+  if (movimientoReducido()) {
+    await animate(el, { opacity: [0, 1] }, { duration: 0.6 });
+    return;
+  }
+  const caja = el.getBoundingClientRect();
+  const base = escenario.getBoundingClientRect();
+  const desdeIzquierda = caja.left + caja.width / 2 - base.left < base.width / 2;
+  const distancia = desdeIzquierda ? -(caja.right - base.left + 20) : base.right - caja.left + 20;
+  await animate(
+    el,
+    { x: [distancia, 0], y: [0, -14, 0, -14, 0, -10, 0], opacity: [1, 1] },
+    { duration: 1.3, ease: 'easeOut', y: { duration: 1.3, ease: 'linear' } },
+  );
+}
+
+/** Levanta la cabeza un momento, como mirando al cielo. */
+export async function mirarArriba(el: HTMLElement): Promise<void> {
+  if (movimientoReducido()) return;
+  el.style.transformOrigin = '50% 100%';
+  await animate(el, { rotate: [0, -7, -7, 0], y: [0, -6, -6, 0] }, { duration: 2.2, times: [0, 0.25, 0.75, 1], ease: 'easeInOut' });
+}
+
+/** Se va caminando hacia el costado más cercano y desaparece. */
+export async function irseCaminando(el: HTMLElement, escenario: HTMLElement, duracion = 3): Promise<void> {
+  if (movimientoReducido()) {
+    await animate(el, { opacity: 0 }, { duration: 0.8 });
+    return;
+  }
+  const caja = el.getBoundingClientRect();
+  const base = escenario.getBoundingClientRect();
+  const haciaDerecha = caja.left + caja.width / 2 - base.left >= base.width / 2;
+  const distancia = haciaDerecha ? base.right - caja.left + 20 : -(caja.right - base.left + 20);
+  el.style.transformOrigin = '50% 100%';
+  const pasos = Math.max(2, Math.round(duracion / 0.55));
+  const balanceo = animate(el, { rotate: [-4, 4] }, { duration: duracion / pasos, repeat: pasos - 1, repeatType: 'mirror', ease: 'easeInOut' });
+  await animate(el, { x: distancia, opacity: [1, 1, 0] }, { duration: duracion, ease: 'easeIn', opacity: { duration: duracion, ease: 'linear', times: [0, 0.8, 1] } });
+  balanceo.stop();
+}
+
+/**
+ * Salta en arco hasta otro elemento y se mete adentro (el perrito en la bolsa):
+ * cae en `punto` (en % del dibujo de destino) y el destino se ilumina un
+ * instante al recibirlo. Con movimiento reducido se desvanece y el destino
+ * igual se ilumina.
+ */
+export async function saltarDentro(el: HTMLElement, destino: HTMLElement, [px, py]: [number, number] = [50, 65]): Promise<void> {
+  if (movimientoReducido()) {
+    await animate(el, { opacity: 0 }, { duration: 0.8 });
+    await recibir(destino);
+    return;
+  }
+  const desde = el.getBoundingClientRect();
+  const hasta = destino.getBoundingClientRect();
+  const dx = hasta.left + (hasta.width * px) / 100 - (desde.left + desde.width / 2);
+  const dy = hasta.top + (hasta.height * py) / 100 - (desde.top + desde.height / 2);
+  const alto = Math.min(160, Math.abs(dx) * 0.4 + 60);
+  // Gira hacia donde salta, como una zambullida.
+  const giro = dx < 0 ? -1 : 1;
+  await animate(
+    el,
+    { x: [0, dx * 0.5, dx], y: [0, Math.min(0, dy) - alto, dy], scale: [1, 0.9, 0.35], rotate: [0, 20 * giro, 40 * giro], opacity: [1, 1, 0] },
+    {
+      duration: 1.1,
+      times: [0, 0.5, 1],
+      // Como un salto de verdad: avanza parejo, sube frenando y cae acelerando.
+      ease: 'linear',
+      y: { duration: 1.1, times: [0, 0.5, 1], ease: ['easeOut', 'easeIn'] },
+      // Se ve hasta que entra en la bolsa.
+      opacity: { duration: 1.1, ease: 'linear', times: [0, 0.94, 1] },
+    },
+  );
+  await recibir(destino);
+}
+
+/**
+ * Un brillo corto en quien recibe algo (la bolsa que se traga al perrito).
+ * Solo cambia el brillo, sin tocar la escala ni el filtro con el que ya estaba.
+ */
+async function recibir(el: HTMLElement): Promise<void> {
+  const brillo = Number(/brightness\(([\d.]+)\)/.exec(getComputedStyle(el).filter)?.[1] ?? 1);
+  await animate(
+    el,
+    { filter: [`brightness(${brillo})`, `brightness(${brillo * 1.45})`, `brightness(${brillo})`] },
+    { duration: 0.5, ease: 'easeOut', times: [0, 0.3, 1] },
+  );
+}
+
+/** Se inclina un momento hacia la derecha (el viejo que abre la bolsa). Con movimiento reducido, un brillo. */
+export async function inclinarse(el: HTMLElement): Promise<void> {
+  if (movimientoReducido()) {
+    await recibir(el);
+    return;
+  }
+  el.style.transformOrigin = '50% 100%';
+  await animate(el, { rotate: [0, 6, 6, 0] }, { duration: 1.2, times: [0, 0.3, 0.7, 1], ease: 'easeInOut' });
+}
+
+/**
+ * Aparece de a poco (el colectivo a lo lejos, el mapa del chofer). Llega a la
+ * opacidad que le da la hoja de estilos, que puede no ser 1 (el mural apagado).
+ */
+export async function aparecerDeAPoco(el: HTMLElement, duracion = 1.6): Promise<void> {
+  el.style.visibility = '';
+  el.style.opacity = '';
+  const final = Number(getComputedStyle(el).opacity) || 1;
+  await animate(el, { opacity: [0, final] }, { duration: movimientoReducido() ? 0.6 : duracion, ease: 'easeOut' });
+  el.style.opacity = '';
+}
+

@@ -75,6 +75,36 @@ export function validarHistoria(h: Historia = historia): string[] {
     }
   };
 
+  // Lo atado a la narración: cada fragmento tiene que estar en el texto, palabra por palabra.
+  const momentos = (p: Pantalla) => {
+    if (!p.momentos?.length) return;
+    const palabras = palabrasDe(p.texto);
+    const esta = (fragmento: string) => {
+      const buscadas = fragmento.split(/\s+/).filter(Boolean);
+      if (!buscadas.length) return false;
+      for (let i = 0; i + buscadas.length <= palabras.length; i++) if (buscadas.every((b, j) => palabras[i + j] === b)) return true;
+      return false;
+    };
+    const piezas = new Set<string>(
+      'escenario' in p ? (p.escenario.elementos ?? []).map((el) => el.id) : [],
+    );
+    if ('escenario' in p && p.escenario.fondo) piezas.add('fondo');
+    if (p.tipo === 'exploracion' && p.reloj) piezas.add('reloj');
+    if (p.tipo === 'viaje') piezas.add('ventana');
+    if (p.tipo === 'mapa') piezas.add('mapa').add('destinos');
+    p.momentos.forEach((m, i) => {
+      const donde = `${p.id} › momentos[${i}]`;
+      if (!esta(m.alDecir)) problemas.push(`${donde}: "${m.alDecir}" no está tal cual en el texto`);
+      if (m.hasta && !esta(m.hasta)) problemas.push(`${donde}: "hasta" ("${m.hasta}") no está tal cual en el texto`);
+      audio(m.efecto, donde);
+      if (!m.efecto && !m.accion) problemas.push(`${donde}: no hace nada (falta "efecto" o "accion")`);
+      if (m.accion && !m.elemento) problemas.push(`${donde}: "${m.accion}" necesita "elemento"`);
+      if (m.elemento && !piezas.has(m.elemento)) problemas.push(`${donde}: "${m.elemento}" no está en la pantalla`);
+      if (m.accion === 'saltarA' && (!m.hacia || !piezas.has(m.hacia))) problemas.push(`${donde}: "saltarA" necesita "hacia" con un elemento de la pantalla`);
+      if (m.punto && !(m.punto.length === 2 && m.punto.every((n) => n >= 0 && n <= 100))) problemas.push(`${donde}: "punto" va en % (dos números de 0 a 100)`);
+    });
+  };
+
   if (!ids.has(h.inicio)) problemas.push(`inicio: "${h.inicio}" no existe`);
   if (ids.size !== h.pantallas.length) problemas.push('Hay pantallas con el mismo id');
   for (const [id, d] of Object.entries(h.duplas)) {
@@ -94,6 +124,7 @@ export function validarHistoria(h: Historia = historia): string[] {
     p.ambiente?.forEach((a) => audio(a, p.id));
     p.efectos?.forEach((a) => audio(a, p.id));
     destinoDe(p.siguiente, p.id);
+    momentos(p);
     switch (p.tipo) {
       case 'intro':
       case 'exploracion':
@@ -101,12 +132,6 @@ export function validarHistoria(h: Historia = historia): string[] {
         escenario(p.escenario, p.id);
         if (p.tipo === 'exploracion') imagen(p.reloj?.imagen, `${p.id} › reloj`);
         if (p.tipo === 'cierre' && !ids.has(p.reiniciarEn)) problemas.push(`${p.id}: "reiniciarEn" no existe`);
-        if (p.tipo === 'cierre' && p.desaparece) {
-          const { elemento, alLeer } = p.desaparece;
-          if (!p.escenario.elementos?.some((el) => el.id === elemento)) problemas.push(`${p.id}: "desaparece" nombra "${elemento}", que no está en la escena`);
-          const texto = p.texto.map((b) => (typeof b === 'string' ? b : b.texto)).join(' ');
-          if (!texto.includes(alLeer)) problemas.push(`${p.id}: "desaparece.alLeer" no aparece en el texto`);
-        }
         break;
       case 'mapa':
         escenario(p.escenario, p.id);
