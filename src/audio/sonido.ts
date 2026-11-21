@@ -17,6 +17,7 @@ const EFECTO_CON_VOZ = 0.3;
 const PESO_ACOMPANIA = 0.5;
 const RAMPA = 0.4; // segundos
 const PAUSA_ENTRE_EFECTOS = 400; // milisegundos
+const FUNDIDO_EFECTO = 0.8; // segundos: cuando la narración ya pasó a otra cosa
 // Los golpes (la moneda) son cortos: a −26 LUFS se pierden debajo del ambiente.
 const GOLPE = 1.6;
 
@@ -218,6 +219,24 @@ export class Sonido {
   }
 
   /**
+   * Un efecto suelto, cuando la narración lo nombra. Mientras suena, el
+   * ambiente baja. Devuelve con qué cortarlo (con un fundido) antes de que
+   * termine: los pasos del viejo no siguen sonando cuando ya llegó.
+   */
+  efectoAhora(id: string): () => void {
+    let sonando: Sonando | null = null;
+    let cortar = false;
+    void this.efecto(id, this.turnoEfectos, (s) => {
+      sonando = s;
+      if (cortar) this.apagar(s, FUNDIDO_EFECTO);
+    });
+    return () => {
+      cortar = true;
+      if (sonando) this.apagar(sonando, FUNDIDO_EFECTO);
+    };
+  }
+
+  /**
    * Un sonido corto que acompaña un toque (cada moneda que llega). No corta
    * los efectos de la pantalla ni espera turno: se suma encima.
    */
@@ -239,13 +258,14 @@ export class Sonido {
   }
 
   /** Un efecto, entero. La promesa se cumple cuando termina (o si no pudo sonar). */
-  private async efecto(id: string, turno: number): Promise<void> {
+  private async efecto(id: string, turno: number, alSonar?: (s: Sonando) => void): Promise<void> {
     const datos = historia.audios[id];
     if (!datos || datos.pendiente || !this.ctx) return;
     const buffer = await this.cargar(id, datos);
     if (!buffer || !this.ctx || turno !== this.turnoEfectos) return;
     const sonando = this.sonar(buffer, this.busEfectos);
     this.efectoActual = sonando;
+    alSonar?.(sonando);
     this.mezclar();
     await new Promise<void>((listo) => {
       sonando.fuente.onended = () => {

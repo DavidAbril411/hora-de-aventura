@@ -75,6 +75,8 @@ export interface EscenarioDibujado {
   /** El área donde van los elementos: la escena sin la franja de subtítulos. */
   juego: HTMLElement;
   elementos: Map<string, { contenedor: HTMLElement; figura: HTMLElement }>;
+  /** El dibujo de fondo, si hay. */
+  fondo?: HTMLElement;
   /** Detiene las animaciones de llegada que sigan andando. */
   detener: () => void;
 }
@@ -92,8 +94,9 @@ export function escenario(
 ): EscenarioDibujado {
   const juego = h('div', { class: 'escenario__juego' });
   const raiz = h('div', { class: 'escenario' });
+  let fondo: HTMLElement | undefined;
   if (datos.fondo) {
-    const fondo = ilustracion(datos.fondo, 'escenario__fondo', momento);
+    fondo = ilustracion(datos.fondo, 'escenario__fondo', momento);
     // Un dibujo que tiene que verse entero va en el área de juego, para que los subtítulos no lo tapen.
     const entero = historia.imagenes[datos.fondo]?.entero;
     (entero ? juego : raiz).append(fondo);
@@ -136,7 +139,7 @@ export function escenario(
     raiz.append(...[...transicion].reverse());
     fundirTransicion(transicion);
   }
-  return { raiz, juego, elementos, detener: () => detenciones.forEach((d) => d()) };
+  return { raiz, juego, elementos, fondo, detener: () => detenciones.forEach((d) => d()) };
 }
 
 /** Ubica un elemento en el área de juego: centro en % y ancho en unidades de escena. */

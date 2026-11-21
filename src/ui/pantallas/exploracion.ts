@@ -5,6 +5,7 @@ import { animarElemento, apagarBrillo, aparecer, balancearReloj, invitarATocar, 
 import { h, svg } from '../dom';
 import { acciones, avisoAudioPendiente, boton, escenario, ilustracion, ubicar } from '../componentes';
 import { iconoCerrar, iconoDescubierto, iconoReloj, iconoSeguir } from '../iconos';
+import { buscarEnEscenario, momentosNarrados } from '../momentos';
 import { subtitulos } from '../subtitulos';
 
 /**
@@ -154,6 +155,8 @@ export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
     if (!destino.closest('.revelacion__tarjeta, .elemento--tocable')) cerrarTarjeta();
   });
 
+  const invitaLaVoz = new Set((p.momentos ?? []).filter((m) => m.accion === 'invitar' && m.elemento).map((m) => m.elemento!));
+  let relojEl: HTMLElement | null = null;
   for (const el of tocables) {
     const contenedor = dibujo.elementos.get(el.id)?.contenedor;
     if (!contenedor) continue;
@@ -165,7 +168,8 @@ export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
     }
     const anillo = contenedor.querySelector('.elemento__invitacion');
     const brillo = contenedor.querySelector('.escondite__brillo');
-    if (anillo) detenerInvitaciones.set(el.id, invitarATocar(anillo));
+    // Si la narración dice cuándo invitar a tocarlo, espera a ese momento.
+    if (anillo && !invitaLaVoz.has(el.id)) detenerInvitaciones.set(el.id, invitarATocar(anillo));
     else if (brillo) detenerInvitaciones.set(el.id, titilar(brillo));
   }
   ctx.alSalir(() => detenerInvitaciones.forEach((detener) => detener()));
@@ -174,17 +178,30 @@ export function exploracion(ctx: Contexto<PantallaExploracion>): HTMLElement {
     // El reloj que dibujaron los chicos: no tiene agujas que mover, se balancea con el tic tac.
     const reloj = h('div', { class: 'reloj reloj--dibujo', role: 'img', 'aria-label': t('reloj') }, ilustracion(p.reloj.imagen, 'reloj__imagen', p.momento));
     dibujo.juego.append(reloj);
-    ctx.alSalir(balancearReloj(reloj));
+    relojEl = reloj;
+    // El reloj arranca cuando la narración dice que empieza a avanzar.
+    if (!p.momentos?.some((m) => m.elemento === 'reloj' && m.accion === 'balancear')) ctx.alSalir(balancearReloj(reloj));
   } else if (p.reloj) {
     const reloj = h('div', { class: 'reloj', role: 'img', 'aria-label': t('reloj') }, svg(iconoReloj));
     dibujo.juego.append(reloj);
+    relojEl = reloj;
     const horas = reloj.querySelector('.reloj__horas');
     const minutos = reloj.querySelector('.reloj__minutos');
     if (horas && minutos) moverReloj(horas, minutos, p.reloj.desde, p.reloj.hasta);
   }
 
+  const alDecir = momentosNarrados(p.momentos, {
+    sonido: ctx.sonido,
+    escenario: dibujo.raiz,
+    buscar: buscarEnEscenario(dibujo, relojEl ? { reloj: [relojEl] } : {}),
+    invitar: (id) => {
+      const anillo = dibujo.elementos.get(id)?.contenedor.querySelector('.elemento__invitacion');
+      if (anillo && !tocados.has(id) && !detenerInvitaciones.has(id)) detenerInvitaciones.set(id, invitarATocar(anillo));
+    },
+    alSalir: ctx.alSalir,
+  });
   const aviso = avisoAudioPendiente(p.narracion, ...(p.ambiente ?? []), ...(p.efectos ?? []));
-  const lectura = subtitulos({ titulo: p.titulo, texto: p.texto, acciones: acciones(pista, seguir), avisos: [aviso], sonido: ctx.sonido, tiempos: p.tiempos });
+  const lectura = subtitulos({ titulo: p.titulo, texto: p.texto, acciones: acciones(pista, seguir), avisos: [aviso], sonido: ctx.sonido, tiempos: p.tiempos, alDecir });
   ctx.alSalir(lectura.destruir);
   return h('main', { class: 'disposicion' }, dibujo.raiz, lectura.raiz);
 }
