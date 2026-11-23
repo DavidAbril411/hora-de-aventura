@@ -806,9 +806,19 @@
   padding: 0;
 }
 
+/* «Escuchar» se destaca: es la puerta al cuento para quien todavía no lee. */
+.control--escuchar {
+  background: var(--accion);
+  color: var(--accion-tinta);
+}
+
 @media (hover: hover) {
   .control:hover {
     background: var(--resaltado);
+  }
+
+  .control--escuchar:hover {
+    background: var(--accion-hover);
   }
 }
 
@@ -874,6 +884,14 @@
 @media (max-width: 30rem) {
   .control--volver {
     padding: 0;
+  }
+
+  /* Los controles de la derecha no pisan «Volver»: si no entran, las monedas bajan a otra fila. */
+  .barra {
+    max-width: calc(100vw - var(--toque) - 2.25rem);
+    /* Al revés: la fila de abajo es la primera, así arriba quedan los controles y abajo las monedas. */
+    flex-wrap: wrap-reverse;
+    justify-content: flex-end;
   }
 
   .control--volver span {

@@ -191,23 +191,25 @@ export class Sonido {
   }
 
   /** El lector pide escuchar al narrador: lee esta pantalla y las que siguen. */
-  escucharNarrador(): void {
+  async escucharNarrador(): Promise<void> {
     const id = this.ofrecida;
     if (!id) return;
     this.narradorPedido = true;
     this.ofrecida = null;
+    // Con el teclado no hay toque previo que habilite el sonido: lo habilita este pedido.
+    await this.desbloquear();
     void this.narrar(id);
   }
 
   /** «Saltear narración»: si es la voz del narrador, deja de leer las pantallas que siguen. */
   saltearPorElLector(): void {
     const id = this.narracion?.id;
-    this.saltear();
     if (id && historia.audios[id]?.aPedido) {
       this.narradorPedido = false;
+      // Se vuelve a ofrecer, por si la quiere escuchar de nuevo.
       this.ofrecida = id;
-      this.avisar();
     }
+    this.saltear();
   }
 
   /** Deja sonando exactamente estos loops de ambiente, con fundido. */

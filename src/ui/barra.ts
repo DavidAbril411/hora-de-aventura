@@ -37,13 +37,16 @@ export function barra(
   );
   const escuchar = h(
     'button',
-    { type: 'button', class: 'control control--escuchar', hidden: true, onclick: () => sonido.escucharNarrador() },
+    { type: 'button', class: 'control control--escuchar', hidden: true, onclick: () => void sonido.escucharNarrador() },
     svg(iconoEscuchar),
     h('span', {}, t('escucharNarracion')),
   );
   sonido.escuchar((narrando) => {
+    // Si el que tenía el foco se esconde, el foco pasa al que aparece en su lugar.
+    const conFoco = document.activeElement === saltear || document.activeElement === escuchar;
     saltear.hidden = !narrando;
     escuchar.hidden = !sonido.hayParaEscuchar;
+    if (conFoco) (narrando ? saltear : escuchar).focus();
   });
 
   const volver = h(
