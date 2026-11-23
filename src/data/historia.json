@@ -1,5 +1,5 @@
 {
-  "titulo": "Hora de aventura",
+  "titulo": "Hora de aventuras",
   "inicio": "p01-intro",
   "interfaz": {
     "empezar": "Empezar",
@@ -8,6 +8,7 @@
     "recorrerConEllos": "Recorrer con ellos",
     "silenciar": "Silenciar",
     "activarSonido": "Activar sonido",
+    "escucharNarracion": "Escuchar",
     "saltearNarracion": "Saltear narración",
     "monedas": "Monedas",
     "cerrar": "Cerrar",
@@ -79,7 +80,7 @@
       "numero": 1,
       "tipo": "intro",
       "momento": "dia",
-      "titulo": "Hora de aventura",
+      "titulo": "Hora de aventuras",
       "texto": [
         "Más allá de las nubes existe un lugar que casi nadie conoce: un pequeño pueblo sobre una isla que flota en el cielo. Desde allí arriba, las casas parecen diminutas, los caminos se pierden entre los árboles del bosque y, si mirás hacia abajo, podés ver las nubes pasar muy cerca de tus pies.",
         "En el pueblo viven chicos, chicas y animales muy especiales. Cada uno tiene su propia historia, sus secretos y, quizás, algún poder extraordinario. Allí hay mucho por descubrir: lugares escondidos, objetos mágicos, animales que tienen algo para contarte y rincones que pueden cambiar cuando los tocás.",
@@ -185,17 +186,17 @@
             "ancho": 20
           },
           {
-            "id": "flor",
-            "nombre": "Una flor",
-            "imagen": "ficha-flor",
+            "id": "economia",
+            "nombre": "Una economía",
+            "imagen": "ficha-economia",
             "x": 10,
             "y": 74,
             "ancho": 13,
             "interaccion": {
               "tipo": "secreto",
               "animacion": "crecer",
-              "titulo": "No es un sombrero",
-              "secreto": "Es… una flor"
+              "titulo": "No es una montaña",
+              "secreto": "Es… una economía"
             }
           },
           {
@@ -252,7 +253,7 @@
       "momentos": [
         {
           "alDecir": "Tocá para saber",
-          "elemento": "flor",
+          "elemento": "economia",
           "accion": "invitar"
         },
         {
@@ -1450,9 +1451,9 @@
       "src": "img/obj-reloj.webp",
       "descripcion": "El reloj"
     },
-    "ficha-flor": {
-      "src": "img/obj-flor.webp",
-      "descripcion": "Dibujo de la ficha «No es un sombrero»: una flor"
+    "ficha-economia": {
+      "src": "img/obj-economia.webp",
+      "descripcion": "Dibujo de la ficha «No es una montaña»: una montaña que en lápiz se vuelve un mapa"
     },
     "ficha-auto": {
       "src": "img/obj-auto.webp",
@@ -1605,47 +1606,56 @@
     "narracion-p03-dia-jp-roberto": {
       "src": "audio/narracion-p03-dia-jp-roberto.m4a",
       "tipo": "narracion",
-      "descripcion": "Narración de la pantalla 3 (p03-dia-jp-roberto)"
+      "descripcion": "Voz del narrador (ElevenLabs) de la pantalla 3 (p03-dia-jp-roberto)",
+      "aPedido": true
     },
     "narracion-p04-dia-camila-alma": {
       "src": "audio/narracion-p04-dia-camila-alma.m4a",
       "tipo": "narracion",
-      "descripcion": "Narración de la pantalla 4 (p04-dia-camila-alma)"
+      "descripcion": "Voz del narrador (ElevenLabs) de la pantalla 4 (p04-dia-camila-alma)",
+      "aPedido": true
     },
     "narracion-p05-dia-diana-rogelio": {
       "src": "audio/narracion-p05-dia-diana-rogelio.m4a",
       "tipo": "narracion",
-      "descripcion": "Narración de la pantalla 5 (p05-dia-diana-rogelio)"
+      "descripcion": "Voz del narrador (ElevenLabs) de la pantalla 5 (p05-dia-diana-rogelio)",
+      "aPedido": true
     },
     "narracion-p06-noche-jp-roberto": {
       "src": "audio/narracion-p06-noche-jp-roberto.m4a",
       "tipo": "narracion",
-      "descripcion": "Narración de la pantalla 6 (p06-noche-jp-roberto)"
+      "descripcion": "Voz del narrador (ElevenLabs) de la pantalla 6 (p06-noche-jp-roberto)",
+      "aPedido": true
     },
     "narracion-p07-noche-camila-alma": {
       "src": "audio/narracion-p07-noche-camila-alma.m4a",
       "tipo": "narracion",
-      "descripcion": "Narración de la pantalla 7 (p07-noche-camila-alma)"
+      "descripcion": "Voz del narrador (ElevenLabs) de la pantalla 7 (p07-noche-camila-alma)",
+      "aPedido": true
     },
     "narracion-p08-noche-diana-rogelio": {
       "src": "audio/narracion-p08-noche-diana-rogelio.m4a",
       "tipo": "narracion",
-      "descripcion": "Narración de la pantalla 8 (p08-noche-diana-rogelio)"
+      "descripcion": "Voz del narrador (ElevenLabs) de la pantalla 8 (p08-noche-diana-rogelio)",
+      "aPedido": true
     },
     "narracion-p09-colectivo": {
       "src": "audio/narracion-p09-colectivo.m4a",
       "tipo": "narracion",
-      "descripcion": "Narración de la pantalla 9 (p09-colectivo)"
+      "descripcion": "Voz del narrador (ElevenLabs) de la pantalla 9 (p09-colectivo)",
+      "aPedido": true
     },
     "narracion-p10-viaje": {
       "src": "audio/narracion-p10-viaje.m4a",
       "tipo": "narracion",
-      "descripcion": "Narración de la pantalla 10 (p10-viaje)"
+      "descripcion": "Voz del narrador (ElevenLabs) de la pantalla 10 (p10-viaje)",
+      "aPedido": true
     },
     "narracion-p11-cierre": {
       "src": "audio/narracion-p11-cierre.m4a",
       "tipo": "narracion",
-      "descripcion": "Narración de la pantalla 11 (p11-cierre)"
+      "descripcion": "Voz del narrador (ElevenLabs) de la pantalla 11 (p11-cierre)",
+      "aPedido": true
     }
   }
 }

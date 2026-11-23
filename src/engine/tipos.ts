@@ -23,6 +23,12 @@ export interface Audio {
   tipo: 'narracion' | 'ambiente' | 'efecto';
   descripcion: string;
   pendiente?: boolean;
+  /**
+   * Narración que no arranca sola: se escucha con «Escuchar» (la voz del
+   * narrador). Así, al entrar, se oyen los sonidos que eligieron los chicos.
+   * Las voces de los chicos arrancan solas.
+   */
+  aPedido?: boolean;
 }
 
 export interface Dupla {

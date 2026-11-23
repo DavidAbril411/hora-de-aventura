@@ -131,7 +131,8 @@ export function subtitulos({ titulo, texto, acciones, avisos = [], sonido, tiemp
   });
   // Con narración sincronizada, lo atado al texto espera a la voz. Si la voz
   // no llega, se saltea o termina, sigue a los subtítulos.
-  let sinVoz = !tiempoDePalabra || !sonido.desbloqueado || !marcas.length;
+  // Si la voz del narrador espera que la pidan, se sigue al texto desde el principio.
+  let sinVoz = !tiempoDePalabra || !sonido.desbloqueado || !marcas.length || sonido.hayParaEscuchar;
   const sinVozDespues = window.setTimeout(() => {
     if (!sonido.narrando) seguirAlTexto();
   }, ESPERA_VOZ);
@@ -344,6 +345,8 @@ export function subtitulos({ titulo, texto, acciones, avisos = [], sonido, tiemp
       return;
     }
     narro = true;
+    // Si el lector pide la voz a mitad de camino, lo que falta va con ella.
+    if (tiempoDePalabra && marcas.length) sinVoz = false;
     window.clearTimeout(sinVozDespues);
     ultimoToque = -Infinity;
     reloj = window.setInterval(acompanar, 100);

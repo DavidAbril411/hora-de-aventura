@@ -22,7 +22,7 @@ Material del 3/11 (dibujos nuevos de los chicos), aprobado por David el 11/11: l
 
 | Escena | Ficha | Tarjeta |
 |---|---|---|
-| p03 (Juan Pablo y Roberto) | flor | No es un sombrero · Es… una flor |
+| p03 (Juan Pablo y Roberto) | economía | No es una montaña · Es… una economía |
 | | auto | No es un helado · Es… un auto |
 | | gorra | No es un paraguas · Es… una gorra |
 | | fantasma | No es un helado · Es… fantasma |
@@ -39,8 +39,9 @@ Para revisar con Lucila sobre las fichas:
 
 - En la vincha se agregó la tilde de «mágica» (la ficha dice «magica»). Es el único cambio respecto de lo escrito a mano.
 - La ficha del pulpo tiene además tres globitos escritos a mano (una «curiosidad» sobre un hermano, «algo ruidoso» y algo sobre sus tentáculos) que no se leen con seguridad en la foto: no se cargaron. Si el equipo los transcribe, se suman en `interaccion.secreto`.
-- Fichas que no se usan todavía (9): abeja, calabaza, carpa, chica endemoniada, economía, físico culturista, globo aerostático, una luz y pata de oso. Las que tienen la letra dudosa o una falta de ortografía (calabaza, abeja, carpa, físico culturista, globo aerostático, pata de oso) necesitan que el equipo confirme cómo se escribe antes de mostrarlas. La de la economía espera que David elija el retoque; la de la luz es un lápiz muy suave.
-- El texto de las escenas de día sigue nombrando «una flor», «una piedra» y «un árbol». La flor está en p03; piedra y árbol no hay entre las fichas.
+- La economía reemplazó a la flor («No es un sombrero · Es… una flor») el 23/11, a pedido de Lucila. El chico escribió «una economia»; se agregó la tilde, como en «mágica». El lápiz casi no se ve sobre el mural, así que se usa el retoque con color pálido adentro (`scripts/retocar-trazo.py`, «trazo-color»), recortado al dibujo.
+- Fichas que no se usan todavía (9): abeja, calabaza, carpa, chica endemoniada, flor, físico culturista, globo aerostático, una luz y pata de oso. Las que tienen la letra dudosa o una falta de ortografía (calabaza, abeja, carpa, físico culturista, globo aerostático, pata de oso) necesitan que el equipo confirme cómo se escribe antes de mostrarlas. La de la luz es un lápiz muy suave.
+- El texto de las escenas de día sigue nombrando «una flor», «una piedra» y «un árbol». Desde el 23/11 ninguna de las tres está entre las fichas.
 
 No queda ninguna ilustración PENDIENTE.
 
@@ -64,7 +65,9 @@ Integrados también los tres sonidos libres (CC0) que buscó el thread de materi
 
 ### Narraciones que faltan grabar (David las genera con ElevenLabs, 13/11)
 
-El 20/11 llegaron de ElevenLabs las de los días (p03, p04, p05), las noches (p06, p07, p08), el colectivo (p09) y el viaje (p10): originales en la Library, `NARRACIONES/elevenlabs-2026-11-20/` (narrador-1 a 8, en ese orden), tratadas con `MEZCLA_RNN=0` (voz sintética, sin ruido que limpiar) y sincronizadas, con 99-100 % de coincidencia. El final (p11) llegó después, en un solo audio con una sola voz (`cierre/cierre-completo-…mp3`), y quedó sincronizado con 97 %. Si David lo rehace partido por personaje, se unen las partes en un solo `narracion-p11-cierre` y se vuelve a sincronizar. A escuchar: en las noches los efectos (clac clac, risa, tic tac) suenan a tiempo fijo debajo de la voz, que también los nombra.
+El 20/11 llegaron de ElevenLabs las de los días (p03, p04, p05), las noches (p06, p07, p08), el colectivo (p09) y el viaje (p10): originales en la Library, `NARRACIONES/elevenlabs-2026-11-20/` (narrador-1 a 8, en ese orden), tratadas con `MEZCLA_RNN=0` (voz sintética, sin ruido que limpiar) y sincronizadas, con 99-100 % de coincidencia. El final (p11) llegó después, en un solo audio con una sola voz (`cierre/cierre-completo-…mp3`), y quedó sincronizado con 97 %. Si David lo rehace partido por personaje, se unen las partes en un solo `narracion-p11-cierre` y se vuelve a sincronizar.
+
+**Voz del narrador a pedido (devolución de Lucila, 23/11).** Al equipo le gustaba más antes, cuando se escuchaban al frente los sonidos que buscaron los chicos: con el narrador hablando, el ambiente baja casi del todo. Desde el 23/11 las voces del narrador tienen `aPedido` en `audios`: al entrar a la pantalla no arrancan solas, se oyen los sonidos de los chicos y arriba a la derecha aparece «Escuchar». Si alguien lo toca, el narrador lee esa pantalla y sigue leyendo las siguientes hasta que se toque «Saltear narración»; al terminar o saltear, «Escuchar» vuelve a aparecer para repetirla. Las voces de los chicos (intro y duplas) arrancan solas, como siempre. Para que el narrador vuelva a arrancar solo, se borra `aPedido`; para sacarlo del todo, se borra `narracion` de cada pantalla.
 
 - Los guiones salen de `historia.json` con `python3 scripts/guiones-narracion.py <carpeta>`: un `.txt` por pantalla, con el texto tal cual. Los del 13/11 están en la Library, en `motor/guiones-narracion/`.
 - Cada audio se llama como su pantalla: `narracion-p03-dia-jp-roberto`, `narracion-p09-colectivo`, etc.
@@ -115,8 +118,8 @@ Esperan al equipo (no se tocan hasta que llegue o se confirme):
   - Dos posibles erratas que se dejaron como vinieron, a confirmar: «se volar» (¿«sé volar»?, presentación de Diana) y «se puede observar como el bosque» (¿«cómo»?, el día).
   - **Las presentaciones de las duplas no coinciden con su audio**: siguen sonando las voces de los chicos, que leyeron el texto anterior en tercera persona. Se sacaron sus `tiempos` (los subtítulos pasan por proporción). David decidió el 20/11 dejar el audio viejo: suena la versión en tercera persona y el subtítulo nuevo avanza por proporción; los guiones nuevos están en la Library, `motor/guiones-narracion-2026-11-20/`. Los textos del narrador para ElevenLabs están en el doc «Textos del narrador para ElevenLabs» (https://claude.ai/artifact/GXBdwbcwi941GDwmBCy4f6).
 - **Dibujo nuevo del viejo de la bolsa** (punto 2): llegó el 19/11 y ya reemplaza a `img/pj-viejo.webp` (recorte A; el anterior quedó en `material-tratado/descartados/viejo-2026-10-26/`).
-- **Objetos de los secretos** (punto 4): quieren dejar los más ambiguos y falta el de la economía. A confirmar cuáles de las doce fichas salen y cuáles de las nueve que no se usan entran.
-- **La «s» del título** (punto 5): a confirmar si es «Hora de aventuras». Cambia `titulo` y el título de la portada en `historia.json`.
+- **Objetos de los secretos** (punto 4): quieren dejar los más ambiguos. El 23/11 pidieron cambiar la flor por la economía (hecho). Si quieren cambiar otras, se dice cuáles de las doce fichas salen y cuáles de las nueve que no se usan entran.
+- **La «s» del título** (punto 5): confirmado el 23/11, ahora es «Hora de aventuras» (`titulo` y portada en `historia.json`, y `index.html`). El dominio y el nombre del repositorio no cambian.
 
 ### Contenido que tiene que indicar el equipo (no se inventa)
 
@@ -228,9 +231,7 @@ Resueltos con sonidos libres (decisión del 26/10): `sfx-clac-clac`, `sfx-tic-ta
 
 ### Esperan aprobación
 
-- **«Economía»:** dos retoques para elegir (`scripts/retocar-trazo.py`): solo el trazo
-  repasado, o el trazo repasado con un color pálido parejo adentro. Si no convence
-  ninguno, queda como está.
+- **«Economía»:** se usa el retoque con color pálido («trazo-color») desde el 23/11. Si no convence, el otro («trazo») está en la Library, `material-tratado/retoques/`.
 
 ### Dudas para el equipo
 

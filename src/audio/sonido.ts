@@ -30,6 +30,7 @@ interface Sonando {
 }
 
 interface Narracion extends Sonando {
+  id: string;
   inicio: number;
   duracion: number;
   fin: (f: FinNarracion) => void;
@@ -55,6 +56,10 @@ export class Sonido {
   private efectoActual: Sonando | null = null;
   private turnoEfectos = 0;
   private oyentes = new Set<Oyente>();
+  /** La voz del narrador de la pantalla, mientras espera que el lector la pida. */
+  private ofrecida: string | null = null;
+  /** El lector pidió escuchar al narrador. */
+  private narradorPedido = false;
   silenciado = false;
 
   get desbloqueado(): boolean {
@@ -123,6 +128,8 @@ export class Sonido {
         // Después de un salto (irANarracion) suena otra fuente con el mismo fin.
         if (this.narracion?.fin === fin) {
           this.narracion.fuente.onended = null;
+          // La voz del narrador que terminó se puede volver a escuchar.
+          if (datos.aPedido && f === 'terminada') this.ofrecida = id!;
           this.narracion = null;
           this.mezclar();
           this.avisar();
@@ -130,7 +137,7 @@ export class Sonido {
         resolver(f);
       };
       sonando.fuente.onended = () => fin('terminada');
-      this.narracion = { ...sonando, inicio: this.ctx!.currentTime, duracion: buffer.duration, fin };
+      this.narracion = { ...sonando, id: id!, inicio: this.ctx!.currentTime, duracion: buffer.duration, fin };
       this.mezclar();
       this.avisar();
     });
@@ -154,7 +161,7 @@ export class Sonido {
     this.apagar(actual, 0.06);
     const nueva = this.sonar(buffer, this.busVoz, { desde });
     nueva.fuente.onended = () => actual.fin('terminada');
-    this.narracion = { ...nueva, inicio: this.ctx.currentTime - desde, duracion: actual.duracion, fin: actual.fin };
+    this.narracion = { ...nueva, id: actual.id, inicio: this.ctx.currentTime - desde, duracion: actual.duracion, fin: actual.fin };
     return true;
   }
 
@@ -163,6 +170,44 @@ export class Sonido {
     if (!actual) return;
     actual.fin('salteada');
     this.apagar(actual, 0.12);
+  }
+
+  /**
+   * La narración de la pantalla que entra. La voz del narrador (`aPedido`)
+   * no arranca sola, para que se escuchen los sonidos que eligieron los
+   * chicos: se ofrece con «Escuchar». Si el lector ya la pidió, sigue
+   * leyendo cada pantalla hasta que la saltee. Devuelve si hay que narrar ya.
+   */
+  narracionDePantalla(id: string | undefined): boolean {
+    const aPedido = !!id && !!historia.audios[id]?.aPedido;
+    this.ofrecida = aPedido && !this.narradorPedido ? id! : null;
+    this.avisar();
+    return !!id && this.ofrecida === null;
+  }
+
+  /** Hay una voz del narrador para escuchar y no está sonando. */
+  get hayParaEscuchar(): boolean {
+    return this.ofrecida !== null && this.narracion === null;
+  }
+
+  /** El lector pide escuchar al narrador: lee esta pantalla y las que siguen. */
+  escucharNarrador(): void {
+    const id = this.ofrecida;
+    if (!id) return;
+    this.narradorPedido = true;
+    this.ofrecida = null;
+    void this.narrar(id);
+  }
+
+  /** «Saltear narración»: si es la voz del narrador, deja de leer las pantallas que siguen. */
+  saltearPorElLector(): void {
+    const id = this.narracion?.id;
+    this.saltear();
+    if (id && historia.audios[id]?.aPedido) {
+      this.narradorPedido = false;
+      this.ofrecida = id;
+      this.avisar();
+    }
   }
 
   /** Deja sonando exactamente estos loops de ambiente, con fundido. */

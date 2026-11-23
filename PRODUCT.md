@@ -14,7 +14,7 @@ Vite + TypeScript, sin framework de UI. Animaciones con Motion (MIT). PWA con se
 
 ## Qué es
 
-"Hora de aventura": una ficción digital interactiva hecha a partir de un cuento escrito, ilustrado y narrado por chicos y chicas de 11 a 13 años de la Escuela San Martín de Villa María (Córdoba, Argentina). Es un proyecto de investigación y extensión de la Universidad Nacional de Villa María (UNVM), cofinanciado por la Municipalidad de Villa María. Referente del equipo: Lucila. Desarrollo: David Abril.
+"Hora de aventuras": una ficción digital interactiva hecha a partir de un cuento escrito, ilustrado y narrado por chicos y chicas de 11 a 13 años de la Escuela San Martín de Villa María (Córdoba, Argentina). Es un proyecto de investigación y extensión de la Universidad Nacional de Villa María (UNVM), cofinanciado por la Municipalidad de Villa María. Referente del equipo: Lucila. Desarrollo: David Abril.
 
 ## Quién lo usa
 
