@@ -886,14 +886,16 @@
     padding: 0;
   }
 
-  /* Los controles de la derecha no pisan «Volver»: si no entran, las monedas bajan a otra fila. */
-  .barra {
-    max-width: calc(100vw - var(--toque) - 2.25rem);
-    /* Al revés: la fila de abajo es la primera, así arriba quedan los controles y abajo las monedas. */
-    flex-wrap: wrap-reverse;
-    justify-content: flex-end;
+  /*
+   * Con monedas, «Escuchar el cuento» y «Saltear narración» no entran al lado
+   * de «Volver»: quedan solo con su ícono (la palabra sigue para los lectores
+   * de pantalla). Sin monedas, como de día, conservan la palabra.
+   */
+  .barra:has(.monedas:not([hidden])) :is(.control--escuchar, .control--saltear) {
+    padding: 0;
   }
 
+  .barra:has(.monedas:not([hidden])) :is(.control--escuchar, .control--saltear) span,
   .control--volver span {
     position: absolute;
     width: 1px;
