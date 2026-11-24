@@ -17,6 +17,7 @@ const EFECTO_CON_VOZ = 0.3;
 const PESO_ACOMPANIA = 0.5;
 const RAMPA = 0.4; // segundos
 const PAUSA_ENTRE_EFECTOS = 400; // milisegundos
+const FUNDIDO_EFECTO = 0.8; // segundos: cuando la narración ya pasó a otra cosa
 // Los golpes (la moneda) son cortos: a −26 LUFS se pierden debajo del ambiente.
 const GOLPE = 1.6;
 
@@ -29,6 +30,7 @@ interface Sonando {
 }
 
 interface Narracion extends Sonando {
+  id: string;
   inicio: number;
   duracion: number;
   fin: (f: FinNarracion) => void;
@@ -54,6 +56,10 @@ export class Sonido {
   private efectoActual: Sonando | null = null;
   private turnoEfectos = 0;
   private oyentes = new Set<Oyente>();
+  /** La voz del narrador de la pantalla, mientras espera que el lector la pida. */
+  private ofrecida: string | null = null;
+  /** El lector pidió escuchar al narrador. */
+  private narradorPedido = false;
   silenciado = false;
 
   get desbloqueado(): boolean {
@@ -122,6 +128,8 @@ export class Sonido {
         // Después de un salto (irANarracion) suena otra fuente con el mismo fin.
         if (this.narracion?.fin === fin) {
           this.narracion.fuente.onended = null;
+          // La voz del narrador que terminó se puede volver a escuchar.
+          if (datos.aPedido && f === 'terminada') this.ofrecida = id!;
           this.narracion = null;
           this.mezclar();
           this.avisar();
@@ -129,7 +137,7 @@ export class Sonido {
         resolver(f);
       };
       sonando.fuente.onended = () => fin('terminada');
-      this.narracion = { ...sonando, inicio: this.ctx!.currentTime, duracion: buffer.duration, fin };
+      this.narracion = { ...sonando, id: id!, inicio: this.ctx!.currentTime, duracion: buffer.duration, fin };
       this.mezclar();
       this.avisar();
     });
@@ -153,7 +161,7 @@ export class Sonido {
     this.apagar(actual, 0.06);
     const nueva = this.sonar(buffer, this.busVoz, { desde });
     nueva.fuente.onended = () => actual.fin('terminada');
-    this.narracion = { ...nueva, inicio: this.ctx.currentTime - desde, duracion: actual.duracion, fin: actual.fin };
+    this.narracion = { ...nueva, id: actual.id, inicio: this.ctx.currentTime - desde, duracion: actual.duracion, fin: actual.fin };
     return true;
   }
 
@@ -162,6 +170,46 @@ export class Sonido {
     if (!actual) return;
     actual.fin('salteada');
     this.apagar(actual, 0.12);
+  }
+
+  /**
+   * La narración de la pantalla que entra. La voz del narrador (`aPedido`)
+   * no arranca sola, para que se escuchen los sonidos que eligieron los
+   * chicos: se ofrece con «Escuchar». Si el lector ya la pidió, sigue
+   * leyendo cada pantalla hasta que la saltee. Devuelve si hay que narrar ya.
+   */
+  narracionDePantalla(id: string | undefined): boolean {
+    const aPedido = !!id && !!historia.audios[id]?.aPedido;
+    this.ofrecida = aPedido && !this.narradorPedido ? id! : null;
+    this.avisar();
+    return !!id && this.ofrecida === null;
+  }
+
+  /** Hay una voz del narrador para escuchar y no está sonando. */
+  get hayParaEscuchar(): boolean {
+    return this.ofrecida !== null && this.narracion === null;
+  }
+
+  /** El lector pide escuchar al narrador: lee esta pantalla y las que siguen. */
+  async escucharNarrador(): Promise<void> {
+    const id = this.ofrecida;
+    if (!id) return;
+    this.narradorPedido = true;
+    this.ofrecida = null;
+    // Con el teclado no hay toque previo que habilite el sonido: lo habilita este pedido.
+    await this.desbloquear();
+    void this.narrar(id);
+  }
+
+  /** «Saltear narración»: si es la voz del narrador, deja de leer las pantallas que siguen. */
+  saltearPorElLector(): void {
+    const id = this.narracion?.id;
+    if (id && historia.audios[id]?.aPedido) {
+      this.narradorPedido = false;
+      // Se vuelve a ofrecer, por si la quiere escuchar de nuevo.
+      this.ofrecida = id;
+    }
+    this.saltear();
   }
 
   /** Deja sonando exactamente estos loops de ambiente, con fundido. */
@@ -218,6 +266,24 @@ export class Sonido {
   }
 
   /**
+   * Un efecto suelto, cuando la narración lo nombra. Mientras suena, el
+   * ambiente baja. Devuelve con qué cortarlo (con un fundido) antes de que
+   * termine: los pasos del viejo no siguen sonando cuando ya llegó.
+   */
+  efectoAhora(id: string): () => void {
+    let sonando: Sonando | null = null;
+    let cortar = false;
+    void this.efecto(id, this.turnoEfectos, (s) => {
+      sonando = s;
+      if (cortar) this.apagar(s, FUNDIDO_EFECTO);
+    });
+    return () => {
+      cortar = true;
+      if (sonando) this.apagar(sonando, FUNDIDO_EFECTO);
+    };
+  }
+
+  /**
    * Un sonido corto que acompaña un toque (cada moneda que llega). No corta
    * los efectos de la pantalla ni espera turno: se suma encima.
    */
@@ -239,13 +305,14 @@ export class Sonido {
   }
 
   /** Un efecto, entero. La promesa se cumple cuando termina (o si no pudo sonar). */
-  private async efecto(id: string, turno: number): Promise<void> {
+  private async efecto(id: string, turno: number, alSonar?: (s: Sonando) => void): Promise<void> {
     const datos = historia.audios[id];
     if (!datos || datos.pendiente || !this.ctx) return;
     const buffer = await this.cargar(id, datos);
     if (!buffer || !this.ctx || turno !== this.turnoEfectos) return;
     const sonando = this.sonar(buffer, this.busEfectos);
     this.efectoActual = sonando;
+    alSonar?.(sonando);
     this.mezclar();
     await new Promise<void>((listo) => {
       sonando.fuente.onended = () => {

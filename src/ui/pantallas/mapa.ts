@@ -1,10 +1,11 @@
 import type { Contexto } from '../../engine/motor';
 import { historia, t } from '../../engine/historia';
 import type { PantallaMapa } from '../../engine/tipos';
-import { aparecer, llamarAtencion } from '../animaciones';
+import { aparecer, aparecerDeAPoco, llamarAtencion } from '../animaciones';
 import { h } from '../dom';
 import { acciones, avisoAudioPendiente, boton, escenario, ilustracion, pareja } from '../componentes';
 import { iconoSeguir } from '../iconos';
+import { buscarEnEscenario, momentosNarrados } from '../momentos';
 import { subtitulos } from '../subtitulos';
 
 /**
@@ -24,7 +25,11 @@ export function mapa(ctx: Contexto<PantallaMapa>): HTMLElement {
 
   const subir = boton(t('subirAlColectivo'), () => {
     if (estado.get().destino) ctx.avanzar();
-    else llamarAtencion([...botones, pista]);
+    else {
+      // Si el mapa todavía no apareció (se leyó sin llegar a esa parte), aparece ahora.
+      if (plano.style.visibility === 'hidden') void aparecerDeAPoco(plano);
+      llamarAtencion([...botones, pista]);
+    }
   }, { icono: iconoSeguir });
   const pista = h('p', { class: 'acciones__pista', id: `pista-${p.id}` });
 
@@ -75,7 +80,13 @@ export function mapa(ctx: Contexto<PantallaMapa>): HTMLElement {
   dibujo.juego.append(plano);
 
   const aviso = avisoAudioPendiente(p.narracion, ...(p.ambiente ?? []), ...(p.efectos ?? []));
-  const lectura = subtitulos({ titulo: p.titulo, texto: p.texto, acciones: acciones(pista, subir), avisos: [aviso], sonido: ctx.sonido, tiempos: p.tiempos });
+  const alDecir = momentosNarrados(p.momentos, {
+    sonido: ctx.sonido,
+    escenario: dibujo.raiz,
+    buscar: buscarEnEscenario(dibujo, { mapa: [plano], destinos: botones }),
+    alSalir: ctx.alSalir,
+  });
+  const lectura = subtitulos({ titulo: p.titulo, texto: p.texto, acciones: acciones(pista, subir), avisos: [aviso], sonido: ctx.sonido, tiempos: p.tiempos, alDecir });
   ctx.alSalir(lectura.destruir);
   return h('main', { class: 'disposicion' }, dibujo.raiz, lectura.raiz);
 }

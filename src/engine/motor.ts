@@ -152,6 +152,8 @@ export class Motor {
 
     const limpiezas: (() => void)[] = [];
     const visita = ++this.visita;
+    // Antes de dibujar: los subtítulos tienen que saber si la voz va a sonar sola.
+    const narrarYa = this.sonido.narracionDePantalla(pantalla.narracion);
     this.volverInterno = null;
     const ctx: Contexto = {
       pantalla,
@@ -188,7 +190,7 @@ export class Motor {
     this.sonido.precargar([pantalla.narracion, ...(pantalla.efectos ?? [])]);
     // La intro arranca su narración con "Empezar"; el resto, al entrar.
     if (this.sonido.desbloqueado) {
-      if (pantalla.narracion && pantalla.tipo !== 'intro') void this.sonido.narrar(pantalla.narracion);
+      if (narrarYa && pantalla.tipo !== 'intro') void this.sonido.narrar(pantalla.narracion);
       this.sonido.efectos(pantalla.efectos ?? []);
     }
     await entrarPantalla(el);

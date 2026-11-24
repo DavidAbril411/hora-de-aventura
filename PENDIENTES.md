@@ -22,7 +22,7 @@ Material del 3/11 (dibujos nuevos de los chicos), aprobado por David el 11/11: l
 
 | Escena | Ficha | Tarjeta |
 |---|---|---|
-| p03 (Juan Pablo y Roberto) | flor | No es un sombrero · Es… una flor |
+| p03 (Juan Pablo y Roberto) | economía | No es una montaña · Es… una economía |
 | | auto | No es un helado · Es… un auto |
 | | gorra | No es un paraguas · Es… una gorra |
 | | fantasma | No es un helado · Es… fantasma |
@@ -39,8 +39,9 @@ Para revisar con Lucila sobre las fichas:
 
 - En la vincha se agregó la tilde de «mágica» (la ficha dice «magica»). Es el único cambio respecto de lo escrito a mano.
 - La ficha del pulpo tiene además tres globitos escritos a mano (una «curiosidad» sobre un hermano, «algo ruidoso» y algo sobre sus tentáculos) que no se leen con seguridad en la foto: no se cargaron. Si el equipo los transcribe, se suman en `interaccion.secreto`.
-- Fichas que no se usan todavía (9): abeja, calabaza, carpa, chica endemoniada, economía, físico culturista, globo aerostático, una luz y pata de oso. Las que tienen la letra dudosa o una falta de ortografía (calabaza, abeja, carpa, físico culturista, globo aerostático, pata de oso) necesitan que el equipo confirme cómo se escribe antes de mostrarlas. La de la economía espera que David elija el retoque; la de la luz es un lápiz muy suave.
-- El texto de las escenas de día sigue nombrando «una flor», «una piedra» y «un árbol». La flor está en p03; piedra y árbol no hay entre las fichas.
+- La economía reemplazó a la flor («No es un sombrero · Es… una flor») el 23/11, a pedido de Lucila. El chico escribió «una economia»; se agregó la tilde, como en «mágica». El lápiz casi no se ve sobre el mural, así que se usa el retoque con color pálido adentro (`scripts/retocar-trazo.py`, «trazo-color»), recortado al dibujo.
+- Fichas que no se usan todavía (9): abeja, calabaza, carpa, chica endemoniada, flor, físico culturista, globo aerostático, una luz y pata de oso. Las que tienen la letra dudosa o una falta de ortografía (calabaza, abeja, carpa, físico culturista, globo aerostático, pata de oso) necesitan que el equipo confirme cómo se escribe antes de mostrarlas. La de la luz es un lápiz muy suave.
+- El texto de las escenas de día sigue nombrando «una flor», «una piedra» y «un árbol». Desde el 23/11 ninguna de las tres está entre las fichas.
 
 No queda ninguna ilustración PENDIENTE.
 
@@ -64,7 +65,9 @@ Integrados también los tres sonidos libres (CC0) que buscó el thread de materi
 
 ### Narraciones que faltan grabar (David las genera con ElevenLabs, 13/11)
 
-El 20/11 llegaron de ElevenLabs las de los días (p03, p04, p05), las noches (p06, p07, p08), el colectivo (p09) y el viaje (p10): originales en la Library, `NARRACIONES/elevenlabs-2026-11-20/` (narrador-1 a 8, en ese orden), tratadas con `MEZCLA_RNN=0` (voz sintética, sin ruido que limpiar) y sincronizadas, con 99-100 % de coincidencia. El final (p11) llegó después, en un solo audio con una sola voz (`cierre/cierre-completo-…mp3`), y quedó sincronizado con 97 %. Si David lo rehace partido por personaje, se unen las partes en un solo `narracion-p11-cierre` y se vuelve a sincronizar. A escuchar: en las noches los efectos (clac clac, risa, tic tac) suenan a tiempo fijo debajo de la voz, que también los nombra.
+El 20/11 llegaron de ElevenLabs las de los días (p03, p04, p05), las noches (p06, p07, p08), el colectivo (p09) y el viaje (p10): originales en la Library, `NARRACIONES/elevenlabs-2026-11-20/` (narrador-1 a 8, en ese orden), tratadas con `MEZCLA_RNN=0` (voz sintética, sin ruido que limpiar) y sincronizadas, con 99-100 % de coincidencia. El final (p11) llegó después, en un solo audio con una sola voz (`cierre/cierre-completo-…mp3`), y quedó sincronizado con 97 %. Si David lo rehace partido por personaje, se unen las partes en un solo `narracion-p11-cierre` y se vuelve a sincronizar.
+
+**Voz del narrador a pedido (devolución de Lucila, 23/11).** Al equipo le gustaba más antes, cuando se escuchaban al frente los sonidos que buscaron los chicos: con el narrador hablando, el ambiente baja casi del todo. Desde el 23/11 las voces del narrador tienen `aPedido` en `audios`: al entrar a la pantalla no arrancan solas, se oyen los sonidos de los chicos y arriba a la derecha aparece «Escuchar el cuento», en el color de acción para que se distinga. Si alguien lo toca, el narrador lee esa pantalla y sigue leyendo las siguientes hasta que se toque «Saltear narración»; al terminar o saltear, el botón vuelve a aparecer para repetirla. Las voces de los chicos (intro y duplas) arrancan solas, como siempre. Para que el narrador vuelva a arrancar solo, se borra `aPedido`; para sacarlo del todo, se borra `narracion` de cada pantalla.
 
 - Los guiones salen de `historia.json` con `python3 scripts/guiones-narracion.py <carpeta>`: un `.txt` por pantalla, con el texto tal cual. Los del 13/11 están en la Library, en `motor/guiones-narracion/`.
 - Cada audio se llama como su pantalla: `narracion-p03-dia-jp-roberto`, `narracion-p09-colectivo`, etc.
@@ -76,6 +79,17 @@ El 20/11 llegaron de ElevenLabs las de los días (p03, p04, p05), las noches (p0
 - `scripts/sincronizar-narracion.py` transcribe cada narración con Whisper (tiempo de cada palabra), la alinea con el texto de la pantalla y guarda en `historia.json` el campo `tiempos`: el segundo en que empieza cada palabra del texto. El subtítulo cambia 0,2 s antes de la primera palabra del tramo que sigue.
 - La introducción lee el texto tal cual (coincide el 97 %). Las tres duplas son adaptaciones en primera persona: coinciden el 82 % (Juan Pablo y Roberto), el 83 % (Camila y Alma) y el 75 % (Diana y Rogelio). Los tramos donde la voz dice otra cosa se reparten entre las palabras que sí coinciden, así que el cambio de subtítulo cae en la frase correcta aunque las palabras no sean las mismas.
 - Si se cambia el texto de una pantalla con narración hay que volver a correr el script. Si no, el motor avisa en la consola y vuelve a repartir los subtítulos según el largo del texto.
+
+### Lo que pasa en la escena va con la narración (pedido de David, 20/11)
+
+Cada pantalla puede tener `momentos` en `historia.json`: un fragmento del texto (`alDecir`) y lo que pasa cuando la voz lo dice (un efecto de sonido, o una acción sobre un elemento: acercarse, entrar corriendo, aparecer, mirar arriba, inclinarse, irse, saltar adentro de otro, desaparecer en polvo, empezar a invitar a tocar, señalar, balancear o mecerse, frenar, un destello de flash). Con narración sincronizada pasa en la palabra exacta, y si tiene `hasta`, el movimiento y el sonido duran hasta esa otra frase (los pasos del viejo se apagan cuando llega). Sin voz (sin sonido, después de «Saltear narración» o si el lector salta hacia adelante con las flechas), cuando el subtítulo llega a esa frase, y de a uno: cada cosa espera que termine la anterior, para que no se amontonen. Lo que entra en escena con una acción está oculto hasta entonces, también para los lectores de pantalla. El validador avisa si un fragmento no está tal cual en el texto.
+
+- **Días:** los anillos que invitan a tocar arrancan con «Tocá para saber…»; en el de Juan Pablo y Roberto la moto suena con «Juan Pablo y Roberto conocen…».
+- **Noches:** el viejo llega desde lejos con «Entonces se escucha un ruido lejano» y el clac clac, termina de llegar con «Nadie sabe…» y su risa, levanta la cabeza con «mira hacia el cielo» y se va con «El viejo sigue su camino». El truco de cada dupla empieza a invitar cuando se lo nombra; en el de Camila y Alma, además, salta un flash con «el flash de cada fotografía». El reloj se balancea y suena el tic tac con «El reloj comienza a avanzar».
+- **Colectivo:** el dibujo del colectivo aparece de a poco, con su sonido, en «A lo lejos aparece el colectivo»; el mapa aparece con «El mapa que nos ofrece el chofer» y los destinos se señalan con «Tocá en el mapa». Si alguien toca «Subir al colectivo» antes de llegar a esa parte, el mapa aparece igual.
+- **Viaje:** la ventana empieza a mecerse con «el colectivo comienza a recorrer» y se frena con «el colectivo se detiene».
+- **Final:** el ladrido con «¡Guau!», el perrito entra corriendo con «Un perrito pitbull aparece corriendo», el viejo llega con el clac clac en «De pronto, se escucha», se inclina con «Abre su enorme bolsa», el perrito salta y cae en la boca de la bolsa (`punto` en el momento: 70 % del ancho y 58 % del alto del dibujo del viejo) con «el perrito salta adentro», y el viejo se esfuma con «el viejo desaparece». El perrito se achicó un poco (ancho 10) para que no quede casi del tamaño del viejo.
+- **No se puede sin material nuevo:** el colectivo de p09 aparece entero (es el fondo), no puede llegar andando; los chicos que bajan en p11 son parte del dibujo de fondo, y lo que se ve por la ventana en p10 es un solo dibujo. Para que se muevan aparte harían falta recortes separados.
 
 ### Créditos (indicación de Lucila, 13/11)
 
@@ -104,8 +118,8 @@ Esperan al equipo (no se tocan hasta que llegue o se confirme):
   - Dos posibles erratas que se dejaron como vinieron, a confirmar: «se volar» (¿«sé volar»?, presentación de Diana) y «se puede observar como el bosque» (¿«cómo»?, el día).
   - **Las presentaciones de las duplas no coinciden con su audio**: siguen sonando las voces de los chicos, que leyeron el texto anterior en tercera persona. Se sacaron sus `tiempos` (los subtítulos pasan por proporción). David decidió el 20/11 dejar el audio viejo: suena la versión en tercera persona y el subtítulo nuevo avanza por proporción; los guiones nuevos están en la Library, `motor/guiones-narracion-2026-11-20/`. Los textos del narrador para ElevenLabs están en el doc «Textos del narrador para ElevenLabs» (https://claude.ai/artifact/GXBdwbcwi941GDwmBCy4f6).
 - **Dibujo nuevo del viejo de la bolsa** (punto 2): llegó el 19/11 y ya reemplaza a `img/pj-viejo.webp` (recorte A; el anterior quedó en `material-tratado/descartados/viejo-2026-10-26/`).
-- **Objetos de los secretos** (punto 4): quieren dejar los más ambiguos y falta el de la economía. A confirmar cuáles de las doce fichas salen y cuáles de las nueve que no se usan entran.
-- **La «s» del título** (punto 5): a confirmar si es «Hora de aventuras». Cambia `titulo` y el título de la portada en `historia.json`.
+- **Objetos de los secretos** (punto 4): quieren dejar los más ambiguos. El 23/11 pidieron cambiar la flor por la economía (hecho). Si quieren cambiar otras, se dice cuáles de las doce fichas salen y cuáles de las nueve que no se usan entran.
+- **La «s» del título** (punto 5): confirmado el 23/11, ahora es «Hora de aventuras» (`titulo` y portada en `historia.json`, y `index.html`). El dominio y el nombre del repositorio no cambian.
 
 ### Contenido que tiene que indicar el equipo (no se inventa)
 
@@ -217,9 +231,7 @@ Resueltos con sonidos libres (decisión del 26/10): `sfx-clac-clac`, `sfx-tic-ta
 
 ### Esperan aprobación
 
-- **«Economía»:** dos retoques para elegir (`scripts/retocar-trazo.py`): solo el trazo
-  repasado, o el trazo repasado con un color pálido parejo adentro. Si no convence
-  ninguno, queda como está.
+- **«Economía»:** se usa el retoque con color pálido («trazo-color») desde el 23/11. Si no convence, el otro («trazo») está en la Library, `material-tratado/retoques/`.
 
 ### Dudas para el equipo
 

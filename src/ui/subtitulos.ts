@@ -1,5 +1,5 @@
 import type { Sonido } from '../audio/sonido';
-import { t, tiemposDe } from '../engine/historia';
+import { palabrasDe, t, tiemposDe } from '../engine/historia';
 import type { BloqueTexto } from '../engine/tipos';
 import { cambiarSubtitulo } from './animaciones';
 import { h, svg } from './dom';
@@ -38,11 +38,29 @@ interface Opciones {
   /** Tiempos de la narración, palabra por palabra (`tiempos` en historia.json). */
   tiempos?: string;
   /**
-   * Avisos atados al texto: `hacer` se llama una vez, cuando el lector llega
-   * al subtítulo que contiene `fragmento` (o al último, si no aparece).
+   * Lo que pasa en la escena atado al texto: `hacer` se llama una vez, cuando
+   * la voz dice `fragmento` (con los tiempos de la narración) o, si no hay voz,
+   * cuando el lector llega al subtítulo que lo contiene. Si está `hasta`, recibe
+   * los segundos que la voz tarda en llegar a ese otro fragmento (null sin voz).
    */
-  alLeer?: { fragmento?: string; hacer: () => void }[];
+  alDecir?: AlDecir[];
 }
+
+export interface AlDecir {
+  fragmento: string;
+  hasta?: string;
+  /**
+   * `enHora` es true si la voz lo está diciendo justo ahora. Es false sin voz,
+   * o si se llegó de golpe (el lector saltó hacia adelante): entonces lo que
+   * pasa se encadena en vez de amontonarse.
+   */
+  hacer: (segundos: number | null, enHora: boolean) => void;
+}
+
+/** Si la narración no arranca en este tiempo, lo atado al texto sigue a los subtítulos. */
+const ESPERA_VOZ = 4000;
+/** Segundos de atraso con los que un momento todavía va con la voz. */
+const A_TIEMPO = 0.6;
 
 /** Milisegundos sin tocar las flechas después de los cuales el subtítulo vuelve a seguir la voz. */
 const RETOMAR_NARRACION = 8000;
@@ -82,7 +100,7 @@ function oraciones(bloque: BloqueTexto): Oracion[] {
  * la voz salta al comienzo de ese tramo y sigue desde ahí. El texto completo queda
  * disponible para lectores de pantalla.
  */
-export function subtitulos({ titulo, texto, acciones, avisos = [], sonido, tiempos, alLeer = [] }: Opciones): Subtitulos {
+export function subtitulos({ titulo, texto, acciones, avisos = [], sonido, tiempos, alDecir = [] }: Opciones): Subtitulos {
   const todas = texto.flatMap(oraciones);
   const tiempoDePalabra = tiemposDe(tiempos, texto);
   let paginas: Pagina[] = [];
@@ -90,11 +108,60 @@ export function subtitulos({ titulo, texto, acciones, avisos = [], sonido, tiemp
   let ultimoToque = -Infinity;
   // Hasta qué punto del texto (contando letras, sin espacios) hay que leer para cada aviso.
   const entero = sinEspacios(todas.map((o) => o.texto).join(''));
-  const marcas = alLeer.map(({ fragmento, hacer }) => {
-    const buscado = fragmento ? sinEspacios(fragmento) : '';
-    const donde = buscado ? entero.indexOf(buscado) : -1;
-    return { hasta: donde === -1 ? entero.length : donde + buscado.length, hacer, hecho: false };
+  // Y en qué palabra empieza, para seguir los tiempos de la voz.
+  const palabras = palabrasDe(texto);
+  const palabraDe = (fragmento: string | undefined): number | null => {
+    const buscadas = fragmento?.split(/\s+/).filter(Boolean) ?? [];
+    if (!buscadas.length) return null;
+    for (let i = 0; i + buscadas.length <= palabras.length; i++) {
+      if (buscadas.every((b, j) => palabras[i + j] === b)) return i;
+    }
+    return null;
+  };
+  const marcas = alDecir.map(({ fragmento, hasta, hacer }) => {
+    const buscado = sinEspacios(fragmento);
+    const donde = entero.indexOf(buscado);
+    return {
+      letras: donde === -1 ? entero.length : donde + buscado.length,
+      palabra: palabraDe(fragmento),
+      palabraHasta: palabraDe(hasta),
+      hacer,
+      hecho: false,
+    };
   });
+  // Con narración sincronizada, lo atado al texto espera a la voz. Si la voz
+  // no llega, se saltea o termina, sigue a los subtítulos.
+  // Si la voz del narrador espera que la pidan, se sigue al texto desde el principio.
+  let sinVoz = !tiempoDePalabra || !sonido.desbloqueado || !marcas.length || sonido.hayParaEscuchar;
+  const sinVozDespues = window.setTimeout(() => {
+    if (!sonido.narrando) seguirAlTexto();
+  }, ESPERA_VOZ);
+  const cumplir = (marca: (typeof marcas)[number], segundos: number | null, enHora: boolean) => {
+    marca.hecho = true;
+    marca.hacer(segundos, enHora);
+  };
+  /** Sin voz: todo lo que está en el subtítulo actual o antes. */
+  const alcanzarTexto = () => {
+    const pagina = paginas[actual];
+    if (!sinVoz || !pagina || raiz.classList.contains('subtitulos--portada')) return;
+    for (const marca of marcas) if (!marca.hecho && pagina.letras >= marca.letras) cumplir(marca, null, false);
+  };
+  /** Con voz: todo lo que la voz ya dijo. */
+  const alcanzarVoz = (segundos: number) => {
+    if (!tiempoDePalabra) return;
+    for (const marca of marcas) {
+      if (marca.hecho || marca.palabra === null) continue;
+      const desde = tiempoDePalabra[marca.palabra];
+      if (desde > segundos) continue;
+      const hasta = marca.palabraHasta === null ? null : tiempoDePalabra[marca.palabraHasta];
+      cumplir(marca, hasta === null || hasta <= desde ? null : Math.max(0, hasta - segundos), segundos - desde <= A_TIEMPO);
+    }
+  };
+  const seguirAlTexto = () => {
+    sinVoz = true;
+    window.clearTimeout(sinVozDespues);
+    alcanzarTexto();
+  };
 
   const linea = h('p', { class: 'subtitulo' });
   const medida = h('p', { class: 'subtitulo subtitulo--medida' });
@@ -221,12 +288,7 @@ export function subtitulos({ titulo, texto, acciones, avisos = [], sonido, tiemp
     const ultima = indice === paginas.length - 1;
     if (ultima) raiz.classList.add('subtitulos--leido');
     raiz.classList.toggle('subtitulos--leyendo', !ultima && !raiz.classList.contains('subtitulos--leido'));
-    if (raiz.classList.contains('subtitulos--portada')) return;
-    for (const marca of marcas) {
-      if (marca.hecho || pagina.letras < marca.hasta) continue;
-      marca.hecho = true;
-      marca.hacer();
-    }
+    alcanzarTexto();
   };
 
   /** El segundo de la narración en que empieza una página: con los tiempos si están, o por el largo del texto. */
@@ -259,6 +321,7 @@ export function subtitulos({ titulo, texto, acciones, avisos = [], sonido, tiemp
   const acompanar = () => {
     const avance = sonido.avanceNarracion;
     const segundos = sonido.tiempoNarracion;
+    if (segundos !== null) alcanzarVoz(segundos);
     if (avance === null || segundos === null || performance.now() - ultimoToque < RETOMAR_NARRACION || !paginas.length) return;
     let indice: number;
     if (tiempoDePalabra) {
@@ -273,9 +336,18 @@ export function subtitulos({ titulo, texto, acciones, avisos = [], sonido, tiemp
     if (indice < actual && performance.now() - salto < 1500) return;
     mostrar(indice);
   };
+  let narro = false;
   const dejarDeEscuchar = sonido.escuchar((narrando) => {
     window.clearInterval(reloj);
-    if (!narrando) return;
+    // La voz terminó o se salteó: lo que falta sigue al texto.
+    if (!narrando) {
+      if (narro) seguirAlTexto();
+      return;
+    }
+    narro = true;
+    // Si el lector pide la voz a mitad de camino, lo que falta va con ella.
+    if (tiempoDePalabra && marcas.length) sinVoz = false;
+    window.clearTimeout(sinVozDespues);
     ultimoToque = -Infinity;
     reloj = window.setInterval(acompanar, 100);
     acompanar();
@@ -296,6 +368,7 @@ export function subtitulos({ titulo, texto, acciones, avisos = [], sonido, tiemp
       observador.disconnect();
       dejarDeEscuchar();
       window.clearInterval(reloj);
+      window.clearTimeout(sinVozDespues);
     },
   };
 }

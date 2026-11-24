@@ -806,9 +806,19 @@
   padding: 0;
 }
 
+/* «Escuchar» se destaca: es la puerta al cuento para quien todavía no lee. */
+.control--escuchar {
+  background: var(--accion);
+  color: var(--accion-tinta);
+}
+
 @media (hover: hover) {
   .control:hover {
     background: var(--resaltado);
+  }
+
+  .control--escuchar:hover {
+    background: var(--accion-hover);
   }
 }
 
@@ -876,6 +886,16 @@
     padding: 0;
   }
 
+  /*
+   * Con monedas, «Escuchar el cuento» y «Saltear narración» no entran al lado
+   * de «Volver»: quedan solo con su ícono (la palabra sigue para los lectores
+   * de pantalla). Sin monedas, como de día, conservan la palabra.
+   */
+  .barra:has(.monedas:not([hidden])) :is(.control--escuchar, .control--saltear) {
+    padding: 0;
+  }
+
+  .barra:has(.monedas:not([hidden])) :is(.control--escuchar, .control--saltear) span,
   .control--volver span {
     position: absolute;
     width: 1px;

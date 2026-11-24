@@ -7,6 +7,8 @@ export const iconoSilencio = `<svg ${base}><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H
 
 export const iconoSaltear = `<svg ${base}><path d="M5 6l8 6-8 6z"/><path d="M17 6v12"/></svg>`;
 
+export const iconoEscuchar = `<svg ${base}><path d="M7 5.5v13l11-6.5z"/></svg>`;
+
 export const iconoSeguir = `<svg ${base}><path d="M5 12h13"/><path d="m13 6 6 6-6 6"/></svg>`;
 
 export const iconoVolver = `<svg ${base}><path d="M19 12H6"/><path d="m11 6-6 6 6 6"/></svg>`;

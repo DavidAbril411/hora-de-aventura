@@ -1,5 +1,5 @@
 {
-  "titulo": "Hora de aventura",
+  "titulo": "Hora de aventuras",
   "inicio": "p01-intro",
   "interfaz": {
     "empezar": "Empezar",
@@ -8,6 +8,7 @@
     "recorrerConEllos": "Recorrer con ellos",
     "silenciar": "Silenciar",
     "activarSonido": "Activar sonido",
+    "escucharNarracion": "Escuchar el cuento",
     "saltearNarracion": "Saltear narración",
     "monedas": "Monedas",
     "cerrar": "Cerrar",
@@ -79,7 +80,7 @@
       "numero": 1,
       "tipo": "intro",
       "momento": "dia",
-      "titulo": "Hora de aventura",
+      "titulo": "Hora de aventuras",
       "texto": [
         "Más allá de las nubes existe un lugar que casi nadie conoce: un pequeño pueblo sobre una isla que flota en el cielo. Desde allí arriba, las casas parecen diminutas, los caminos se pierden entre los árboles del bosque y, si mirás hacia abajo, podés ver las nubes pasar muy cerca de tus pies.",
         "En el pueblo viven chicos, chicas y animales muy especiales. Cada uno tiene su propia historia, sus secretos y, quizás, algún poder extraordinario. Allí hay mucho por descubrir: lugares escondidos, objetos mágicos, animales que tienen algo para contarte y rincones que pueden cambiar cuando los tocás.",
@@ -185,17 +186,17 @@
             "ancho": 20
           },
           {
-            "id": "flor",
-            "nombre": "Una flor",
-            "imagen": "ficha-flor",
-            "x": 10,
+            "id": "economia",
+            "nombre": "Una economía",
+            "imagen": "ficha-economia",
+            "x": 12,
             "y": 74,
-            "ancho": 13,
+            "ancho": 16,
             "interaccion": {
               "tipo": "secreto",
               "animacion": "crecer",
-              "titulo": "No es un sombrero",
-              "secreto": "Es… una flor"
+              "titulo": "No es una montaña",
+              "secreto": "Es… una economía"
             }
           },
           {
@@ -247,11 +248,34 @@
         "amb-vecinos",
         "amb-pelotita"
       ],
-      "efectos": [
-        "sfx-moto"
-      ],
       "requiereInteracciones": 1,
-      "siguiente": "p06-noche-jp-roberto"
+      "siguiente": "p06-noche-jp-roberto",
+      "momentos": [
+        {
+          "alDecir": "Tocá para saber",
+          "elemento": "economia",
+          "accion": "invitar"
+        },
+        {
+          "alDecir": "Tocá para saber",
+          "elemento": "auto",
+          "accion": "invitar"
+        },
+        {
+          "alDecir": "Tocá para saber",
+          "elemento": "gorra",
+          "accion": "invitar"
+        },
+        {
+          "alDecir": "Tocá para saber",
+          "elemento": "fantasma",
+          "accion": "invitar"
+        },
+        {
+          "alDecir": "Juan Pablo y Roberto conocen",
+          "efecto": "sfx-moto"
+        }
+      ]
     },
     {
       "id": "p04-dia-camila-alma",
@@ -345,9 +369,30 @@
         "amb-guitarra",
         "amb-vecinos"
       ],
-      "efectos": [],
       "requiereInteracciones": 1,
-      "siguiente": "p07-noche-camila-alma"
+      "siguiente": "p07-noche-camila-alma",
+      "momentos": [
+        {
+          "alDecir": "Tocá para saber",
+          "elemento": "muffins",
+          "accion": "invitar"
+        },
+        {
+          "alDecir": "Tocá para saber",
+          "elemento": "vincha",
+          "accion": "invitar"
+        },
+        {
+          "alDecir": "Tocá para saber",
+          "elemento": "globo",
+          "accion": "invitar"
+        },
+        {
+          "alDecir": "Tocá para saber",
+          "elemento": "zanahoria",
+          "accion": "invitar"
+        }
+      ]
     },
     {
       "id": "p05-dia-diana-rogelio",
@@ -449,9 +494,30 @@
         "amb-loritas",
         "amb-viento"
       ],
-      "efectos": [],
       "requiereInteracciones": 1,
-      "siguiente": "p08-noche-diana-rogelio"
+      "siguiente": "p08-noche-diana-rogelio",
+      "momentos": [
+        {
+          "alDecir": "Tocá para saber",
+          "elemento": "pato",
+          "accion": "invitar"
+        },
+        {
+          "alDecir": "Tocá para saber",
+          "elemento": "barco",
+          "accion": "invitar"
+        },
+        {
+          "alDecir": "Tocá para saber",
+          "elemento": "mariquita",
+          "accion": "invitar"
+        },
+        {
+          "alDecir": "Tocá para saber",
+          "elemento": "pulpo",
+          "accion": "invitar"
+        }
+      ]
     },
     {
       "id": "p06-noche-jp-roberto",
@@ -517,12 +583,7 @@
             "imagen": "personaje-viejo-de-la-bolsa",
             "x": 84,
             "y": 58,
-            "ancho": 20,
-            "llegada": {
-              "animacion": "acercarse",
-              "retraso": 3.5,
-              "duracion": 6.5
-            }
+            "ancho": 20
           },
           {
             "id": "escondite-1",
@@ -613,12 +674,47 @@
       "ambiente": [
         "amb-viento"
       ],
-      "efectos": [
-        "sfx-clac-clac",
-        "sfx-risa-viejo",
-        "sfx-tic-tac"
-      ],
-      "siguiente": "p09-colectivo"
+      "siguiente": "p09-colectivo",
+      "momentos": [
+        {
+          "alDecir": "Entonces se escucha",
+          "efecto": "sfx-clac-clac",
+          "elemento": "viejo",
+          "accion": "acercarse",
+          "hasta": "Nadie sabe exactamente"
+        },
+        {
+          "alDecir": "Nadie sabe exactamente",
+          "efecto": "sfx-risa-viejo"
+        },
+        {
+          "alDecir": "mira hacia el cielo",
+          "elemento": "viejo",
+          "accion": "mirarArriba"
+        },
+        {
+          "alDecir": "El viejo sigue su camino.",
+          "elemento": "viejo",
+          "accion": "irse",
+          "hasta": "Hay poco tiempo"
+        },
+        {
+          "alDecir": "haciendo el Miami y la mortal.",
+          "elemento": "miami",
+          "accion": "invitar"
+        },
+        {
+          "alDecir": "haciendo el Miami y la mortal.",
+          "elemento": "mortal",
+          "accion": "invitar"
+        },
+        {
+          "alDecir": "El reloj comienza a avanzar.",
+          "efecto": "sfx-tic-tac",
+          "elemento": "reloj",
+          "accion": "balancear"
+        }
+      ]
     },
     {
       "id": "p07-noche-camila-alma",
@@ -677,12 +773,7 @@
             "imagen": "personaje-viejo-de-la-bolsa",
             "x": 84,
             "y": 58,
-            "ancho": 20,
-            "llegada": {
-              "animacion": "acercarse",
-              "retraso": 3.5,
-              "duracion": 6.5
-            }
+            "ancho": 20
           },
           {
             "id": "escondite-1",
@@ -786,12 +877,47 @@
       "ambiente": [
         "amb-viento"
       ],
-      "efectos": [
-        "sfx-clac-clac",
-        "sfx-risa-viejo",
-        "sfx-tic-tac"
-      ],
-      "siguiente": "p09-colectivo"
+      "siguiente": "p09-colectivo",
+      "momentos": [
+        {
+          "alDecir": "Entonces se escucha",
+          "efecto": "sfx-clac-clac",
+          "elemento": "viejo",
+          "accion": "acercarse",
+          "hasta": "Nadie sabe exactamente"
+        },
+        {
+          "alDecir": "Nadie sabe exactamente",
+          "efecto": "sfx-risa-viejo"
+        },
+        {
+          "alDecir": "mira hacia el cielo",
+          "elemento": "viejo",
+          "accion": "mirarArriba"
+        },
+        {
+          "alDecir": "El viejo sigue su camino.",
+          "elemento": "viejo",
+          "accion": "irse",
+          "hasta": "Hay poco tiempo"
+        },
+        {
+          "alDecir": "tienen una cámara de fotos",
+          "elemento": "camara",
+          "accion": "invitar"
+        },
+        {
+          "alDecir": "el flash de cada fotografía",
+          "elemento": "camara",
+          "accion": "destello"
+        },
+        {
+          "alDecir": "El reloj comienza a avanzar.",
+          "efecto": "sfx-tic-tac",
+          "elemento": "reloj",
+          "accion": "balancear"
+        }
+      ]
     },
     {
       "id": "p08-noche-diana-rogelio",
@@ -850,12 +976,7 @@
             "imagen": "personaje-viejo-de-la-bolsa",
             "x": 84,
             "y": 58,
-            "ancho": 20,
-            "llegada": {
-              "animacion": "acercarse",
-              "retraso": 3.5,
-              "duracion": 6.5
-            }
+            "ancho": 20
           },
           {
             "id": "escondite-1",
@@ -959,12 +1080,42 @@
       "ambiente": [
         "amb-viento"
       ],
-      "efectos": [
-        "sfx-clac-clac",
-        "sfx-risa-viejo",
-        "sfx-tic-tac"
-      ],
-      "siguiente": "p09-colectivo"
+      "siguiente": "p09-colectivo",
+      "momentos": [
+        {
+          "alDecir": "Entonces se escucha",
+          "efecto": "sfx-clac-clac",
+          "elemento": "viejo",
+          "accion": "acercarse",
+          "hasta": "Nadie sabe exactamente"
+        },
+        {
+          "alDecir": "Nadie sabe exactamente",
+          "efecto": "sfx-risa-viejo"
+        },
+        {
+          "alDecir": "mira hacia el cielo",
+          "elemento": "viejo",
+          "accion": "mirarArriba"
+        },
+        {
+          "alDecir": "El viejo sigue su camino.",
+          "elemento": "viejo",
+          "accion": "irse",
+          "hasta": "Hay poco tiempo"
+        },
+        {
+          "alDecir": "conserva su varita mágica.",
+          "elemento": "varita",
+          "accion": "invitar"
+        },
+        {
+          "alDecir": "El reloj comienza a avanzar.",
+          "efecto": "sfx-tic-tac",
+          "elemento": "reloj",
+          "accion": "balancear"
+        }
+      ]
     },
     {
       "id": "p09-colectivo",
@@ -1004,10 +1155,25 @@
       "ambiente": [
         "amb-viento"
       ],
-      "efectos": [
-        "sfx-colectivo"
-      ],
-      "siguiente": "p10-viaje"
+      "siguiente": "p10-viaje",
+      "momentos": [
+        {
+          "alDecir": "A lo lejos aparece el colectivo.",
+          "efecto": "sfx-colectivo",
+          "elemento": "fondo",
+          "accion": "aparecer"
+        },
+        {
+          "alDecir": "El mapa que nos ofrece el chofer,",
+          "elemento": "mapa",
+          "accion": "aparecer"
+        },
+        {
+          "alDecir": "Tocá en el mapa",
+          "elemento": "destinos",
+          "accion": "senalar"
+        }
+      ]
     },
     {
       "id": "p10-viaje",
@@ -1024,7 +1190,19 @@
       "ambiente": [
         "amb-viento"
       ],
-      "siguiente": "p11-cierre"
+      "siguiente": "p11-cierre",
+      "momentos": [
+        {
+          "alDecir": "el colectivo comienza a recorrer",
+          "elemento": "ventana",
+          "accion": "balancear"
+        },
+        {
+          "alDecir": "el colectivo se detiene.",
+          "elemento": "ventana",
+          "accion": "detener"
+        }
+      ]
     },
     {
       "id": "p11-cierre",
@@ -1065,7 +1243,7 @@
             "imagen": "objeto-perro-pitbull",
             "x": 28,
             "y": 82,
-            "ancho": 12
+            "ancho": 10
           },
           {
             "id": "viejo",
@@ -1077,16 +1255,46 @@
           }
         ]
       },
-      "desaparece": {
-        "elemento": "viejo",
-        "alLeer": "el viejo desaparece"
-      },
-      "efectos": [
-        "sfx-perros",
-        "sfx-clac-clac"
-      ],
       "ambiente": [],
-      "reiniciarEn": "p02-eleccion"
+      "reiniciarEn": "p02-eleccion",
+      "momentos": [
+        {
+          "alDecir": "—¡Guau!",
+          "efecto": "sfx-perros"
+        },
+        {
+          "alDecir": "Un perrito pitbull aparece corriendo",
+          "elemento": "perrito",
+          "accion": "entrar"
+        },
+        {
+          "alDecir": "De pronto, se escucha:",
+          "efecto": "sfx-clac-clac",
+          "elemento": "viejo",
+          "accion": "acercarse",
+          "hasta": "—Ah…"
+        },
+        {
+          "alDecir": "Abre su enorme bolsa",
+          "elemento": "viejo",
+          "accion": "inclinarse"
+        },
+        {
+          "alDecir": "el perrito salta adentro.",
+          "elemento": "perrito",
+          "accion": "saltarA",
+          "hacia": "viejo",
+          "punto": [
+            70,
+            58
+          ]
+        },
+        {
+          "alDecir": "el viejo desaparece.",
+          "elemento": "viejo",
+          "accion": "desaparecer"
+        }
+      ]
     }
   ],
   "creditos": {
@@ -1243,9 +1451,9 @@
       "src": "img/obj-reloj.webp",
       "descripcion": "El reloj"
     },
-    "ficha-flor": {
-      "src": "img/obj-flor.webp",
-      "descripcion": "Dibujo de la ficha «No es un sombrero»: una flor"
+    "ficha-economia": {
+      "src": "img/obj-economia.webp",
+      "descripcion": "Dibujo de la ficha «No es una montaña»: una montaña que en lápiz se vuelve un mapa"
     },
     "ficha-auto": {
       "src": "img/obj-auto.webp",
@@ -1398,47 +1606,56 @@
     "narracion-p03-dia-jp-roberto": {
       "src": "audio/narracion-p03-dia-jp-roberto.m4a",
       "tipo": "narracion",
-      "descripcion": "Narración de la pantalla 3 (p03-dia-jp-roberto)"
+      "descripcion": "Voz del narrador (ElevenLabs) de la pantalla 3 (p03-dia-jp-roberto)",
+      "aPedido": true
     },
     "narracion-p04-dia-camila-alma": {
       "src": "audio/narracion-p04-dia-camila-alma.m4a",
       "tipo": "narracion",
-      "descripcion": "Narración de la pantalla 4 (p04-dia-camila-alma)"
+      "descripcion": "Voz del narrador (ElevenLabs) de la pantalla 4 (p04-dia-camila-alma)",
+      "aPedido": true
     },
     "narracion-p05-dia-diana-rogelio": {
       "src": "audio/narracion-p05-dia-diana-rogelio.m4a",
       "tipo": "narracion",
-      "descripcion": "Narración de la pantalla 5 (p05-dia-diana-rogelio)"
+      "descripcion": "Voz del narrador (ElevenLabs) de la pantalla 5 (p05-dia-diana-rogelio)",
+      "aPedido": true
     },
     "narracion-p06-noche-jp-roberto": {
       "src": "audio/narracion-p06-noche-jp-roberto.m4a",
       "tipo": "narracion",
-      "descripcion": "Narración de la pantalla 6 (p06-noche-jp-roberto)"
+      "descripcion": "Voz del narrador (ElevenLabs) de la pantalla 6 (p06-noche-jp-roberto)",
+      "aPedido": true
     },
     "narracion-p07-noche-camila-alma": {
       "src": "audio/narracion-p07-noche-camila-alma.m4a",
       "tipo": "narracion",
-      "descripcion": "Narración de la pantalla 7 (p07-noche-camila-alma)"
+      "descripcion": "Voz del narrador (ElevenLabs) de la pantalla 7 (p07-noche-camila-alma)",
+      "aPedido": true
     },
     "narracion-p08-noche-diana-rogelio": {
       "src": "audio/narracion-p08-noche-diana-rogelio.m4a",
       "tipo": "narracion",
-      "descripcion": "Narración de la pantalla 8 (p08-noche-diana-rogelio)"
+      "descripcion": "Voz del narrador (ElevenLabs) de la pantalla 8 (p08-noche-diana-rogelio)",
+      "aPedido": true
     },
     "narracion-p09-colectivo": {
       "src": "audio/narracion-p09-colectivo.m4a",
       "tipo": "narracion",
-      "descripcion": "Narración de la pantalla 9 (p09-colectivo)"
+      "descripcion": "Voz del narrador (ElevenLabs) de la pantalla 9 (p09-colectivo)",
+      "aPedido": true
     },
     "narracion-p10-viaje": {
       "src": "audio/narracion-p10-viaje.m4a",
       "tipo": "narracion",
-      "descripcion": "Narración de la pantalla 10 (p10-viaje)"
+      "descripcion": "Voz del narrador (ElevenLabs) de la pantalla 10 (p10-viaje)",
+      "aPedido": true
     },
     "narracion-p11-cierre": {
       "src": "audio/narracion-p11-cierre.m4a",
       "tipo": "narracion",
-      "descripcion": "Narración de la pantalla 11 (p11-cierre)"
+      "descripcion": "Voz del narrador (ElevenLabs) de la pantalla 11 (p11-cierre)",
+      "aPedido": true
     }
   }
 }

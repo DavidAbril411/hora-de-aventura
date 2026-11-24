@@ -4,12 +4,13 @@ import { t } from '../engine/historia';
 import type { ContadorMonedas } from '../engine/motor';
 import { contarMoneda } from './animaciones';
 import { h, svg } from './dom';
-import { iconoMoneda, iconoSaltear, iconoSilencio, iconoSonido, iconoVolver } from './iconos';
+import { iconoEscuchar, iconoMoneda, iconoSaltear, iconoSilencio, iconoSonido, iconoVolver } from './iconos';
 
 /**
  * Controles que están en todas las pantallas: volver (arriba a la izquierda,
- * cuando hay adónde), silenciar (siempre visible), saltear la narración
- * (mientras suena) y las monedas (cuando hay).
+ * cuando hay adónde), silenciar (siempre visible), escuchar la voz del
+ * narrador (cuando no suena sola), saltear la narración (mientras suena) y
+ * las monedas (cuando hay).
  */
 export function barra(
   estado: Almacen,
@@ -30,12 +31,22 @@ export function barra(
 
   const saltear = h(
     'button',
-    { type: 'button', class: 'control control--saltear', hidden: true, onclick: () => sonido.saltear() },
+    { type: 'button', class: 'control control--saltear', hidden: true, onclick: () => sonido.saltearPorElLector() },
     svg(iconoSaltear),
     h('span', {}, t('saltearNarracion')),
   );
+  const escuchar = h(
+    'button',
+    { type: 'button', class: 'control control--escuchar', hidden: true, onclick: () => void sonido.escucharNarrador() },
+    svg(iconoEscuchar),
+    h('span', {}, t('escucharNarracion')),
+  );
   sonido.escuchar((narrando) => {
+    // Si el que tenía el foco se esconde, el foco pasa al que aparece en su lugar.
+    const conFoco = document.activeElement === saltear || document.activeElement === escuchar;
     saltear.hidden = !narrando;
+    escuchar.hidden = !sonido.hayParaEscuchar;
+    if (conFoco) (narrando ? saltear : escuchar).focus();
   });
 
   const volver = h(
@@ -80,5 +91,5 @@ export function barra(
     },
   };
 
-  return { raiz: h('div', { class: 'barra' }, el, saltear, silenciar), volver, contador };
+  return { raiz: h('div', { class: 'barra' }, el, escuchar, saltear, silenciar), volver, contador };
 }
