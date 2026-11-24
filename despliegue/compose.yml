@@ -1,5 +1,8 @@
 # Se levanta con: docker compose -f despliegue/compose.yml up -d --build
 # Solo escucha en 127.0.0.1: desde afuera se entra por el proxy del VPS.
+# Dominio: horadeaventuras.abrilcodes.com (desde el 24/11). El dominio vive solo en el
+# proxy del VPS y en el DNS: la app no lo tiene escrito en ningún lado.
+# El dominio anterior, horadeaventura.abrilcodes.com, redirige al nuevo desde el proxy.
 name: hora-de-aventura
 services:
   web:

@@ -119,7 +119,7 @@ Esperan al equipo (no se tocan hasta que llegue o se confirme):
   - **Las presentaciones de las duplas no coinciden con su audio**: siguen sonando las voces de los chicos, que leyeron el texto anterior en tercera persona. Se sacaron sus `tiempos` (los subtítulos pasan por proporción). David decidió el 20/11 dejar el audio viejo: suena la versión en tercera persona y el subtítulo nuevo avanza por proporción; los guiones nuevos están en la Library, `motor/guiones-narracion-2026-11-20/`. Los textos del narrador para ElevenLabs están en el doc «Textos del narrador para ElevenLabs» (https://claude.ai/artifact/GXBdwbcwi941GDwmBCy4f6).
 - **Dibujo nuevo del viejo de la bolsa** (punto 2): llegó el 19/11 y ya reemplaza a `img/pj-viejo.webp` (recorte A; el anterior quedó en `material-tratado/descartados/viejo-2026-10-26/`).
 - **Objetos de los secretos** (punto 4): quieren dejar los más ambiguos. El 23/11 pidieron cambiar la flor por la economía (hecho). Si quieren cambiar otras, se dice cuáles de las doce fichas salen y cuáles de las nueve que no se usan entran.
-- **La «s» del título** (punto 5): confirmado el 23/11, ahora es «Hora de aventuras» (`titulo` y portada en `historia.json`, y `index.html`). El dominio y el nombre del repositorio no cambian.
+- **La «s» del título** (punto 5): confirmado el 23/11, ahora es «Hora de aventuras» (`titulo` y portada en `historia.json`, y `index.html`). El 24/11 David pidió pasar también el dominio: ahora es `horadeaventuras.abrilcodes.com`, y el viejo (`horadeaventura.abrilcodes.com`) redirige al nuevo. El nombre del repositorio no cambia.
 
 ### Contenido que tiene que indicar el equipo (no se inventa)
 
